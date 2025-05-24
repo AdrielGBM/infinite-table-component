@@ -28,5 +28,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../data-table-filters/src/lib/table", "../data-table-filters/src/lib/compose-refs.ts", "../data-table-filters/src/lib/delimiters.ts", "../data-table-filters/src/lib/format.ts", "../data-table-filters/src/lib/is-array.ts", "../data-table-filters/src/lib/is-json.ts", "../data-table-filters/src/lib/request"]
 }
