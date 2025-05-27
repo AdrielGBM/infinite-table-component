@@ -51,14 +51,14 @@ export function DataTableFilterCommand({
   const [currentWord, setCurrentWord] = useState<string>("");
   const filterFields = useMemo(
     () => _filterFields?.filter((i) => !i.commandDisabled),
-    [_filterFields],
+    [_filterFields]
   );
   const columnParser = useMemo(
     () => columnFiltersParser({ searchParamsParser, filterFields }),
-    [searchParamsParser, filterFields],
+    [searchParamsParser, filterFields]
   );
   const [inputValue, setInputValue] = useState<string>(
-    columnParser.serialize(columnFilters),
+    columnParser.serialize(columnFilters)
   );
   const [lastSearches, setLastSearches] = useLocalStorage<
     {
@@ -92,7 +92,7 @@ export function DataTableFilterCommand({
         prev[curr.id] = curr.value;
         return prev;
       },
-      {} as Record<string, unknown>,
+      {} as Record<string, unknown>
     );
 
     for (const key of Object.keys(searchParams)) {
@@ -130,7 +130,7 @@ export function DataTableFilterCommand({
         type="button"
         className={cn(
           "group flex w-full items-center rounded-lg border border-input bg-background px-3 text-muted-foreground ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:bg-accent/50 hover:text-accent-foreground",
-          open ? "hidden" : "visible",
+          open ? "hidden" : "visible"
         )}
         onClick={() => setOpen(true)}
       >
@@ -154,7 +154,7 @@ export function DataTableFilterCommand({
       <Command
         className={cn(
           "overflow-visible rounded-lg border border-border shadow-md dark:bg-muted/50 [&>div]:border-none",
-          open ? "visible" : "hidden",
+          open ? "visible" : "hidden"
         )}
         filter={(value, search, keywords) =>
           getFilterValue({ value, search, keywords, currentWord })
@@ -177,7 +177,7 @@ export function DataTableFilterCommand({
             if (!search) return;
             const timestamp = Date.now();
             const searchIndex = lastSearches.findIndex(
-              (item) => item.search === search,
+              (item) => item.search === search
             );
             if (searchIndex !== -1) {
               lastSearches[searchIndex].timestamp = timestamp;
@@ -224,7 +224,7 @@ export function DataTableFilterCommand({
                           const prefix = isStarting ? "" : " ";
                           const input = prev.replace(
                             `${prefix}${currentWord}`,
-                            `${prefix}${value}`,
+                            `${prefix}${value}`
                           );
                           return `${input}:`;
                         });
@@ -268,7 +268,7 @@ export function DataTableFilterCommand({
                               optionValue,
                               value,
                               field,
-                            }),
+                            })
                           );
                           setCurrentWord("");
                         }}
@@ -277,7 +277,7 @@ export function DataTableFilterCommand({
                         {facetedValue?.has(optionValue) ? (
                           <span className="ml-auto font-mono text-muted-foreground">
                             {formatCompactNumber(
-                              facetedValue.get(optionValue) || 0,
+                              facetedValue.get(optionValue) || 0
                             )}
                           </span>
                         ) : null}
@@ -325,8 +325,8 @@ export function DataTableFilterCommand({
                             // TODO: extract into function
                             setLastSearches(
                               lastSearches.filter(
-                                (i) => i.search !== item.search,
-                              ),
+                                (i) => i.search !== item.search
+                              )
                             );
                           }}
                           className="ml-1 hidden rounded-md p-0.5 hover:bg-background group-aria-selected:block"

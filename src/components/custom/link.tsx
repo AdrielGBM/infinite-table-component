@@ -1,5 +1,6 @@
-import NextLink, { type LinkProps as NextLinkProps } from "next/link";
+import { type LinkProps as NextLinkProps } from "next/link";
 import React from "react";
+import { Link as NextLink } from "react-router";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 

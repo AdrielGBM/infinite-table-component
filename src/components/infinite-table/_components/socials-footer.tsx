@@ -11,24 +11,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Book, Command } from "lucide-react";
-import NextLink from "next/link";
+import { Link as NextLink } from "react-router";
 
 export function SocialsFooter() {
   return (
     <div className="flex flex-col gap-2">
       <div className="grid w-full grid-cols-3 items-center justify-center gap-2 p-1 md:grid-cols-6">
         <Button variant="ghost" size="sm" className="h-8 w-8 px-0" asChild>
-          <NextLink href="https://github.com/openstatusHQ/data-table-filters">
+          <NextLink to="https://github.com/openstatusHQ/data-table-filters">
             <Github className="h-4 w-4" />
           </NextLink>
         </Button>
         <Button variant="ghost" size="sm" className="h-8 w-8 px-0" asChild>
-          <NextLink href="https://twitter.com/openstatusHQ">
+          <NextLink to="https://twitter.com/openstatusHQ">
             <X className="h-4 w-4" />
           </NextLink>
         </Button>
         <Button variant="ghost" size="sm" className="h-8 w-8 px-0" asChild>
-          <NextLink href="https://bsky.app/profile/openstatus.dev">
+          <NextLink to="https://bsky.app/profile/openstatus.dev">
             <Bluesky className="h-4 w-4" />
           </NextLink>
         </Button>
@@ -44,7 +44,7 @@ export function SocialsFooter() {
           </PopoverContent>
         </Popover>
         <Button variant="ghost" size="sm" className="h-8 w-8 px-0" asChild>
-          <NextLink href="/guide">
+          <NextLink to="/guide">
             <Book className="h-4 w-4" />
           </NextLink>
         </Button>
