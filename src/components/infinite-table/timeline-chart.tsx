@@ -21,15 +21,15 @@ export const description = "A stacked bar chart";
 const chartConfig = {
   success: {
     label: <TooltipLabel level="success" />,
-    color: "hsl(var(--success))",
+    color: "var(--success)",
   },
   warning: {
     label: <TooltipLabel level="warning" />,
-    color: "hsl(var(--warning))",
+    color: "var(--warning)",
   },
   error: {
     label: <TooltipLabel level="error" />,
-    color: "hsl(var(--error))",
+    color: "var(--error)",
   },
 } satisfies ChartConfig;
 
@@ -63,7 +63,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
         ...item,
         [columnId]: new Date(item.timestamp).toString(),
       })),
-    [data],
+    [data]
   );
 
   const timerange = useMemo(() => {
@@ -90,7 +90,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
   const handleMouseUp: CategoricalChartFunc = (e) => {
     if (refAreaLeft && refAreaRight) {
       const [left, right] = [refAreaLeft, refAreaRight].sort(
-        (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+        (a, b) => new Date(a).getTime() - new Date(b).getTime()
       );
       table
         .getColumn(columnId)
@@ -108,7 +108,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
         "aspect-auto h-[60px] w-full",
         "[&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted/50", // otherwise same color as 200
         "select-none", // disable text selection
-        className,
+        className
       )}
     >
       <BarChart
@@ -165,7 +165,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
             x1={refAreaLeft}
             x2={refAreaRight}
             strokeOpacity={0.3}
-            fill="hsl(var(--foreground))"
+            fill="var(--foreground)"
             fillOpacity={0.08}
           />
         )}
