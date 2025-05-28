@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")!).render(
     <NuqsAdapter>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <Home />
           </ThemeProvider>
         </QueryClientProvider>
