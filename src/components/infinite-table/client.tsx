@@ -14,6 +14,7 @@ import { DataTableInfinite } from "./data-table-infinite";
 import { dataOptions } from "./query-options";
 import type { FacetMetadataSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
+import { mock } from "./mock";
 
 export function Client() {
   const [search] = useQueryStates(searchParamsParser);
@@ -30,7 +31,7 @@ export function Client() {
 
   const flatData = React.useMemo(
     () => data?.pages?.flatMap((page) => page.data ?? []) ?? [],
-    [data?.pages],
+    [data?.pages]
   );
 
   const liveMode = useLiveMode(flatData);
@@ -79,7 +80,7 @@ export function Client() {
   return (
     <DataTableInfinite
       columns={columns}
-      data={flatData}
+      data={mock} /* flatData */
       totalRows={totalDBRowCount}
       filterRows={filterDBRowCount}
       totalRowsFetched={totalFetched}
@@ -112,7 +113,9 @@ export function Client() {
       chartData={chartData}
       chartDataColumnId="date"
       getRowClassName={(row) => {
-        const rowTimestamp = row.original.date.getTime();
+        const rowTimestamp = new Date(
+          row.original.date
+        ).getTime(); /* Se le agregó el new Date() */
         const isPast = rowTimestamp <= (liveMode.timestamp || -1);
         const levelClassName = getLevelRowClassName(row.original.level);
         return cn(levelClassName, isPast ? "opacity-50" : "opacity-100");
@@ -147,7 +150,7 @@ export function useLiveMode<TData extends { date: Date }>(data: TData[]) {
   const [live] = useQueryState("live", searchParamsParser.live);
   // REMINDER: used to capture the live mode on timestamp
   const liveTimestamp = React.useRef<number | undefined>(
-    live ? new Date().getTime() : undefined,
+    live ? new Date().getTime() : undefined
   );
 
   React.useEffect(() => {
@@ -174,17 +177,17 @@ export function useLiveMode<TData extends { date: Date }>(data: TData[]) {
 }
 
 export function getFacetedUniqueValues<TData>(
-  facets?: Record<string, FacetMetadataSchema>,
+  facets?: Record<string, FacetMetadataSchema>
 ) {
   return (_: TTable<TData>, columnId: string): Map<string, number> => {
     return new Map(
-      facets?.[columnId]?.rows?.map(({ value, total }) => [value, total]) || [],
+      facets?.[columnId]?.rows?.map(({ value, total }) => [value, total]) || []
     );
   };
 }
 
 export function getFacetedMinMaxValues<TData>(
-  facets?: Record<string, FacetMetadataSchema>,
+  facets?: Record<string, FacetMetadataSchema>
 ) {
   return (_: TTable<TData>, columnId: string): [number, number] | undefined => {
     const min = facets?.[columnId]?.min;
