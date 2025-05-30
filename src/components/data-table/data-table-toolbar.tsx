@@ -1,5 +1,3 @@
-"use client";
-
 import { Kbd } from "@/components/custom/kbd";
 import { useDataTable } from "@/components/data-table/data-table-provider";
 import { Button } from "@/components/ui/button";
@@ -11,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useHotKey } from "@/hooks/use-hot-key";
 import { formatCompactNumber } from "@/lib/format";
-import { useControls } from "@/providers/controls";
+import { useControls } from "@/providers/useControls";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useMemo } from "react";
 import { DataTableFilterControlsDrawer } from "./data-table-filter-controls-drawer";
@@ -33,7 +31,7 @@ export function DataTableToolbar({ renderActions }: DataTableToolbarProps) {
       total: table.getCoreRowModel().rows.length,
       filtered: table.getFilteredRowModel().rows.length,
     }),
-    [isLoading, columnFilters],
+    [isLoading, columnFilters]
   );
 
   return (

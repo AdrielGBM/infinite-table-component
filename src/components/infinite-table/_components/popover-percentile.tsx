@@ -1,7 +1,5 @@
-"use client";
 import { ColumnSchema } from "../schema";
 import { FunctionSquare } from "lucide-react";
-import * as React from "react";
 import { cn } from "@/lib/utils";
 import { formatCompactNumber, formatMilliseconds } from "@/lib/format";
 import { Percentile, getPercentileColor } from "@/lib/request/percentile";

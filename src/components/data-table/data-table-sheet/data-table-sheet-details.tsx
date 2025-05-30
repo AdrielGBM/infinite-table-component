@@ -1,5 +1,3 @@
-"use client";
-
 import { ChevronDown, ChevronUp, X } from "lucide-react";
 import * as React from "react";
 import {
@@ -51,12 +49,12 @@ export function DataTableSheetDetails({
 
   const nextId = React.useMemo(
     () => table.getCoreRowModel().flatRows[index + 1]?.id,
-    [index, isLoading],
+    [index, isLoading]
   );
 
   const prevId = React.useMemo(
     () => table.getCoreRowModel().flatRows[index - 1]?.id,
-    [index, isLoading],
+    [index, isLoading]
   );
 
   const onPrev = React.useCallback(() => {

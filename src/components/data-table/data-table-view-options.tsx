@@ -1,5 +1,3 @@
-"use client";
-
 import { Check, GripVertical, Settings2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -39,7 +37,7 @@ export function DataTableViewOptions() {
       table.getAllColumns().sort((a, b) => {
         return columnOrder.indexOf(a.id) - columnOrder.indexOf(b.id);
       }),
-    [columnOrder],
+    [columnOrder]
   );
 
   return (
@@ -80,7 +78,7 @@ export function DataTableViewOptions() {
                   .filter(
                     (column) =>
                       typeof column.accessorFn !== "undefined" &&
-                      column.getCanHide(),
+                      column.getCanHide()
                   )
                   .map((column) => (
                     <SortableItem key={column.id} value={column.id} asChild>
@@ -97,7 +95,7 @@ export function DataTableViewOptions() {
                             "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
                             column.getIsVisible()
                               ? "bg-primary text-primary-foreground"
-                              : "opacity-50 [&_svg]:invisible",
+                              : "opacity-50 [&_svg]:invisible"
                           )}
                         >
                           <Check className={cn("h-4 w-4")} />

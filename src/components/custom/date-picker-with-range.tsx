@@ -1,5 +1,3 @@
-"use client";
-
 import { kbdVariants } from "@/components/custom/kbd";
 import type { DatePreset } from "@/components/data-table/types";
 import { Button } from "@/components/ui/button";
@@ -67,7 +65,7 @@ export function DatePickerWithRange({
             size="sm"
             className={cn(
               "max-w-full justify-start truncate text-left font-normal hover:bg-muted/50",
-              !date && "text-muted-foreground",
+              !date && "text-muted-foreground"
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -142,7 +140,7 @@ function DatePresets({
               onClick={() => onSelect({ from, to })}
               className={cn(
                 "flex items-center justify-between gap-6",
-                !isActive && "border border-transparent",
+                !isActive && "border border-transparent"
               )}
             >
               <span className="mr-auto">{label}</span>
@@ -168,7 +166,7 @@ function DatePresetsSelect({
     return presets.find((p) => p.from === from && p.to === to)?.shortcut;
   }
   const [value, setValue] = React.useState<string | undefined>(
-    findPreset(selected?.from, selected?.to),
+    findPreset(selected?.from, selected?.to)
   );
 
   React.useEffect(() => {
@@ -204,7 +202,7 @@ function DatePresetsSelect({
                 <span
                   className={cn(
                     kbdVariants(),
-                    "ml-2 h-5 uppercase leading-snug",
+                    "ml-2 h-5 uppercase leading-snug"
                   )}
                 >
                   {shortcut}
@@ -227,7 +225,7 @@ function CustomDateRange({
   onSelect: (date: DateRange | undefined) => void;
 }) {
   const [dateFrom, setDateFrom] = React.useState<Date | undefined>(
-    selected?.from,
+    selected?.from
   );
   const [dateTo, setDateTo] = React.useState<Date | undefined>(selected?.to);
   const debounceDateFrom = useDebounce(dateFrom, 1000);

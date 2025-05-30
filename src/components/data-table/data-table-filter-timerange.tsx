@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo } from "react";
 import type { DataTableTimerangeFilterField } from "./types";
 import { isArrayOfDates } from "@/lib/is-array";
@@ -21,9 +19,9 @@ export function DataTableFilterTimerange<TData>({
       filterValue instanceof Date
         ? { from: filterValue, to: undefined }
         : Array.isArray(filterValue) && isArrayOfDates(filterValue)
-          ? { from: filterValue?.[0], to: filterValue?.[1] }
-          : undefined,
-    [filterValue],
+        ? { from: filterValue?.[0], to: filterValue?.[1] }
+        : undefined,
+    [filterValue]
   );
 
   const setDate = (date: DateRange | undefined) => {

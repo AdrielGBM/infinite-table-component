@@ -1,12 +1,9 @@
-"use client";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/custom/accordion";
-import type React from "react";
 import { DataTableFilterResetButton } from "./data-table-filter-reset-button";
 import { DataTableFilterCheckbox } from "./data-table-filter-checkbox";
 import { DataTableFilterSlider } from "./data-table-filter-slider";

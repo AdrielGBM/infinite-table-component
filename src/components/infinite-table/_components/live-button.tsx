@@ -1,5 +1,3 @@
-"use client";
-
 import { useDataTable } from "@/components/data-table/data-table-provider";
 import { Button } from "@/components/ui/button";
 import { useHotKey } from "@/hooks/use-hot-key";
@@ -13,9 +11,7 @@ import { searchParamsParser } from "../search-params";
 const REFRESH_INTERVAL = 4_000;
 
 interface LiveButtonProps {
-  fetchPreviousPage?: (
-    options?: FetchPreviousPageOptions | undefined,
-  ) => Promise<unknown>;
+  fetchPreviousPage?: (options?: FetchPreviousPageOptions) => Promise<unknown>;
 }
 
 export function LiveButton({ fetchPreviousPage }: LiveButtonProps) {

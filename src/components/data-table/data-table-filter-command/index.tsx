@@ -1,5 +1,3 @@
-"use client";
-
 import { Kbd } from "@/components/custom/kbd";
 import { useDataTable } from "@/components/data-table/data-table-provider";
 import {

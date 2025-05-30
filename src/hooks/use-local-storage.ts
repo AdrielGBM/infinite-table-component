@@ -1,9 +1,7 @@
-"use client";
-
 import { useEffect, useState, useCallback } from "react";
 
 function getItemFromLocalStorage(key: string) {
-  const item = window?.localStorage.getItem(key);
+  const item = window.localStorage.getItem(key);
   if (item) return JSON.parse(item);
 
   return null;

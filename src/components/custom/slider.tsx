@@ -1,7 +1,5 @@
 // Props to https://github.com/shadcn-ui/ui/issues/885#issuecomment-2059600641
 
-"use client";
-
 import * as React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 

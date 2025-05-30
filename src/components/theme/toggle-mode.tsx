@@ -1,9 +1,6 @@
-"use client";
+import { useTheme } from "./useTheme";
 
-import * as React from "react";
-import { useTheme } from "./theme";
-
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +10,10 @@ import {
 import { Laptop, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function ModeToggle({ className, ...props }: ButtonProps) {
+export function ModeToggle({
+  className,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   const { setTheme } = useTheme();
 
   return (
@@ -22,7 +22,10 @@ export function ModeToggle({ className, ...props }: ButtonProps) {
         <Button
           variant="ghost"
           size="sm"
-          className={cn("w-9 px-0", className)}
+          className={cn(
+            "w-9 px-0",
+            typeof className === "string" ? className : undefined
+          )}
           {...props}
         >
           <Sun className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -31,15 +34,27 @@ export function ModeToggle({ className, ...props }: ButtonProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("light");
+          }}
+        >
           <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("dark");
+          }}
+        >
           <Moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          onClick={() => {
+            setTheme("system");
+          }}
+        >
           <Laptop className="mr-2 h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>

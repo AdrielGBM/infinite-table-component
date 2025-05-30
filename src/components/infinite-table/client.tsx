@@ -1,5 +1,3 @@
-"use client";
-
 import { useHotKey } from "@/hooks/use-hot-key";
 import { getLevelRowClassName } from "@/lib/request/level";
 import { cn } from "@/lib/utils";

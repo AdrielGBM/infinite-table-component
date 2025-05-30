@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { composeRefs } from "@/lib/compose-refs";
@@ -20,7 +18,7 @@ const containerVariants = cva(
         variant: "default",
       },
     },
-  },
+  }
 );
 
 export interface CopyToClipboardContainerProps
@@ -69,7 +67,7 @@ export const CopyToClipboardContainer = React.forwardRef<
           collapsible && !open
             ? "max-h-(--max-height) overflow-hidden"
             : undefined,
-          className,
+          className
         )}
         {...props}
       >

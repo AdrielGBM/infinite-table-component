@@ -12,11 +12,6 @@ export function useCopyToClipboard() {
         withToast: false,
       }
     ) => {
-      if (!navigator?.clipboard) {
-        console.warn("Clipboard not supported");
-        return false;
-      }
-
       try {
         await navigator.clipboard.writeText(text);
         setText(text);

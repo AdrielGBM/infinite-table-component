@@ -1,5 +1,3 @@
-"use client";
-
 import { TextWithTooltip } from "@/components/custom/text-with-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableColumnLatency } from "@/components/data-table/data-table-column/data-table-column-latency";
@@ -229,7 +227,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
                   key={key}
                   className={cn(
                     getTimingColor(key as keyof typeof timing),
-                    "h-4",
+                    "h-4"
                   )}
                   style={{ width: `${(value / latency) * 100}%` }}
                 />

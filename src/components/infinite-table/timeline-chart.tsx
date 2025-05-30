@@ -1,5 +1,3 @@
-"use client";
-
 import { Bar, BarChart, CartesianGrid, ReferenceArea, XAxis } from "recharts";
 
 import {

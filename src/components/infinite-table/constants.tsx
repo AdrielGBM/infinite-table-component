@@ -1,5 +1,3 @@
-"use client";
-
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
 import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
@@ -49,7 +47,7 @@ export const filterFields = [
             <div
               className={cn(
                 "h-2.5 w-2.5 rounded-[2px]",
-                getLevelColor(value).bg,
+                getLevelColor(value).bg
               )}
             />
             <span className="text-xs text-muted-foreground/70">

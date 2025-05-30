@@ -1,5 +1,3 @@
-"use client";
-
 import type { DataTableSliderFilterField } from "./types";
 import { InputWithAddons } from "@/components/custom/input-with-addons";
 import { Label } from "@/components/ui/label";
@@ -13,10 +11,10 @@ function getFilter(filterValue: unknown) {
   return typeof filterValue === "number"
     ? [filterValue, filterValue]
     : Array.isArray(filterValue) && isArrayOfNumbers(filterValue)
-      ? filterValue.length === 1
-        ? [filterValue[0], filterValue[0]]
-        : filterValue
-      : null;
+    ? filterValue.length === 1
+      ? [filterValue[0], filterValue[0]]
+      : filterValue
+    : null;
 }
 
 // TODO: discuss if we even need the `defaultMin` and `defaultMax`
