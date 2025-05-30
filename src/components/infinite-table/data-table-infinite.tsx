@@ -428,7 +428,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
               <TableBody
                 id="content"
                 tabIndex={-1}
-                className="outline-1 -outline-offset-1 outline-primary transition-colors focus-visible:outline"
+                className="-outline-offset-1 outline-primary transition-colors focus-visible:outline"
                 // REMINDER: avoids scroll (skipping the table header) when using skip to content
                 style={{
                   scrollMarginTop: "calc(var(--top-bar-height) + 40px)",
@@ -550,7 +550,7 @@ function Row<TData>({
       }}
       className={cn(
         "[&>:not(:last-child)]:border-r",
-        "outline-1 -outline-offset-1 outline-primary transition-colors focus-visible:bg-muted/50 focus-visible:outline data-[state=selected]:outline",
+        "-outline-offset-1 outline-primary transition-colors focus-visible:bg-muted/50 focus-visible:outline data-[state=selected]:outline",
         table.options.meta?.getRowClassName?.(row)
       )}
     >
