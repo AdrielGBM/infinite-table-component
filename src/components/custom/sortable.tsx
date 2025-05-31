@@ -34,7 +34,7 @@ import { Slot, type SlotProps } from "@radix-ui/react-slot";
 
 import { composeRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
-import { Button, type ButtonProps } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { createPortal } from "react-dom";
 
 const orientationConfig = {
@@ -81,6 +81,9 @@ interface SortableProps<TData extends { id: UniqueIdentifier }>
    * onMove={(event) => console.log(`Item moved from index ${event.activeIndex} to index ${event.overIndex}`)}
    */
   onMove?: (event: { activeIndex: number; overIndex: number }) => void;
+  onDragStart?: (event: unknown) => void;
+  onDragEnd?: (event: unknown) => void;
+  onDragCancel?: (event: unknown) => void;
 
   /**
    * A collision detection strategy that will be used to determine the closest sortable item.
@@ -156,7 +159,7 @@ function Sortable<TData extends { id: UniqueIdentifier }>({
       }}
       onDragEnd={(event) => {
         const { active, over } = event;
-        if (over && active.id !== over?.id) {
+        if (over && active.id !== over.id) {
           const activeIndex = value.findIndex((item) => item.id === active.id);
           const overIndex = value.findIndex((item) => item.id === over.id);
 
@@ -170,7 +173,7 @@ function Sortable<TData extends { id: UniqueIdentifier }>({
         onDragEnd?.(event);
       }}
       onDragCancel={(event) => {
-        setActiveId?.(null);
+        setActiveId(null);
         onDragCancel?.(event);
       }}
       collisionDetection={collisionDetection}
@@ -242,11 +245,6 @@ const SortableItemContext = React.createContext<SortableItemContextProps>({
 
 function useSortableItem() {
   const context = React.useContext(SortableItemContext);
-
-  if (!context) {
-    throw new Error("useSortableItem must be used within a SortableItem");
-  }
-
   return context;
 }
 
@@ -321,7 +319,8 @@ const SortableItem = React.forwardRef<HTMLDivElement, SortableItemProps>(
 );
 SortableItem.displayName = "SortableItem";
 
-interface SortableDragHandleProps extends ButtonProps {
+interface SortableDragHandleProps
+  extends React.ComponentPropsWithoutRef<"button"> {
   withHandle?: boolean;
 }
 

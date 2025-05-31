@@ -40,7 +40,7 @@ function RowAction({
       className="group text-left *:border-border hover:bg-transparent [&>:not(:last-child)]:border-r"
       onClick={(e) => {
         e.stopPropagation();
-        copy(value.toString());
+        void copy(value.toString());
       }}
     >
       <TableCell className="bg-muted/50 py-1 font-mono font-medium">

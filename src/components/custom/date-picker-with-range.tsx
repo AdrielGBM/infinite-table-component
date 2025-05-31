@@ -1,4 +1,4 @@
-import { kbdVariants } from "@/components/custom/kbd";
+import { kbdVariants } from "./kbdVariants";
 import type { DatePreset } from "@/components/data-table/types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -52,7 +52,9 @@ export function DatePickerWithRange({
       });
     };
     document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    return () => {
+      document.removeEventListener("keydown", down);
+    };
   }, [setDate, presets, open]);
 
   return (
@@ -131,13 +133,15 @@ function DatePresets({
       <p className="mx-3 text-xs uppercase text-muted-foreground">Date Range</p>
       <div className="grid gap-1">
         {presets.map(({ label, shortcut, from, to }) => {
-          const isActive = selected?.from === from && selected?.to === to;
+          const isActive = selected?.from === from && selected.to === to;
           return (
             <Button
               key={label}
               variant={isActive ? "outline" : "ghost"}
               size="sm"
-              onClick={() => onSelect({ from, to })}
+              onClick={() => {
+                onSelect({ from, to });
+              }}
               className={cn(
                 "flex items-center justify-between gap-6",
                 !isActive && "border border-transparent"
@@ -162,9 +166,12 @@ function DatePresetsSelect({
   onSelect: (date: DateRange | undefined) => void;
   presets: DatePreset[];
 }) {
-  function findPreset(from?: Date, to?: Date) {
-    return presets.find((p) => p.from === from && p.to === to)?.shortcut;
-  }
+  const findPreset = React.useCallback(
+    (from?: Date, to?: Date) => {
+      return presets.find((p) => p.from === from && p.to === to)?.shortcut;
+    },
+    [presets]
+  );
   const [value, setValue] = React.useState<string | undefined>(
     findPreset(selected?.from, selected?.to)
   );
@@ -173,7 +180,7 @@ function DatePresetsSelect({
     const preset = findPreset(selected?.from, selected?.to);
     if (preset === value) return;
     setValue(preset);
-  }, [selected, presets]);
+  }, [selected, presets, findPreset, value]);
 
   return (
     <Select

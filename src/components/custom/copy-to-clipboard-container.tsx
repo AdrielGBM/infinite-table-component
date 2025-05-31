@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { composeRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/utils";
-import { cva, VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Check, Copy, Plus } from "lucide-react";
 import * as React from "react";
 
@@ -49,15 +49,17 @@ export const CopyToClipboardContainer = React.forwardRef<
         setCollapsible(false);
       }
     }
-  }, [innerRef.current, maxHeight]);
+  }, [maxHeight]);
 
   return (
     <div
       className="group relative text-left"
       style={
-        {
-          "--max-height": `${maxHeight}px`,
-        } as React.CSSProperties
+        maxHeight
+          ? ({
+              "--max-height": `${String(maxHeight)}px`,
+            } as React.CSSProperties)
+          : undefined
       }
     >
       <div
@@ -79,7 +81,7 @@ export const CopyToClipboardContainer = React.forwardRef<
         className="absolute right-2 top-2 h-6 w-6 opacity-0 focus:opacity-100 group-hover:opacity-100 peer-focus:opacity-100"
         onClick={() => {
           const content = innerRef.current?.textContent;
-          if (content) copy(content);
+          if (content) void copy(content);
         }}
       >
         {!isCopied ? (
@@ -94,7 +96,9 @@ export const CopyToClipboardContainer = React.forwardRef<
             variant="outline"
             size="sm"
             className="my-1 rounded-full"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true);
+            }}
           >
             <Plus className="mr-2 h-4 w-4" /> Show content
           </Button>
