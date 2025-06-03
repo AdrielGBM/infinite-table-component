@@ -4,8 +4,8 @@ import {
   SLIDER_DELIMITER,
 } from "@/lib/delimiters";
 import { isArrayOfDates } from "@/lib/is-array";
-import { ColumnFiltersState } from "@tanstack/react-table";
-import { ParserBuilder } from "nuqs";
+import type { ColumnFiltersState } from "@tanstack/react-table";
+import type { ParserBuilder } from "nuqs";
 import type { DataTableFilterField } from "../types";
 
 /**
@@ -42,30 +42,39 @@ export function replaceInputByFieldType<TData>({
   field: DataTableFilterField<TData>;
 }) {
   switch (field.type) {
-    case "checkbox": {
-      if (currentWord.includes(ARRAY_DELIMITER)) {
-        const words = currentWord.split(ARRAY_DELIMITER);
-        words[words.length - 1] = `${optionValue}`;
-        const input = prev.replace(currentWord, words.join(ARRAY_DELIMITER));
-        return `${input.trim()} `;
+    case "checkbox":
+      {
+        if (currentWord.includes(ARRAY_DELIMITER)) {
+          const words = currentWord.split(ARRAY_DELIMITER);
+          words[words.length - 1] =
+            optionValue !== undefined ? String(optionValue) : "";
+          const input = prev.replace(currentWord, words.join(ARRAY_DELIMITER));
+          return `${input.trim()} `;
+        }
       }
-    }
-    case "slider": {
-      if (currentWord.includes(SLIDER_DELIMITER)) {
-        const words = currentWord.split(SLIDER_DELIMITER);
-        words[words.length - 1] = `${optionValue}`;
-        const input = prev.replace(currentWord, words.join(SLIDER_DELIMITER));
-        return `${input.trim()} `;
+      break;
+    case "slider":
+      {
+        if (currentWord.includes(SLIDER_DELIMITER)) {
+          const words = currentWord.split(SLIDER_DELIMITER);
+          words[words.length - 1] =
+            optionValue !== undefined ? String(optionValue) : "";
+          const input = prev.replace(currentWord, words.join(SLIDER_DELIMITER));
+          return `${input.trim()} `;
+        }
       }
-    }
-    case "timerange": {
-      if (currentWord.includes(RANGE_DELIMITER)) {
-        const words = currentWord.split(RANGE_DELIMITER);
-        words[words.length - 1] = `${optionValue}`;
-        const input = prev.replace(currentWord, words.join(RANGE_DELIMITER));
-        return `${input.trim()} `;
+      break;
+    case "timerange":
+      {
+        if (currentWord.includes(RANGE_DELIMITER)) {
+          const words = currentWord.split(RANGE_DELIMITER);
+          words[words.length - 1] =
+            optionValue !== undefined ? String(optionValue) : "";
+          const input = prev.replace(currentWord, words.join(RANGE_DELIMITER));
+          return `${input.trim()} `;
+        }
       }
-    }
+      break;
     default: {
       const input = prev.replace(currentWord, value);
       return `${input.trim()} `;
@@ -87,11 +96,11 @@ export function getFieldOptions<TData>({
             .filter(notEmpty)
         : Array.from(
             { length: field.max - field.min + 1 },
-            (_, i) => field.min + i,
-          ) || [];
+            (_, i) => field.min + i
+          );
     }
     default: {
-      return field.options?.map(({ value }) => value).filter(notEmpty) || [];
+      return field.options?.map(({ value }) => value).filter(notEmpty) ?? [];
     }
   }
 }
@@ -206,7 +215,7 @@ export function getFieldValueByType<TData>({
 }
 
 export function notEmpty<TValue>(
-  value: TValue | null | undefined,
+  value: TValue | null | undefined
 ): value is TValue {
   return value !== null && value !== undefined;
 }
@@ -215,7 +224,7 @@ export function columnFiltersParser<TData>({
   searchParamsParser,
   filterFields,
 }: {
-  searchParamsParser: Record<string, ParserBuilder<any>>;
+  searchParamsParser: Record<string, ParserBuilder<unknown>>;
   filterFields: DataTableFilterField<TData>[];
 }) {
   return {
@@ -223,37 +232,32 @@ export function columnFiltersParser<TData>({
       const values = inputValue
         .trim()
         .split(" ")
-        .reduce(
-          (prev, curr) => {
-            const [name, value] = curr.split(":");
-            if (!value || !name) return prev;
-            prev[name] = value;
-            return prev;
-          },
-          {} as Record<string, string>,
-        );
-
-      const searchParams = Object.entries(values).reduce(
-        (prev, [key, value]) => {
-          const parser = searchParamsParser[key];
-          if (!parser) return prev;
-
-          prev[key] = parser.parse(value);
+        .reduce<Record<string, string>>((prev, curr) => {
+          const [name, value] = curr.split(":");
+          if (!value || !name) return prev;
+          prev[name] = value;
           return prev;
-        },
-        {} as Record<string, unknown>,
-      );
+        }, {});
+
+      const searchParams = Object.entries(values).reduce<
+        Record<string, unknown>
+      >((prev, [key, value]) => {
+        const parser = searchParamsParser[key];
+
+        prev[key] = parser.parse(value);
+        return prev;
+      }, {});
 
       return searchParams;
     },
     serialize: (columnFilters: ColumnFiltersState) => {
       const values = columnFilters.reduce((prev, curr) => {
-        const { commandDisabled } = filterFields?.find(
-          (field) => curr.id === field.value,
-        ) || { commandDisabled: true }; // if column filter is not found, disable the command by default
+        const { commandDisabled } = filterFields.find(
+          (field) => curr.id === field.value
+        ) ?? { commandDisabled: true }; // if column filter is not found, disable the command by default
         const parser = searchParamsParser[curr.id];
 
-        if (commandDisabled || !parser) return prev;
+        if (commandDisabled) return prev;
 
         return `${prev}${curr.id}:${parser.serialize(curr.value)} `;
       }, "");

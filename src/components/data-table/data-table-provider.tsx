@@ -1,4 +1,4 @@
-import { DataTableFilterField } from "@/components/data-table/types";
+import type { DataTableFilterField } from "@/components/data-table/types";
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -8,13 +8,14 @@ import type {
   Table,
   VisibilityState,
 } from "@tanstack/react-table";
-import { createContext, useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { ControlsProvider } from "../../providers/controls";
+import { DataTableContext } from "./useDataTable";
 
 // REMINDER: read about how to move controlled state out of the useReactTable hook
 // https://github.com/TanStack/table/discussions/4005#discussioncomment-7303569
 
-interface DataTableStateContextType {
+export interface DataTableStateContextType {
   columnFilters: ColumnFiltersState;
   sorting: SortingState;
   rowSelection: RowSelectionState;
@@ -24,29 +25,20 @@ interface DataTableStateContextType {
   enableColumnOrdering: boolean;
 }
 
-interface DataTableBaseContextType<TData = unknown, TValue = unknown> {
+export interface DataTableBaseContextType<TData = unknown, TValue = unknown> {
   table: Table<TData>;
   filterFields: DataTableFilterField<TData>[];
   columns: ColumnDef<TData, TValue>[];
   isLoading?: boolean;
   getFacetedUniqueValues?: (
     table: Table<TData>,
-    columnId: string,
+    columnId: string
   ) => Map<string, number>;
   getFacetedMinMaxValues?: (
     table: Table<TData>,
-    columnId: string,
+    columnId: string
   ) => undefined | [number, number];
 }
-
-interface DataTableContextType<TData = unknown, TValue = unknown>
-  extends DataTableStateContextType,
-    DataTableBaseContextType<TData, TValue> {}
-
-export const DataTableContext = createContext<DataTableContextType<
-  any,
-  any
-> | null>(null);
 
 export function DataTableProvider<TData, TValue>({
   children,
@@ -80,7 +72,7 @@ export function DataTableProvider<TData, TValue>({
       props.isLoading,
       props.getFacetedUniqueValues,
       props.getFacetedMinMaxValues,
-    ],
+    ]
   );
 
   return (
@@ -88,14 +80,4 @@ export function DataTableProvider<TData, TValue>({
       <ControlsProvider>{children}</ControlsProvider>
     </DataTableContext.Provider>
   );
-}
-
-export function useDataTable<TData, TValue>() {
-  const context = useContext(DataTableContext);
-
-  if (!context) {
-    throw new Error("useDataTable must be used within a DataTableProvider");
-  }
-
-  return context as DataTableContextType<TData, TValue>;
 }

@@ -1,48 +1,46 @@
 import type { JSX } from "react";
 
-export type SearchParams = {
-  [key: string]: string | string[] | undefined;
-};
+export type SearchParams = Record<string, string | string[] | undefined>;
 
-export type DatePreset = {
+export interface DatePreset {
   label: string;
   from: Date;
   to: Date;
   shortcut: string;
-};
+}
 
 // TODO: we could type the value(!) especially when using enums
-export type Option = {
+export interface Option {
   label: string;
   value: string | boolean | number | undefined;
-};
+}
 
-export type Input = {
+export interface Input {
   type: "input";
   options?: Option[];
-};
+}
 
-export type Checkbox = {
+export interface Checkbox {
   type: "checkbox";
   component?: (props: Option) => JSX.Element | null;
   options?: Option[];
-};
+}
 
-export type Slider = {
+export interface Slider {
   type: "slider";
   min: number;
   max: number;
   // if options is undefined, we will provide all the steps between min and max
   options?: Option[];
-};
+}
 
-export type Timerange = {
+export interface Timerange {
   type: "timerange";
   options?: Option[]; // required for TS
   presets?: DatePreset[];
-};
+}
 
-export type Base<TData> = {
+export interface Base<TData> {
   label: string;
   value: keyof TData;
   /**
@@ -53,7 +51,7 @@ export type Base<TData> = {
    * Defines if the command input is disabled for this field
    */
   commandDisabled?: boolean;
-};
+}
 
 export type DataTableCheckboxFilterField<TData> = Base<TData> & Checkbox;
 export type DataTableSliderFilterField<TData> = Base<TData> & Slider;
@@ -68,7 +66,7 @@ export type DataTableFilterField<TData> =
 
 /** ----------------------------------------- */
 
-export type SheetField<TData, TMeta = Record<string, unknown>> = {
+export interface SheetField<TData, TMeta = Record<string, unknown>> {
   id: keyof TData;
   label: string;
   // FIXME: rethink that! I dont think we need this as there is no input type
@@ -88,4 +86,4 @@ export type SheetField<TData, TMeta = Record<string, unknown>> = {
   condition?: (props: TData) => boolean;
   className?: string;
   skeletonClassName?: string;
-};
+}

@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { useMemo } from "react";
 
 export function DataTablePagination() {
@@ -25,7 +25,7 @@ export function DataTablePagination() {
       <div className="flex items-center space-x-2">
         <p className="text-sm font-medium">Rows per page</p>
         <Select
-          value={`${pagination.pageSize}`}
+          value={pagination.pageSize.toString()}
           onValueChange={(value) => {
             table.setPageSize(Number(value));
           }}
@@ -35,7 +35,7 @@ export function DataTablePagination() {
           </SelectTrigger>
           <SelectContent side="top">
             {[10, 20, 30, 40, 50].map((pageSize) => (
-              <SelectItem key={pageSize} value={`${pageSize}`}>
+              <SelectItem key={pageSize} value={String(pageSize)}>
                 {pageSize}
               </SelectItem>
             ))}

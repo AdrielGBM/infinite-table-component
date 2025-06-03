@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, ReferenceArea, XAxis } from "recharts";
 
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -11,8 +11,8 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { CategoricalChartFunc } from "recharts/types/chart/generateCategoricalChart";
 import { getLevelLabel } from "@/lib/request/level";
-import { useDataTable } from "@/components/data-table/data-table-provider";
-import { BaseChartSchema, TimelineChartSchema } from "./schema";
+import { useDataTable } from "@/components/data-table/useDataTable";
+import type { BaseChartSchema, TimelineChartSchema } from "./schema";
 
 export const description = "A stacked bar chart";
 
@@ -85,7 +85,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
     }
   };
 
-  const handleMouseUp: CategoricalChartFunc = (e) => {
+  const handleMouseUp: CategoricalChartFunc = () => {
     if (refAreaLeft && refAreaRight) {
       const [left, right] = [refAreaLeft, refAreaRight].sort(
         (a, b) => new Date(a).getTime() - new Date(b).getTime()
@@ -126,7 +126,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
           minTickGap={32}
           axisLine={false}
           // interval="preserveStartEnd"
-          tickFormatter={(value) => {
+          tickFormatter={(value: string | number | Date) => {
             const date = new Date(value);
             if (isNaN(date.getTime())) return "N/A";
             if (timerange.period === "10m") {
@@ -143,7 +143,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
           // defaultIndex={10}
           content={
             <ChartTooltipContent
-              labelFormatter={(value) => {
+              labelFormatter={(value: string | number | Date) => {
                 const date = new Date(value);
                 if (isNaN(date.getTime())) return "N/A";
                 if (timerange.period === "10m") {

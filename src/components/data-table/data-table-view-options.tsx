@@ -22,7 +22,7 @@ import {
   SortableItem,
 } from "@/components/custom/sortable";
 
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 
 export function DataTableViewOptions() {
   const { table, enableColumnOrdering } = useDataTable();
@@ -66,13 +66,19 @@ export function DataTableViewOptions() {
             <CommandGroup>
               <Sortable
                 value={sortedColumns.map((c) => ({ id: c.id }))}
-                onValueChange={(items) =>
-                  table.setColumnOrder(items.map((c) => c.id))
-                }
+                onValueChange={(items) => {
+                  table.setColumnOrder(items.map((c) => c.id));
+                }}
                 overlay={<div className="h-8 w-full rounded-md bg-muted/60" />}
-                onDragStart={() => setDrag(true)}
-                onDragEnd={() => setDrag(false)}
-                onDragCancel={() => setDrag(false)}
+                onDragStart={() => {
+                  setDrag(true);
+                }}
+                onDragEnd={() => {
+                  setDrag(false);
+                }}
+                onDragCancel={() => {
+                  setDrag(false);
+                }}
               >
                 {sortedColumns
                   .filter(
@@ -84,9 +90,9 @@ export function DataTableViewOptions() {
                     <SortableItem key={column.id} value={column.id} asChild>
                       <CommandItem
                         value={column.id}
-                        onSelect={() =>
-                          column.toggleVisibility(!column.getIsVisible())
-                        }
+                        onSelect={() => {
+                          column.toggleVisibility(!column.getIsVisible());
+                        }}
                         className={"capitalize"}
                         disabled={drag}
                       >
@@ -100,13 +106,9 @@ export function DataTableViewOptions() {
                         >
                           <Check className={cn("h-4 w-4")} />
                         </div>
-                        <span>{column.columnDef.meta?.label || column.id}</span>
+                        <span>{column.columnDef.meta?.label ?? column.id}</span>
                         {enableColumnOrdering && !search ? (
-                          <SortableDragHandle
-                            variant="ghost"
-                            size="icon"
-                            className="ml-auto size-5 text-muted-foreground hover:text-foreground focus:bg-muted focus:text-foreground"
-                          >
+                          <SortableDragHandle className="ml-auto size-5 text-muted-foreground hover:text-foreground focus:bg-muted focus:text-foreground">
                             <GripVertical
                               className="size-4"
                               aria-hidden="true"

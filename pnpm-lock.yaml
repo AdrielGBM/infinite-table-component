@@ -125,6 +125,9 @@ importers:
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      zod:
+        specifier: ^3.25.49
+        version: 3.25.49
     devDependencies:
       '@eslint/js':
         specifier: ^9.25.0
@@ -2435,6 +2438,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zod@3.25.49:
+    resolution: {integrity: sha512-JMMPMy9ZBk3XFEdbM3iL1brx4NUSejd6xr3ELrrGEfGb355gjhiAWtG3K5o+AViV/3ZfkIrCzXsZn6SbLwTR8Q==}
+
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -4500,3 +4506,5 @@ snapshots:
   yallist@5.0.0: {}
 
   yocto-queue@0.1.0: {}
+
+  zod@3.25.49: {}

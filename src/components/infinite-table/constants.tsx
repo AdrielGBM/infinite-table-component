@@ -229,7 +229,7 @@ export const sheetFields = [
         <PopoverPercentile
           data={props}
           percentiles={props.metadata?.currentPercentiles}
-          filterRows={props.metadata?.filterRows as number}
+          filterRows={props.metadata?.filterRows ?? 0}
           className="ml-auto"
         />
       );

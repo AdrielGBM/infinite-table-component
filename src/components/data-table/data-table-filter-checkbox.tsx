@@ -1,5 +1,5 @@
 import { InputWithAddons } from "@/components/custom/input-with-addons";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,7 +22,7 @@ export function DataTableFilterCheckbox<TData>({
   // REMINDER: avoid using column?.getFilterValue()
   const filterValue = columnFilters.find((i) => i.id === value)?.value;
   const facetedValue =
-    getFacetedUniqueValues?.(table, value) || column?.getFacetedUniqueValues();
+    getFacetedUniqueValues?.(table, value) ?? column?.getFacetedUniqueValues();
 
   const Component = component;
 
@@ -34,10 +34,10 @@ export function DataTableFilterCheckbox<TData>({
   );
 
   // CHECK: it could be filterValue or searchValue
-  const filters = filterValue
+  const filters: (string | number)[] = filterValue
     ? Array.isArray(filterValue)
-      ? filterValue
-      : [filterValue]
+      ? (filterValue as (string | number)[])
+      : [filterValue as string | number]
     : [];
 
   // REMINDER: if no options are defined, while fetching data, we should show a skeleton
@@ -66,7 +66,9 @@ export function DataTableFilterCheckbox<TData>({
           leading={<Search className="mt-0.5 h-4 w-4" />}
           containerClassName="h-9 rounded-lg"
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
         />
       ) : null}
       {/* FIXME: due to the added max-h and overflow-y-auto, the hover state and border is laying on top of the scroll bar */}
@@ -75,7 +77,11 @@ export function DataTableFilterCheckbox<TData>({
           // TODO: we shoudn't sort the options here, instead filterOptions should be sorted by default
           // .sort((a, b) => a.label.localeCompare(b.label))
           .map((option, index) => {
-            const checked = filters.includes(option.value);
+            const checked =
+              typeof option.value === "string" ||
+              typeof option.value === "number"
+                ? filters.includes(option.value)
+                : false;
 
             return (
               <div
@@ -86,19 +92,19 @@ export function DataTableFilterCheckbox<TData>({
                 )}
               >
                 <Checkbox
-                  id={`${value}-${option.value}`}
+                  id={`${String(value)}-${String(option.value)}`}
                   checked={checked}
                   onCheckedChange={(checked) => {
                     const newValue = checked
-                      ? [...(filters || []), option.value]
-                      : filters?.filter((value) => option.value !== value);
+                      ? [...filters, option.value]
+                      : filters.filter((value) => option.value !== value);
                     column?.setFilterValue(
-                      newValue?.length ? newValue : undefined
+                      newValue.length ? newValue : undefined
                     );
                   }}
                 />
                 <Label
-                  htmlFor={`${value}-${option.value}`}
+                  htmlFor={`${String(value)}-${String(option.value)}`}
                   className="flex w-full items-center justify-center gap-1 truncate text-foreground/70 group-hover:text-accent-foreground"
                 >
                   {Component ? (
@@ -110,7 +116,7 @@ export function DataTableFilterCheckbox<TData>({
                     {isLoading ? (
                       <Skeleton className="h-4 w-4" />
                     ) : facetedValue?.has(option.value) ? (
-                      formatCompactNumber(facetedValue.get(option.value) || 0)
+                      formatCompactNumber(facetedValue.get(option.value) ?? 0)
                     ) : null}
                   </span>
                   <button

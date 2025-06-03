@@ -1,4 +1,4 @@
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { Button } from "@/components/ui/button";
 import { useHotKey } from "@/hooks/use-hot-key";
 import { cn } from "@/lib/utils";
@@ -25,13 +25,15 @@ export function LiveButton({ fetchPreviousPage }: LiveButtonProps) {
     async function fetchData() {
       if (live) {
         await fetchPreviousPage?.();
-        timeoutId = setTimeout(fetchData, REFRESH_INTERVAL);
+        timeoutId = setTimeout(() => {
+          void fetchData();
+        }, REFRESH_INTERVAL);
       } else {
         clearTimeout(timeoutId);
       }
     }
 
-    fetchData();
+    void fetchData();
 
     return () => {
       clearTimeout(timeoutId);
@@ -42,12 +44,12 @@ export function LiveButton({ fetchPreviousPage }: LiveButtonProps) {
   // TODO: test properly
   React.useEffect(() => {
     if ((date || sort) && live) {
-      setSearch((prev) => ({ ...prev, live: null }));
+      void setSearch((prev) => ({ ...prev, live: null }));
     }
   }, [date, sort]);
 
   function handleClick() {
-    setSearch((prev) => ({
+    void setSearch((prev) => ({
       ...prev,
       live: !prev.live,
       date: null,

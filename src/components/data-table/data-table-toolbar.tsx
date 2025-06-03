@@ -1,5 +1,5 @@
 import { Kbd } from "@/components/custom/kbd";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -23,7 +23,9 @@ interface DataTableToolbarProps {
 export function DataTableToolbar({ renderActions }: DataTableToolbarProps) {
   const { table, isLoading, columnFilters } = useDataTable();
   const { open, setOpen } = useControls();
-  useHotKey(() => setOpen((prev) => !prev), "b");
+  useHotKey(() => {
+    setOpen((prev) => !prev);
+  }, "b");
   const filters = table.getState().columnFilters;
 
   const rows = useMemo(
@@ -43,7 +45,9 @@ export function DataTableToolbar({ renderActions }: DataTableToolbarProps) {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() => {
+                  setOpen((prev) => !prev);
+                }}
                 className="hidden gap-2 sm:flex"
               >
                 {open ? (

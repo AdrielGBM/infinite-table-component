@@ -25,11 +25,11 @@ import { startOfDay } from "date-fns";
 import { startOfHour } from "date-fns";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { endOfDay } from "date-fns";
-import { Table } from "@tanstack/react-table";
+import type { Table } from "@tanstack/react-table";
 import { CalendarClock } from "lucide-react";
 import { endOfHour } from "date-fns";
 import { cn } from "@/lib/utils";
-import { DataTableFilterField } from "../types";
+import type { DataTableFilterField } from "../types";
 
 interface DataTableSheetRowActionProps<
   TData,
@@ -70,10 +70,10 @@ export function DataTableSheetRowAction<
               // FIXME:
               const filterValue = column?.getFilterValue() as
                 | undefined
-                | Array<unknown>;
+                | unknown[];
               const newValue = filterValue?.includes(value)
                 ? filterValue
-                : [...(filterValue || []), value];
+                : [...(filterValue ?? []), value];
 
               column?.setFilterValue(newValue);
             }}
@@ -112,7 +112,7 @@ export function DataTableSheetRowAction<
             </DropdownMenuItem>
           </DropdownMenuGroup>
         );
-      case "timerange":
+      case "timerange": {
         const date = new Date(value);
         return (
           <DropdownMenuGroup>
@@ -142,6 +142,7 @@ export function DataTableSheetRowAction<
             </DropdownMenuItem>
           </DropdownMenuGroup>
         );
+      }
       default:
         return null;
     }
@@ -177,7 +178,7 @@ export function DataTableSheetRowAction<
         {renderOptions()}
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => copy(String(value), { timeout: 1000 })}
+          onClick={() => void copy(String(value), { timeout: 1000 })}
         >
           <Copy />
           Copy value

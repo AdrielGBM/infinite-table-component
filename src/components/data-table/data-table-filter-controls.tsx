@@ -9,7 +9,7 @@ import { DataTableFilterCheckbox } from "./data-table-filter-checkbox";
 import { DataTableFilterSlider } from "./data-table-filter-slider";
 import { DataTableFilterInput } from "./data-table-filter-input";
 import { DataTableFilterTimerange } from "./data-table-filter-timerange";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 
 // FIXME: use @container (especially for the slider element) to restructure elements
 
@@ -22,10 +22,10 @@ export function DataTableFilterControls() {
     <Accordion
       type="multiple"
       defaultValue={filterFields
-        ?.filter(({ defaultOpen }) => defaultOpen)
-        ?.map(({ value }) => value as string)}
+        .filter(({ defaultOpen }) => defaultOpen)
+        .map(({ value }) => value as string)}
     >
-      {filterFields?.map((field) => {
+      {filterFields.map((field) => {
         const value = field.value as string;
         return (
           <AccordionItem key={value} value={value} className="border-none">

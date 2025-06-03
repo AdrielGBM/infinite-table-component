@@ -7,15 +7,15 @@ import { useEffect } from "react";
 export default function Page({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Record<string, string | string[] | undefined>;
 }) {
   useEffect(() => {
     async function search() {
-      const search = searchParamsCache.parse(await searchParams);
+      const search = searchParamsCache.parse(searchParams);
       const queryClient = getQueryClient();
       await queryClient.prefetchInfiniteQuery(dataOptions(search));
     }
-    search();
+    void search();
   }, [searchParams]);
 
   return <Client />;

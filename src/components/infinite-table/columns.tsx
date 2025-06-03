@@ -229,7 +229,7 @@ export const columns: ColumnDef<ColumnSchema>[] = [
                     getTimingColor(key as keyof typeof timing),
                     "h-4"
                   )}
-                  style={{ width: `${(value / latency) * 100}%` }}
+                  style={{ width: String((value / latency) * 100) + "%" }}
                 />
               ))}
             </div>

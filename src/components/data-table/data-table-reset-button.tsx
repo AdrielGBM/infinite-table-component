@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Kbd } from "@/components/custom/kbd";
 import { useHotKey } from "@/hooks/use-hot-key";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 
 export function DataTableResetButton() {
   const { table } = useDataTable();
@@ -21,7 +21,9 @@ export function DataTableResetButton() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => table.resetColumnFilters()}
+            onClick={() => {
+              table.resetColumnFilters();
+            }}
           >
             <X className="mr-2 h-4 w-4" />
             Reset

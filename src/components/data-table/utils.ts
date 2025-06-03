@@ -14,12 +14,12 @@ export function deserialize<T extends z.AnyZodObject>(schema: T) {
     return val
       .trim()
       .split(" ")
-      .reduce((prev, curr) => {
+      .reduce<Record<string, unknown>>((prev, curr) => {
         const [name, value] = curr.split(":");
         if (!value || !name) return prev;
         prev[name] = value;
         return prev;
-      }, {} as Record<string, unknown>);
+      }, {});
   }, schema);
   return (value: string) => castToSchema.safeParse(value);
 }
@@ -45,7 +45,7 @@ export function serializeColumFilters<TData>(
   return columnFilters.reduce((prev, curr) => {
     const { type, commandDisabled } = filterFields?.find(
       (field) => curr.id === field.value
-    ) || { commandDisabled: true }; // if column filter is not found, disable the command by default
+    ) ?? { commandDisabled: true }; // if column filter is not found, disable the command by default
 
     if (commandDisabled) return prev;
 
@@ -61,6 +61,6 @@ export function serializeColumFilters<TData>(
       }
     }
 
-    return `${prev}${curr.id}:${curr.value} `;
+    return `${prev}${curr.id}:${String(curr.value)} `;
   }, "");
 }

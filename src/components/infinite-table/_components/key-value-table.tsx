@@ -35,7 +35,7 @@ function RowAction({ label, value }: { label: string; value: string }) {
       className="group *:border-border hover:bg-transparent [&>:not(:last-child)]:border-r text-left"
       onClick={(e) => {
         e.stopPropagation();
-        copy(value);
+        void copy(value);
       }}
     >
       <TableCell className="bg-muted/50 py-1 font-medium font-mono">

@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 
 function getFilter(filterValue: unknown) {
   return typeof filterValue === "string" ? filterValue : null;
@@ -45,8 +45,10 @@ export function DataTableFilterInput<TData>({
         containerClassName="h-9 rounded-lg"
         name={value}
         id={value}
-        value={input || ""}
-        onChange={(e) => setInput(e.target.value)}
+        value={input ?? ""}
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
       />
     </div>
   );

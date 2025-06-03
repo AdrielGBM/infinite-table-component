@@ -23,10 +23,10 @@ import { useLocalStorage } from "@/hooks/use-local-storage";
 import { formatCompactNumber } from "@/lib/format";
 import { arrSome, inDateRange } from "@/lib/table/filterfns";
 import { cn } from "@/lib/utils";
-import {
+import type {
   FetchPreviousPageOptions,
   RefetchOptions,
-  type FetchNextPageOptions,
+  FetchNextPageOptions,
 } from "@tanstack/react-query";
 import type {
   ColumnDef,
@@ -53,7 +53,7 @@ import { useQueryState, useQueryStates, type ParserBuilder } from "nuqs";
 import * as React from "react";
 import { LiveButton } from "./_components/live-button";
 import { RefreshButton } from "./_components/refresh-button";
-import { BaseChartSchema } from "./schema";
+import type { BaseChartSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
 import { TimelineChart } from "./timeline-chart";
 import { SocialsFooter } from "./_components/socials-footer";
@@ -89,17 +89,14 @@ export interface DataTableInfiniteProps<TData, TValue, TMeta> {
   isFetching?: boolean;
   isLoading?: boolean;
   hasNextPage?: boolean;
-  fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
-  ) => Promise<unknown>;
-  fetchPreviousPage?: (
-    options?: FetchPreviousPageOptions | undefined
-  ) => Promise<unknown>;
-  refetch: (options?: RefetchOptions | undefined) => void;
+  fetchNextPage: (options?: FetchNextPageOptions) => Promise<unknown>;
+  fetchPreviousPage?: (options?: FetchPreviousPageOptions) => Promise<unknown>;
+  refetch: (options?: RefetchOptions) => void;
   renderLiveRow?: (props?: { row: Row<TData> }) => React.ReactNode;
   renderSheetTitle: (props: { row?: Row<TData> }) => React.ReactNode;
   // TODO:
   renderChart?: () => React.ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   searchParamsParser: Record<string, ParserBuilder<any>>;
 }
 
@@ -151,7 +148,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
   const tableRef = React.useRef<HTMLTableElement>(null);
   const [topBarHeight, setTopBarHeight] = React.useState(0);
   // FIXME: searchParamsParser needs to be passed as property
-  const [_, setSearch] = useQueryStates(searchParamsParser);
+  const [, setSearch] = useQueryStates(searchParamsParser);
 
   const onScroll = React.useCallback(
     (e: React.UIEvent<HTMLElement>) => {
@@ -160,7 +157,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
         e.currentTarget.scrollHeight;
 
       if (onPageBottom && !isFetching && totalRowsFetched < filterRows) {
-        fetchNextPage();
+        void fetchNextPage();
       }
     },
     [fetchNextPage, isFetching, filterRows, totalRowsFetched]
@@ -178,7 +175,9 @@ export function DataTableInfinite<TData, TValue, TMeta>({
     if (!topBar) return;
 
     observer.observe(topBar);
-    return () => observer.unobserve(topBar);
+    return () => {
+      observer.unobserve(topBar);
+    };
   }, [topBarRef]);
 
   const table = useReactTable({
@@ -219,23 +218,26 @@ export function DataTableInfinite<TData, TValue, TMeta>({
       return { id: field.value, value: filterValue.value };
     });
 
-    const search = columnFiltersWithNullable.reduce((prev, curr) => {
-      prev[curr.id as string] = curr.value;
-      return prev;
-    }, {} as Record<string, unknown>);
+    const search = columnFiltersWithNullable.reduce<Record<string, unknown>>(
+      (prev, curr) => {
+        prev[curr.id as string] = curr.value;
+        return prev;
+      },
+      {}
+    );
 
-    setSearch(search);
+    void setSearch(search);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnFilters]);
 
   React.useEffect(() => {
-    setSearch({ sort: sorting?.[0] || null });
+    void setSearch({ sort: sorting[0] || null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
 
   const selectedRow = React.useMemo(() => {
     if ((isLoading || isFetching) && !data.length) return;
-    const selectedRowKey = Object.keys(rowSelection)?.[0];
+    const selectedRowKey = Object.keys(rowSelection)[0];
     return table
       .getCoreRowModel()
       .flatRows.find((row) => row.id === selectedRowKey);
@@ -244,11 +246,11 @@ export function DataTableInfinite<TData, TValue, TMeta>({
   // TODO: can only share uuid within the first batch
   React.useEffect(() => {
     if (isLoading || isFetching) return;
-    if (Object.keys(rowSelection)?.length && !selectedRow) {
-      setSearch({ uuid: null });
+    if (Object.keys(rowSelection).length && !selectedRow) {
+      void setSearch({ uuid: null });
       setRowSelection({});
     } else {
-      setSearch({ uuid: Object.keys(rowSelection)?.[0] || null });
+      void setSearch({ uuid: Object.keys(rowSelection)[0] || null });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowSelection, selectedRow, isLoading, isFetching]);
@@ -262,16 +264,15 @@ export function DataTableInfinite<TData, TValue, TMeta>({
    */
   const columnSizeVars = React.useMemo(() => {
     const headers = table.getFlatHeaders();
-    const colSizes: { [key: string]: string } = {};
-    for (let i = 0; i < headers.length; i++) {
-      const header = headers[i]!;
+    const colSizes: Record<string, string> = {};
+    for (const header of headers) {
       // REMINDER: replace "." with "-" to avoid invalid CSS variable name (e.g. "timing.dns" -> "timing-dns")
-      colSizes[
-        `--header-${header.id.replace(".", "-")}-size`
-      ] = `${header.getSize()}px`;
-      colSizes[
-        `--col-${header.column.id.replace(".", "-")}-size`
-      ] = `${header.column.getSize()}px`;
+      colSizes[`--header-${header.id.replace(".", "-")}-size`] = `${String(
+        header.getSize()
+      )}px`;
+      colSizes[`--col-${header.column.id.replace(".", "-")}-size`] = `${String(
+        header.column.getSize()
+      )}px`;
     }
     return colSizes;
   }, [
@@ -296,7 +297,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
       columnOrder={columnOrder}
       columnVisibility={columnVisibility}
       enableColumnOrdering={true}
-      isLoading={isFetching || isLoading}
+      isLoading={isFetching ?? isLoading}
       getFacetedUniqueValues={getFacetedUniqueValues}
       getFacetedMinMaxValues={getFacetedMinMaxValues}
     >
@@ -304,7 +305,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
         className="flex h-full min-h-screen w-full flex-col sm:flex-row"
         style={
           {
-            "--top-bar-height": `${topBarHeight}px`,
+            "--top-bar-height": `${String(topBarHeight)}px`,
             ...columnSizeVars,
           } as React.CSSProperties
         }
@@ -408,7 +409,9 @@ export function DataTableInfinite<TData, TValue, TMeta>({
                               )}
                           {header.column.getCanResize() && (
                             <div
-                              onDoubleClick={() => header.column.resetSize()}
+                              onDoubleClick={() => {
+                                header.column.resetSize();
+                              }}
                               onMouseDown={header.getResizeHandler()}
                               onTouchStart={header.getResizeHandler()}
                               className={cn(
@@ -432,7 +435,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
                   scrollMarginTop: "calc(var(--top-bar-height) + 40px)",
                 }}
               >
-                {table.getRowModel().rows?.length ? (
+                {table.getRowModel().rows.length ? (
                   table.getRowModel().rows.map((row) => (
                     // REMINDER: if we want to add arrow navigation https://github.com/TanStack/table/discussions/2752#discussioncomment-192558
                     <React.Fragment key={row.id}>
@@ -461,8 +464,8 @@ export function DataTableInfinite<TData, TValue, TMeta>({
                   <TableCell colSpan={columns.length} className="text-center">
                     {hasNextPage || isFetching || isLoading ? (
                       <Button
-                        disabled={isFetching || isLoading}
-                        onClick={() => fetchNextPage()}
+                        disabled={isFetching ?? isLoading}
+                        onClick={() => void fetchNextPage()}
                         size="sm"
                         variant="outline"
                       >
@@ -539,7 +542,9 @@ function Row<TData>({
       id={row.id}
       tabIndex={0}
       data-state={selected && "selected"}
-      onClick={() => row.toggleSelected()}
+      onClick={() => {
+        row.toggleSelected();
+      }}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
           event.preventDefault();

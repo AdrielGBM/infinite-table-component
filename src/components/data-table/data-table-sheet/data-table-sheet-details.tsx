@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Kbd } from "@/components/custom/kbd";
 import { cn } from "@/lib/utils";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export interface DataTableSheetDetailsProps {
@@ -34,7 +34,7 @@ export function DataTableSheetDetails({
 }: DataTableSheetDetailsProps) {
   const { table, rowSelection, isLoading } = useDataTable();
 
-  const selectedRowKey = Object.keys(rowSelection)?.[0];
+  const selectedRowKey = Object.keys(rowSelection)[0];
 
   const selectedRow = React.useMemo(() => {
     if (isLoading && !selectedRowKey) return;
@@ -86,7 +86,9 @@ export function DataTableSheetDetails({
     };
 
     document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
+    return () => {
+      document.removeEventListener("keydown", down);
+    };
   }, [selectedRowKey, onNext, onPrev]);
 
   return (

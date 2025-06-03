@@ -1,8 +1,8 @@
-import { ColumnSchema } from "../schema";
+import type { ColumnSchema } from "../schema";
 import { FunctionSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatCompactNumber, formatMilliseconds } from "@/lib/format";
-import { Percentile, getPercentileColor } from "@/lib/request/percentile";
+import { type Percentile, getPercentileColor } from "@/lib/request/percentile";
 import {
   Popover,
   PopoverContent,
@@ -22,16 +22,16 @@ export function PopoverPercentile({
   filterRows,
   className,
 }: PopoverPercentileProps) {
-  let percentileArray = percentiles
+  const percentileArray = percentiles
     ? Object.entries(percentiles).map(([percentile, latency]) => [
         parseInt(percentile),
         latency,
       ])
     : [];
 
-  data?.percentile
-    ? percentileArray.push([data.percentile, data.latency])
-    : null;
+  if (data?.percentile) {
+    percentileArray.push([data.percentile, data.latency]);
+  }
   percentileArray.sort((a, b) => a[0] - b[0]);
 
   return (
@@ -50,7 +50,7 @@ export function PopoverPercentile({
               : "text-muted-foreground"
           )}
         />
-        {!data?.percentile ? "N/A" : `P${Math.round(data.percentile)}`}
+        {!data?.percentile ? "N/A" : `P${String(Math.round(data.percentile))}`}
       </PopoverTrigger>
       <PopoverContent
         className="w-40 flex flex-col gap-2 p-2 text-xs"
@@ -71,7 +71,7 @@ export function PopoverPercentile({
               value === data.latency;
             return (
               <div
-                key={`${key}-${value}`}
+                key={`${String(key)}-${String(value)}`}
                 className={cn(
                   "flex items-center justify-between px-1 py-0.5 rounded-md",
                   active && data.percentile
@@ -84,7 +84,7 @@ export function PopoverPercentile({
                     "font-mono",
                     !active && "text-muted-foreground"
                   )}
-                >{`P${Math.round(key)}`}</div>
+                >{`P${String(Math.round(key))}`}</div>
                 <div className="font-mono">
                   {formatMilliseconds(Math.round(value))}
                   <span className="text-muted-foreground">ms</span>

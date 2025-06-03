@@ -1,4 +1,4 @@
-import { TimingPhase, timingPhases } from "@/lib/request/timing";
+import { type TimingPhase, timingPhases } from "@/lib/request/timing";
 
 import {
   getTimingColor,
@@ -40,7 +40,7 @@ export function SheetTimingPhases({
             </div>
             <div
               className={cn(getTimingColor(phase), "h-4")}
-              style={{ width: `${(timing[phase] / latency) * 100}%` }}
+              style={{ width: `${String((timing[phase] / latency) * 100)}%` }}
             />
           </div>
         </div>

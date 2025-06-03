@@ -1,5 +1,5 @@
 import { Kbd } from "@/components/custom/kbd";
-import { useDataTable } from "@/components/data-table/data-table-provider";
+import { useDataTable } from "@/components/data-table/useDataTable";
 import {
   Command,
   CommandEmpty,
@@ -16,8 +16,8 @@ import { formatCompactNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { LoaderCircle, Search, X } from "lucide-react";
-import { ParserBuilder } from "nuqs";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import type { ParserBuilder } from "nuqs";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { DataTableFilterField } from "../types";
 import {
   columnFiltersParser,
@@ -31,7 +31,7 @@ import {
 
 interface DataTableFilterCommandProps {
   // TODO: maybe use generics for the parser
-  searchParamsParser: Record<string, ParserBuilder<any>>;
+  searchParamsParser: Record<string, ParserBuilder<unknown>>;
 }
 
 export function DataTableFilterCommand({
@@ -48,7 +48,7 @@ export function DataTableFilterCommand({
   const [open, setOpen] = useState<boolean>(false);
   const [currentWord, setCurrentWord] = useState<string>("");
   const filterFields = useMemo(
-    () => _filterFields?.filter((i) => !i.commandDisabled),
+    () => _filterFields.filter((i) => !i.commandDisabled),
     [_filterFields]
   );
   const columnParser = useMemo(
@@ -77,24 +77,12 @@ export function DataTableFilterCommand({
 
     const currentFilters = table.getState().columnFilters;
     const currentEnabledFilters = currentFilters.filter((filter) => {
-      const field = _filterFields?.find((field) => field.value === filter.id);
+      const field = _filterFields.find((field) => field.value === filter.id);
       return !field?.commandDisabled;
     });
-    const currentDisabledFilters = currentFilters.filter((filter) => {
-      const field = _filterFields?.find((field) => field.value === filter.id);
-      return field?.commandDisabled;
-    });
-
-    const commandDisabledFilterKeys = currentDisabledFilters.reduce(
-      (prev, curr) => {
-        prev[curr.id] = curr.value;
-        return prev;
-      },
-      {} as Record<string, unknown>
-    );
 
     for (const key of Object.keys(searchParams)) {
-      const value = searchParams[key as keyof typeof searchParams];
+      const value = searchParams[key];
       table.getColumn(key)?.setFilterValue(value);
     }
     const currentFiltersToReset = currentEnabledFilters.filter((filter) => {
@@ -114,11 +102,13 @@ export function DataTableFilterCommand({
     }
   }, [columnFilters, filterFields, open]);
 
-  useHotKey(() => setOpen((open) => !open), "k");
+  useHotKey(() => {
+    setOpen((open) => !open);
+  }, "k");
 
   useEffect(() => {
     if (open) {
-      inputRef?.current?.focus();
+      inputRef.current?.focus();
     }
   }, [open]);
 
@@ -130,7 +120,9 @@ export function DataTableFilterCommand({
           "group flex w-full items-center rounded-lg border border-input bg-background px-3 text-muted-foreground ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:bg-accent/50 hover:text-accent-foreground",
           open ? "hidden" : "visible"
         )}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+        }}
       >
         {isLoading ? (
           <LoaderCircle className="mr-2 h-4 w-4 shrink-0 animate-spin text-muted-foreground opacity-50 group-hover:text-popover-foreground" />
@@ -164,7 +156,7 @@ export function DataTableFilterCommand({
           value={inputValue}
           onValueChange={setInputValue}
           onKeyDown={(e) => {
-            if (e.key === "Escape") inputRef?.current?.blur();
+            if (e.key === "Escape") inputRef.current?.blur();
           }}
           onBlur={() => {
             setOpen(false);
@@ -186,8 +178,8 @@ export function DataTableFilterCommand({
             return;
           }}
           onInput={(e) => {
-            const caretPosition = e.currentTarget?.selectionStart || -1;
-            const value = e.currentTarget?.value || "";
+            const caretPosition = e.currentTarget.selectionStart ?? -1;
+            const value = e.currentTarget.value || "";
             const word = getWordByCaretPosition({ value, caretPosition });
             setCurrentWord(word);
           }}
@@ -201,7 +193,8 @@ export function DataTableFilterCommand({
               <CommandGroup heading="Filter">
                 {filterFields.map((field) => {
                   if (typeof field.value !== "string") return null;
-                  if (inputValue.includes(`${field.value}:`)) return null;
+                  if (inputValue.includes(`${String(field.value)}:`))
+                    return null;
                   // TBD: should we handle this in the component?
                   return (
                     <CommandItem
@@ -238,13 +231,14 @@ export function DataTableFilterCommand({
               </CommandGroup>
               <CommandSeparator />
               <CommandGroup heading="Query">
-                {filterFields?.map((field) => {
+                {filterFields.map((field) => {
                   if (typeof field.value !== "string") return null;
-                  if (!currentWord.includes(`${field.value}:`)) return null;
+                  if (!currentWord.includes(`${String(field.value)}:`))
+                    return null;
 
                   const column = table.getColumn(field.value);
                   const facetedValue =
-                    getFacetedUniqueValues?.(table, field.value) ||
+                    getFacetedUniqueValues?.(table, field.value) ??
                     column?.getFacetedUniqueValues();
 
                   const options = getFieldOptions({ field });
@@ -252,30 +246,31 @@ export function DataTableFilterCommand({
                   return options.map((optionValue) => {
                     return (
                       <CommandItem
-                        key={`${String(field.value)}:${optionValue}`}
-                        value={`${String(field.value)}:${optionValue}`}
+                        key={`${String(field.value)}:${String(optionValue)}`}
+                        value={`${String(field.value)}:${String(optionValue)}`}
                         onMouseDown={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                         }}
                         onSelect={(value) => {
-                          setInputValue((prev) =>
-                            replaceInputByFieldType({
+                          setInputValue((prev) => {
+                            const result = replaceInputByFieldType({
                               prev,
                               currentWord,
                               optionValue,
                               value,
                               field,
-                            })
-                          );
+                            });
+                            return typeof result === "string" ? result : "";
+                          });
                           setCurrentWord("");
                         }}
                       >
-                        {`${optionValue}`}
+                        {String(optionValue)}
                         {facetedValue?.has(optionValue) ? (
                           <span className="ml-auto font-mono text-muted-foreground">
                             {formatCompactNumber(
-                              facetedValue.get(optionValue) || 0
+                              facetedValue.get(optionValue) ?? 0
                             )}
                           </span>
                         ) : null}
@@ -287,7 +282,7 @@ export function DataTableFilterCommand({
               <CommandSeparator />
               <CommandGroup heading="Suggestions">
                 {lastSearches
-                  ?.sort((a, b) => b.timestamp - a.timestamp)
+                  .sort((a, b) => b.timestamp - a.timestamp)
                   .slice(0, 5)
                   .map((item) => {
                     return (
@@ -368,7 +363,9 @@ export function DataTableFilterCommand({
                     e.preventDefault();
                     e.stopPropagation();
                   }}
-                  onClick={() => setLastSearches([])}
+                  onClick={() => {
+                    setLastSearches([]);
+                  }}
                 >
                   Clear suggestions
                 </button>
@@ -396,15 +393,18 @@ function CommandItemSuggestions<TData>({
       return (
         <span className="ml-1 hidden truncate text-muted-foreground/80 group-aria-selected:block">
           {getFacetedUniqueValues
-            ? Array.from(getFacetedUniqueValues(table, value)?.keys() || [])
+            ? Array.from(getFacetedUniqueValues(table, value).keys())
                 .map((value) => `[${value}]`)
                 .join(" ")
-            : field.options?.map(({ value }) => `[${value}]`).join(" ")}
+            : field.options
+                ?.filter(({ value }) => value !== undefined)
+                .map(({ value }) => `[${String(value)}]`)
+                .join(" ")}
         </span>
       );
     }
     case "slider": {
-      const [min, max] = getFacetedMinMaxValues?.(table, value) || [
+      const [min, max] = getFacetedMinMaxValues?.(table, value) ?? [
         field.min,
         field.max,
       ];
@@ -417,7 +417,7 @@ function CommandItemSuggestions<TData>({
     case "input": {
       return (
         <span className="ml-1 hidden truncate text-muted-foreground/80 group-aria-selected:block">
-          [{`${String(field.value)}`} input]
+          [{String(field.value)} input]
         </span>
       );
     }
