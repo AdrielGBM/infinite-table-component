@@ -49,7 +49,7 @@ export const CopyToClipboardContainer = React.forwardRef<
         setCollapsible(false);
       }
     }
-  }, [maxHeight]);
+  }, [innerRef.current, maxHeight]);
 
   return (
     <div

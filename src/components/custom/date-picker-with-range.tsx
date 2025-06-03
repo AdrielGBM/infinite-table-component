@@ -180,7 +180,7 @@ function DatePresetsSelect({
     const preset = findPreset(selected?.from, selected?.to);
     if (preset === value) return;
     setValue(preset);
-  }, [selected, presets, findPreset, value]);
+  }, [selected, presets]);
 
   return (
     <Select

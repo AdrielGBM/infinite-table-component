@@ -10,16 +10,19 @@ import Home from "./app/Home.tsx";
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <NuqsAdapter>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <Home />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </NuqsAdapter>
-  </StrictMode>
-);
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <NuqsAdapter>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+              <Home />
+            </ThemeProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </NuqsAdapter>
+    </StrictMode>
+  );
+}
