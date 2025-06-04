@@ -4,7 +4,7 @@ import { dataOptions } from "./query-options";
 import { Client } from "./client";
 import { useEffect } from "react";
 
-export default function Page({
+export default function InfiniteTable({
   searchParams,
 }: {
   searchParams: Record<string, string | string[] | undefined>;
