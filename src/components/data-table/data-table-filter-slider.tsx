@@ -51,7 +51,7 @@ export function DataTableFilterSlider<TData>({
     ) {
       setInput(filters);
     }
-  }, [debouncedInput, filters]);
+  }, [filters]);
 
   return (
     <div className="grid gap-2">
