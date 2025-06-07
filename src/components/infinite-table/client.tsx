@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import * as React from "react";
 import { LiveRow } from "./_components/live-row";
-import { columns } from "./columns";
+import { getColumns, type ColumnConfig } from "./columns";
 import { filterFields as defaultFilterFields, sheetFields } from "./constants";
 import { DataTableInfinite } from "./data-table-infinite";
 import { dataOptions } from "./query-options";
@@ -17,7 +17,7 @@ import {
   getFacetedMinMaxValues,
 } from "./useLiveMode";
 
-export function Client() {
+export function Client({ columnTypes }: { columnTypes: ColumnConfig[] }) {
   const [search] = useQueryStates(searchParamsParser);
   const {
     data,
@@ -81,7 +81,7 @@ export function Client() {
 
   return (
     <DataTableInfinite
-      columns={columns}
+      columns={getColumns(columnTypes)}
       data={mock} /* Aquí va flatData */
       totalRows={totalDBRowCount}
       filterRows={filterDBRowCount}
@@ -130,7 +130,7 @@ export function Client() {
       renderLiveRow={(props) => {
         if (!liveMode.timestamp) return null;
         if (props?.row.original.uuid !== liveMode.row?.uuid) return null;
-        return <LiveRow />;
+        return <LiveRow length={columnTypes.length} />;
       }}
       renderSheetTitle={(props) => props.row?.original.pathname}
       searchParamsParser={searchParamsParser}

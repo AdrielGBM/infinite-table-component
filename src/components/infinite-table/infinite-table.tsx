@@ -18,5 +18,33 @@ export default function InfiniteTable({
     void search();
   }, [searchParams]);
 
-  return <Client />;
+  return (
+    <Client
+      columnTypes={[
+        { id: "level", type: "level" },
+        { id: "date", type: "date", label: "Fecha" },
+        { id: "uuid", type: "uuid", label: "ID" },
+        { id: "status", type: "status", label: "Estado" },
+        { id: "method", type: "method", label: "Method" },
+        { id: "host", type: "host", label: "Host" },
+        { id: "pathname", type: "pathname", label: "Ruta" },
+        { id: "latency", type: "latency", label: "Latencia" },
+        { id: "regions", type: "regions", label: "Regiones" },
+        { id: "timing", type: "timing", label: "Línea de tiempo" },
+        { id: "timing.dns", type: "timing_dns", label: "DNS" },
+        {
+          id: "timing.connection",
+          type: "timing_connection",
+          label: "Conexión",
+        },
+        { id: "timing.tls", type: "timing_tls", label: "TLS" },
+        { id: "timing.ttfb", type: "timing_ttfb", label: "TTFB" },
+        {
+          id: "timing.transfer",
+          type: "timing_transfer",
+          label: "Transferencia",
+        },
+      ]}
+    />
+  );
 }
