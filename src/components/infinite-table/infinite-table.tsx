@@ -21,7 +21,7 @@ export default function InfiniteTable({
   return (
     <Client
       columnTypes={[
-        { id: "level", type: "level" },
+        { id: "level", type: "level", label: "Nivel" },
         { id: "date", type: "date", label: "Fecha" },
         { id: "uuid", type: "uuid", label: "ID" },
         { id: "status", type: "status", label: "Estado" },

@@ -18,18 +18,37 @@ import { PopoverPercentile } from "./_components/popover-percentile";
 import { SheetTimingPhases } from "./_components/sheet-timing-phases";
 import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
+import type { ColumnConfig } from "./columns";
 
 // instead of filterFields, maybe just 'fields' with a filterDisabled prop?
 // that way, we could have 'message' or 'headers' field with label and value as well as type!
-export const filterFields = [
-  {
+
+export function getFilterFields(
+  config: ColumnConfig[]
+): DataTableFilterField<ColumnSchema>[] {
+  return config
+    .map((col) => {
+      if (!(col.type in filterFields)) return false;
+
+      const base = filterFields[col.type as keyof typeof filterFields];
+      return {
+        ...base,
+        label: col.label ?? col.id,
+        value: col.id,
+      };
+    })
+    .filter(Boolean) as DataTableFilterField<ColumnSchema>[];
+}
+
+const filterFields = {
+  date: {
     label: "Time Range",
     value: "date",
     type: "timerange",
     defaultOpen: true,
     commandDisabled: true,
   },
-  {
+  level: {
     label: "Level",
     value: "level",
     type: "checkbox",
@@ -58,17 +77,17 @@ export const filterFields = [
       );
     },
   },
-  {
+  host: {
     label: "Host",
     value: "host",
     type: "input",
   },
-  {
+  pathname: {
     label: "Pathname",
     value: "pathname",
     type: "input",
   },
-  {
+  status: {
     label: "Status Code",
     value: "status",
     type: "checkbox",
@@ -89,7 +108,7 @@ export const filterFields = [
       );
     },
   },
-  {
+  method: {
     label: "Method",
     value: "method",
     type: "checkbox",
@@ -98,7 +117,7 @@ export const filterFields = [
       return <span className="font-mono">{props.value}</span>;
     },
   },
-  {
+  regions: {
     label: "Regions",
     value: "regions",
     type: "checkbox",
@@ -107,49 +126,49 @@ export const filterFields = [
       return <span className="font-mono">{props.value}</span>;
     },
   },
-  {
+  latency: {
     label: "Latency",
     value: "latency",
     type: "slider",
     min: 0,
     max: 5000,
   },
-  {
+  timing_dns: {
     label: "DNS",
     value: "timing.dns",
     type: "slider",
     min: 0,
     max: 5000,
   },
-  {
+  timing_connection: {
     label: "Connection",
     value: "timing.connection",
     type: "slider",
     min: 0,
     max: 5000,
   },
-  {
+  timing_tls: {
     label: "TLS",
     value: "timing.tls",
     type: "slider",
     min: 0,
     max: 5000,
   },
-  {
+  timing_ttfb: {
     label: "TTFB",
     value: "timing.ttfb",
     type: "slider",
     min: 0,
     max: 5000,
   },
-  {
+  timing_transfer: {
     label: "Transfer",
     value: "timing.transfer",
     type: "slider",
     min: 0,
     max: 5000,
   },
-] satisfies DataTableFilterField<ColumnSchema>[];
+};
 
 export const sheetFields = [
   {

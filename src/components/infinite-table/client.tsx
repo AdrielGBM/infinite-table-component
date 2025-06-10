@@ -6,7 +6,7 @@ import { useQueryStates } from "nuqs";
 import * as React from "react";
 import { LiveRow } from "./_components/live-row";
 import { getColumns, type ColumnConfig } from "./columns";
-import { filterFields as defaultFilterFields, sheetFields } from "./constants";
+import { getFilterFields, sheetFields } from "./constants";
 import { DataTableInfinite } from "./data-table-infinite";
 import { dataOptions } from "./query-options";
 import { searchParamsParser } from "./search-params";
@@ -53,7 +53,7 @@ export function Client({ columnTypes }: { columnTypes: ColumnConfig[] }) {
   // REMINDER: this is currently needed for the cmdk search
   // TODO: auto search via API when the user changes the filter instead of hardcoded
   const filterFields = React.useMemo(() => {
-    return defaultFilterFields.map((field) => {
+    return getFilterFields(columnTypes).map((field) => {
       const facetsField = facets?.[field.value];
       if (!facetsField) return field;
       if (field.options && field.options.length > 0) return field;
