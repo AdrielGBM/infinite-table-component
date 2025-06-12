@@ -27,7 +27,7 @@ export interface InfiniteQueryResponse<TData, TMeta = unknown> {
   nextCursor: number | null;
 }
 
-export const dataOptions = (search: SearchParamsType) => {
+export const dataOptions = (url: string, search: SearchParamsType) => {
   return infiniteQueryOptions({
     queryKey: [
       "data-table",
@@ -43,7 +43,7 @@ export const dataOptions = (search: SearchParamsType) => {
         uuid: null,
         live: null,
       });
-      const response = await fetch(`/infinite/api${serialize}`);
+      const response = await fetch(`${url}${serialize}`);
       const json = await response.text();
       return SuperJSON.parse<InfiniteQueryResponse<ColumnSchema[], LogsMeta>>(
         json

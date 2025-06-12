@@ -3,8 +3,8 @@ import { useInfiniteQuery as useInfiniteTanstackQuery } from "@tanstack/react-qu
 import { dataOptions } from "./query-options";
 import { searchParamsParser } from "./search-params";
 
-export function useInfiniteQuery() {
+export function useInfiniteQuery(url: string) {
   const [search] = useQueryStates(searchParamsParser);
-  const query = useInfiniteTanstackQuery(dataOptions(search));
+  const query = useInfiniteTanstackQuery(dataOptions(url, search));
   return query;
 }

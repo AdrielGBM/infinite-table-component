@@ -5,21 +5,24 @@ import { Client } from "./client";
 import { useEffect } from "react";
 
 export default function InfiniteTable({
+  url,
   searchParams,
 }: {
+  url: string;
   searchParams: Record<string, string | string[] | undefined>;
 }) {
   useEffect(() => {
     async function search() {
       const search = searchParamsCache.parse(searchParams);
       const queryClient = getQueryClient();
-      await queryClient.prefetchInfiniteQuery(dataOptions(search));
+      await queryClient.prefetchInfiniteQuery(dataOptions(url, search));
     }
     void search();
   }, [searchParams]);
 
   return (
     <Client
+      url={url}
       columnTypes={[
         { id: "level", type: "level", label: "Nivel" },
         { id: "date", type: "date", label: "Fecha" },

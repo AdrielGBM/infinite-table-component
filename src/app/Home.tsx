@@ -21,7 +21,10 @@ function Home() {
   const searchParams = useSearchParamsObject();
   return (
     <>
-      <InfiniteTable searchParams={searchParams}></InfiniteTable>
+      <InfiniteTable
+        url={"https://api.tu-backend.com/api"}
+        searchParams={searchParams}
+      ></InfiniteTable>
     </>
   );
 }

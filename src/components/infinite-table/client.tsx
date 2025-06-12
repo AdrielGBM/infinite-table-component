@@ -17,7 +17,13 @@ import {
   getFacetedMinMaxValues,
 } from "./useLiveMode";
 
-export function Client({ columnTypes }: { columnTypes: ColumnConfig[] }) {
+export function Client({
+  url,
+  columnTypes,
+}: {
+  columnTypes: ColumnConfig[];
+  url: string;
+}) {
   const [search] = useQueryStates(searchParamsParser);
   const {
     data,
@@ -27,7 +33,7 @@ export function Client({ columnTypes }: { columnTypes: ColumnConfig[] }) {
     hasNextPage,
     fetchPreviousPage,
     refetch,
-  } = useInfiniteQuery(dataOptions(search));
+  } = useInfiniteQuery(dataOptions(url, search));
   useResetFocus();
 
   const flatData = React.useMemo(
