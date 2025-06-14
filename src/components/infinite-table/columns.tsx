@@ -28,16 +28,13 @@ import { Minus } from "lucide-react";
 import { HoverCardTimestamp } from "./_components/hover-card-timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ColumnSchema } from "./schema";
-
-export interface ColumnConfig {
-  id: string;
-  type: string;
-  label?: string;
-}
+import type { ColumnConfig } from "./client";
 
 export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
   return config
     .map((col) => {
+      if (col.noColumn || !(col.type in columns)) return false;
+
       const base = columns[col.type];
       return {
         ...base,

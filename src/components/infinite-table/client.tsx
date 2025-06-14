@@ -5,8 +5,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import * as React from "react";
 import { LiveRow } from "./_components/live-row";
-import { getColumns, type ColumnConfig } from "./columns";
-import { getFilterFields, sheetFields } from "./constants";
+import { getColumns } from "./columns";
+import { getFilterFields, getSheetFields } from "./constants";
 import { DataTableInfinite } from "./data-table-infinite";
 import { dataOptions } from "./query-options";
 import { searchParamsParser } from "./search-params";
@@ -17,11 +17,20 @@ import {
   getFacetedMinMaxValues,
 } from "./useLiveMode";
 
+export interface ColumnConfig {
+  id: string;
+  type: string;
+  label?: string;
+  noColumn?: boolean;
+  noFilter?: boolean;
+  noSheet?: boolean;
+}
+
 export function Client({
   url,
-  columnTypes,
+  columnConfig,
 }: {
-  columnTypes: ColumnConfig[];
+  columnConfig: ColumnConfig[];
   url: string;
 }) {
   const [search] = useQueryStates(searchParamsParser);
@@ -59,7 +68,7 @@ export function Client({
   // REMINDER: this is currently needed for the cmdk search
   // TODO: auto search via API when the user changes the filter instead of hardcoded
   const filterFields = React.useMemo(() => {
-    return getFilterFields(columnTypes).map((field) => {
+    return getFilterFields(columnConfig).map((field) => {
       const facetsField = facets?.[field.value];
       if (!facetsField) return field;
       if (field.options && field.options.length > 0) return field;
@@ -87,7 +96,7 @@ export function Client({
 
   return (
     <DataTableInfinite
-      columns={getColumns(columnTypes)}
+      columns={getColumns(columnConfig)}
       data={mock} /* Aquí va flatData */
       totalRows={totalDBRowCount}
       filterRows={filterDBRowCount}
@@ -111,7 +120,7 @@ export function Client({
       }}
       meta={metadata}
       filterFields={filterFields}
-      sheetFields={sheetFields}
+      sheetFields={getSheetFields(columnConfig)}
       isFetching={isFetching}
       isLoading={isLoading}
       fetchNextPage={fetchNextPage}
@@ -136,7 +145,7 @@ export function Client({
       renderLiveRow={(props) => {
         if (!liveMode.timestamp) return null;
         if (props?.row.original.uuid !== liveMode.row?.uuid) return null;
-        return <LiveRow length={columnTypes.length} />;
+        return <LiveRow length={columnConfig.length} />;
       }}
       renderSheetTitle={(props) => props.row?.original.pathname}
       searchParamsParser={searchParamsParser}

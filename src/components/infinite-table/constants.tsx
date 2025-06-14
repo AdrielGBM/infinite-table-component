@@ -18,7 +18,8 @@ import { PopoverPercentile } from "./_components/popover-percentile";
 import { SheetTimingPhases } from "./_components/sheet-timing-phases";
 import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
-import type { ColumnConfig } from "./columns";
+import type { ColumnConfig } from "./client";
+import type { Percentile } from "@/lib/request/percentile";
 
 // instead of filterFields, maybe just 'fields' with a filterDisabled prop?
 // that way, we could have 'message' or 'headers' field with label and value as well as type!
@@ -28,7 +29,7 @@ export function getFilterFields(
 ): DataTableFilterField<ColumnSchema>[] {
   return config
     .map((col) => {
-      if (!(col.type in filterFields)) return false;
+      if (col.noFilter || !(col.type in filterFields)) return false;
 
       const base = filterFields[col.type as keyof typeof filterFields];
       return {
@@ -170,25 +171,43 @@ const filterFields = {
   },
 };
 
-export const sheetFields = [
-  {
+export function getSheetFields(
+  config: ColumnConfig[]
+): SheetField<ColumnSchema, LogsMeta>[] {
+  return config
+    .map((col) => {
+      if (col.noSheet || !(col.type in sheetFields)) return false;
+
+      const base = sheetFields[col.type as keyof typeof sheetFields];
+      return {
+        ...base,
+        id: col.id,
+        label: col.label ?? col.id,
+      };
+    })
+    .filter(Boolean) as SheetField<ColumnSchema, LogsMeta>[];
+}
+
+const sheetFields = {
+  uuid: {
     id: "uuid",
     label: "Request ID",
     type: "readonly",
     skeletonClassName: "w-64",
   },
-  {
+  date: {
     id: "date",
     label: "Date",
     type: "timerange",
-    component: (props) => format(new Date(props.date), "LLL dd, y HH:mm:ss"),
+    component: (props: { date: string | number | Date }) =>
+      format(new Date(props.date), "LLL dd, y HH:mm:ss"),
     skeletonClassName: "w-36",
   },
-  {
+  status: {
     id: "status",
     label: "Status",
     type: "checkbox",
-    component: (props) => {
+    component: (props: { status: number }) => {
       return (
         <span className={cn("font-mono", getStatusColor(props.status).text)}>
           {props.status}
@@ -197,41 +216,41 @@ export const sheetFields = [
     },
     skeletonClassName: "w-12",
   },
-  {
+  method: {
     id: "method",
     label: "Method",
     type: "checkbox",
-    component: (props) => {
+    component: (props: { method: string }) => {
       return <span className="font-mono">{props.method}</span>;
     },
     skeletonClassName: "w-10",
   },
-  {
+  host: {
     id: "host",
     label: "Host",
     type: "input",
     skeletonClassName: "w-24",
   },
-  {
+  pathname: {
     id: "pathname",
     label: "Pathname",
     type: "input",
     skeletonClassName: "w-56",
   },
-  {
+  regions: {
     id: "regions",
     label: "Regions",
     type: "checkbox",
     skeletonClassName: "w-12",
-    component: (props) => (
+    component: (props: { regions: string[] }) => (
       <DataTableColumnRegion value={props.regions[0]} reverse showFlag />
     ),
   },
-  {
+  latency: {
     id: "latency",
     label: "Latency",
     type: "slider",
-    component: (props) => (
+    component: (props: { latency: number }) => (
       <>
         {formatMilliseconds(props.latency)}
         <span className="text-muted-foreground">ms</span>
@@ -239,11 +258,18 @@ export const sheetFields = [
     ),
     skeletonClassName: "w-16",
   },
-  {
+  percentile: {
     id: "percentile",
     label: "Percentile",
     type: "readonly",
-    component: (props) => {
+    component: (
+      props: ColumnSchema & {
+        metadata?: {
+          currentPercentiles?: Record<Percentile, number>;
+          filterRows?: number;
+        };
+      }
+    ) => {
       return (
         <PopoverPercentile
           data={props}
@@ -255,35 +281,42 @@ export const sheetFields = [
     },
     skeletonClassName: "w-12",
   },
-  {
+  timing_dns: {
     id: "timing.dns", // REMINDER: cannot be 'timing' as it is a property of the object
     label: "Timing Phases",
     type: "readonly",
-    component: (props) => (
-      <SheetTimingPhases latency={props.latency} timing={props} />
-    ),
+    component: (
+      props: Record<
+        | "timing.dns"
+        | "timing.connection"
+        | "timing.tls"
+        | "timing.ttfb"
+        | "timing.transfer",
+        number
+      > & { latency: number }
+    ) => <SheetTimingPhases latency={props.latency} timing={props} />,
     className: "flex-col items-start w-full gap-1",
   },
-  {
+  headers: {
     id: "headers",
     label: "Headers",
     type: "readonly",
-    component: (props) => (
+    component: (props: { headers: Record<string, string> }) => (
       // REMINDER: negative margin to make it look like the header is on the same level of the tab triggers
       <KVTabs data={props.headers} className="-mt-[22px]" />
     ),
     className: "flex-col items-start w-full gap-1",
   },
-  {
+  message: {
     id: "message",
     label: "Message",
     type: "readonly",
-    condition: (props) => props.message !== undefined,
-    component: (props) => (
+    condition: (props: { message?: string }) => props.message !== undefined,
+    component: (props: { message?: string }) => (
       <CopyToClipboardContainer variant="destructive">
         {JSON.stringify(props.message, null, 2)}
       </CopyToClipboardContainer>
     ),
     className: "flex-col items-start w-full gap-1",
   },
-] satisfies SheetField<ColumnSchema, LogsMeta>[];
+};
