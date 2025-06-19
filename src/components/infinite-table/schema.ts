@@ -20,6 +20,7 @@ export const timingSchema = z.object({
 
 export const columnSchema = z
   .object({
+    string: z.string().optional(),
     uuid: z.string(),
     method: z.enum(METHODS),
     host: z.string(),
@@ -40,6 +41,7 @@ export type TimingSchema = z.infer<typeof timingSchema>;
 
 // TODO: can we get rid of this in favor of nuqs search-params?
 export const columnFilterSchema = z.object({
+  string: z.string().optional(),
   level: z
     .string()
     .transform((val) => val.split(ARRAY_DELIMITER))

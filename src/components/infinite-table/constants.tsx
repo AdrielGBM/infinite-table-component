@@ -18,7 +18,7 @@ import { PopoverPercentile } from "./_components/popover-percentile";
 import { SheetTimingPhases } from "./_components/sheet-timing-phases";
 import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
-import type { ColumnConfig } from "./client";
+import type { ColumnConfig } from "./infinite-table";
 import type { Percentile } from "@/lib/request/percentile";
 
 // instead of filterFields, maybe just 'fields' with a filterDisabled prop?
@@ -42,6 +42,11 @@ export function getFilterFields(
 }
 
 const filterFields = {
+  string: {
+    label: "String",
+    value: "string",
+    type: "input",
+  },
   date: {
     label: "Time Range",
     value: "date",
@@ -189,6 +194,12 @@ export function getSheetFields(
 }
 
 const sheetFields = {
+  string: {
+    id: "string",
+    label: "String",
+    type: "input",
+    skeletonClassName: "w-56",
+  },
   uuid: {
     id: "uuid",
     label: "Request ID",

@@ -28,7 +28,7 @@ import { Minus } from "lucide-react";
 import { HoverCardTimestamp } from "./_components/hover-card-timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ColumnSchema } from "./schema";
-import type { ColumnConfig } from "./client";
+import type { ColumnConfig } from "./infinite-table";
 
 export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
   return config
@@ -51,6 +51,23 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                   column: { ...props.column, label: col.label ?? col.id },
                 })
             : col.label ?? base.label),
+        size: col.size ?? base.size,
+        minSize: col.size ?? base.size,
+        meta: {
+          ...base.meta,
+          cellClassName:
+            base.meta?.cellClassName ??
+            `font-mono w-(--col-${col.id.replace(
+              ".",
+              "-"
+            )}-size) max-w-(--col-${col.id.replace(".", "-")}-size)`,
+          headerClassName:
+            base.meta?.headerClassName ??
+            `min-w-(--header-${col.id.replace(
+              ".",
+              "-"
+            )}-size) w-(--header-${col.id.replace(".", "-")}-size)`,
+        },
       };
     })
     .filter(Boolean) as ColumnDef<ColumnSchema>[];
@@ -60,6 +77,17 @@ const columns: Record<
   string,
   Partial<ColumnDef<ColumnSchema>> & { label: string }
 > = {
+  string: {
+    accessorKey: "string",
+    label: "string",
+    header: "String",
+    cell: ({ row, column }) => {
+      const value = row.getValue<ColumnSchema["string"]>(column.id);
+      return <TextWithTooltip text={value ?? ""} />;
+    },
+    size: 130,
+    minSize: 130,
+  },
   level: {
     accessorKey: "level",
     label: "level",

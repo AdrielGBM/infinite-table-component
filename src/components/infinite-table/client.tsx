@@ -16,15 +16,7 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
 } from "./useLiveMode";
-
-export interface ColumnConfig {
-  id: string;
-  type: string;
-  label?: string;
-  noColumn?: boolean;
-  noFilter?: boolean;
-  noSheet?: boolean;
-}
+import type { ColumnConfig } from "./infinite-table";
 
 export function Client({
   url,
