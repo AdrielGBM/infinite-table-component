@@ -23,7 +23,6 @@ export const columnSchema = z
     string: z.string().optional(),
     uuid: z.string(),
     method: z.enum(METHODS),
-    host: z.string(),
     pathname: z.string(),
     level: z.enum(LEVELS),
     latency: z.number(),
@@ -52,7 +51,6 @@ export const columnFilterSchema = z.object({
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.enum(METHODS).array())
     .optional(),
-  host: z.string().optional(),
   pathname: z.string().optional(),
   latency: z
     .string()

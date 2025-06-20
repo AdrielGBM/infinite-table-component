@@ -7,9 +7,10 @@ export interface ColumnConfig {
   id: string;
   type: string;
   label?: string;
-  size?: number;
+  columnSize?: number;
   noColumn?: boolean;
   noFilter?: boolean;
+  sheetClassName?: string;
   noSheet?: boolean;
 }
 

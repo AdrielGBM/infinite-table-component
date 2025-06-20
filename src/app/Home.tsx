@@ -35,8 +35,20 @@ function Home() {
           },
           { id: "status", type: "status", label: "Estado" },
           { id: "method", type: "method", label: "Method" },
-          { id: "host", type: "string", label: "Host", size: 125 },
-          { id: "pathname", type: "string", label: "Ruta", size: 130 },
+          {
+            id: "host",
+            type: "string",
+            label: "Host",
+            columnSize: 125,
+            sheetClassName: "w-24",
+          },
+          {
+            id: "pathname",
+            type: "string",
+            label: "Ruta",
+            columnSize: 130,
+            sheetClassName: "w-56",
+          },
           { id: "latency", type: "latency", label: "Latencia" },
           { id: "regions", type: "regions", label: "Regiones" },
           {

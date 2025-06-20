@@ -51,8 +51,8 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                   column: { ...props.column, label: col.label ?? col.id },
                 })
             : col.label ?? base.label),
-        size: col.size ?? base.size,
-        minSize: col.size ?? base.size,
+        size: col.columnSize ?? base.size,
+        minSize: col.columnSize ?? base.size,
         meta: {
           ...base.meta,
           cellClassName:
@@ -185,38 +185,6 @@ const columns: Record<
         "font-mono text-muted-foreground w-(--col-method-size) max-w-(--col-method-size) min-w-(--col-method-size)",
       headerClassName:
         "w-(--header-method-size) max-w-(--header-method-size) min-w-(--header-method-size)",
-    },
-  },
-  host: {
-    accessorKey: "host",
-    label: "host",
-    header: "Host",
-    cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["host"]>("host");
-      return <TextWithTooltip text={value} />;
-    },
-    size: 125,
-    minSize: 125,
-    meta: {
-      cellClassName: "font-mono w-(--col-host-size) max-w-(--col-host-size)",
-      headerClassName: "min-w-(--header-host-size) w-(--header-host-size)",
-    },
-  },
-  pathname: {
-    accessorKey: "pathname",
-    label: "pathname",
-    header: "Pathname",
-    cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["pathname"]>("pathname");
-      return <TextWithTooltip text={value} />;
-    },
-    size: 130,
-    minSize: 130,
-    meta: {
-      cellClassName:
-        "font-mono w-(--col-pathname-size) max-w-(--col-pathname-size)",
-      headerClassName:
-        "min-w-(--header-pathname-size) w-(--header-pathname-size)",
     },
   },
   latency: {

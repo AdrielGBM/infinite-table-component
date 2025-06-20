@@ -83,16 +83,6 @@ const filterFields = {
       );
     },
   },
-  host: {
-    label: "Host",
-    value: "host",
-    type: "input",
-  },
-  pathname: {
-    label: "Pathname",
-    value: "pathname",
-    type: "input",
-  },
   status: {
     label: "Status Code",
     value: "status",
@@ -188,6 +178,14 @@ export function getSheetFields(
         ...base,
         id: col.id,
         label: col.label ?? col.id,
+        skeletonClassName:
+          "skeletonClassName" in base
+            ? col.sheetClassName ?? base.skeletonClassName
+            : undefined,
+        className:
+          "className" in base
+            ? col.sheetClassName ?? base.className
+            : undefined,
       };
     })
     .filter(Boolean) as SheetField<ColumnSchema, LogsMeta>[];
@@ -235,18 +233,6 @@ const sheetFields = {
       return <span className="font-mono">{props.method}</span>;
     },
     skeletonClassName: "w-10",
-  },
-  host: {
-    id: "host",
-    label: "Host",
-    type: "input",
-    skeletonClassName: "w-24",
-  },
-  pathname: {
-    id: "pathname",
-    label: "Pathname",
-    type: "input",
-    skeletonClassName: "w-56",
   },
   regions: {
     id: "regions",
