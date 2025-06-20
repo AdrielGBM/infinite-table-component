@@ -8,7 +8,7 @@ import { LiveRow } from "./_components/live-row";
 import { getColumns } from "./columns";
 import { getFilterFields, getSheetFields } from "./constants";
 import { DataTableInfinite } from "./data-table-infinite";
-import { dataOptions } from "./query-options";
+import { dataOptions, type LogsMeta } from "./query-options";
 import { searchParamsParser } from "./search-params";
 import { mock } from "./mock";
 import {
@@ -110,7 +110,7 @@ export function Client({
         "timing.ttfb": false,
         "timing.transfer": false,
       }}
-      meta={metadata}
+      meta={metadata ?? ({} as LogsMeta)}
       filterFields={filterFields}
       sheetFields={getSheetFields(columnConfig)}
       isFetching={isFetching}
