@@ -25,7 +25,7 @@ export function Client({
   columnConfig: ColumnConfig[];
   url: string;
 }) {
-  const [search] = useQueryStates(searchParamsParser);
+  const [search] = useQueryStates(searchParamsParser(columnConfig));
   const {
     data,
     isFetching,
@@ -34,7 +34,7 @@ export function Client({
     hasNextPage,
     fetchPreviousPage,
     refetch,
-  } = useInfiniteQuery(dataOptions(url, search));
+  } = useInfiniteQuery(dataOptions(url, search, columnConfig));
   useResetFocus();
 
   const flatData = React.useMemo(
@@ -42,7 +42,7 @@ export function Client({
     [data?.pages]
   );
 
-  const liveMode = useLiveMode(flatData);
+  const liveMode = useLiveMode(flatData, columnConfig);
 
   // REMINDER: meta data is always the same for all pages as filters do not change(!)
   const lastPage = data?.pages[data.pages.length - 1];
@@ -140,7 +140,7 @@ export function Client({
         return <LiveRow length={columnConfig.length} />;
       }}
       renderSheetTitle={(props) => props.row?.original.pathname}
-      searchParamsParser={searchParamsParser}
+      searchParamsParser={searchParamsParser(columnConfig)}
     />
   );
 }

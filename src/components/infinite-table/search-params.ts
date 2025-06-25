@@ -20,6 +20,7 @@ import {
 import { REGIONS } from "@/constants/region";
 import { METHODS } from "@/constants/method";
 import { LEVELS } from "@/constants/levels";
+import type { ColumnConfig } from "./infinite-table";
 
 // https://logs.run/i?sort=latency.desc
 
@@ -34,35 +35,50 @@ export const parseAsSort = createParser({
   },
 });
 
-export const searchParamsParser = {
-  // CUSTOM FILTERS
-  level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
-  latency: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  "timing.dns": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  "timing.connection": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  "timing.ttfb": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  status: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-  regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
-  method: parseAsArrayOf(parseAsStringLiteral(METHODS), ARRAY_DELIMITER),
-  host: parseAsString,
-  pathname: parseAsString,
-  date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
-  // REQUIRED FOR SORTING & PAGINATION
-  sort: parseAsSort,
-  size: parseAsInteger.withDefault(40),
-  start: parseAsInteger.withDefault(0),
-  // REQUIRED FOR INFINITE SCROLLING (Live Mode and Load More)
-  direction: parseAsStringLiteral(["prev", "next"]).withDefault("next"),
-  cursor: parseAsTimestamp.withDefault(new Date()),
-  live: parseAsBoolean.withDefault(false),
-  // REQUIRED FOR SELECTION
-  uuid: parseAsString,
+export const searchParamsParser = (columnConfig: ColumnConfig[]) => {
+  const types = {
+    string: parseAsString,
+    level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
+    latency: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    "timing.dns": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    "timing.connection": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    "timing.ttfb": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    status: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
+    method: parseAsArrayOf(parseAsStringLiteral(METHODS), ARRAY_DELIMITER),
+    date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
+  };
+
+  const params: Record<string, unknown> = {};
+  columnConfig.forEach((column) => {
+    if (column.type && column.type in types) {
+      params[column.id] = params[column.type];
+    }
+  });
+
+  return {
+    ...params,
+    // REQUIRED FOR SORTING & PAGINATION
+    sort: parseAsSort,
+    size: parseAsInteger.withDefault(40),
+    start: parseAsInteger.withDefault(0),
+    // REQUIRED FOR INFINITE SCROLLING (Live Mode and Load More)
+    direction: parseAsStringLiteral(["prev", "next"]).withDefault("next"),
+    cursor: parseAsTimestamp.withDefault(new Date()),
+    live: parseAsBoolean.withDefault(false),
+    // REQUIRED FOR SELECTION
+    uuid: parseAsString,
+  };
 };
 
-export const searchParamsCache = createSearchParamsCache(searchParamsParser);
+export const searchParamsCache = (columnConfig: ColumnConfig[]) =>
+  createSearchParamsCache(searchParamsParser(columnConfig));
 
-export const searchParamsSerializer = createSerializer(searchParamsParser);
+export const searchParamsSerializer = (columnConfig: ColumnConfig[]) =>
+  createSerializer(searchParamsParser(columnConfig));
 
-export type SearchParamsType = inferParserType<typeof searchParamsParser>;
+export type SearchParamsType = inferParserType<
+  ReturnType<typeof searchParamsParser>
+>;

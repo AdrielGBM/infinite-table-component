@@ -7,15 +7,22 @@ import { CirclePause, CirclePlay } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import * as React from "react";
 import { searchParamsParser } from "../search-params";
+import type { ColumnConfig } from "../infinite-table";
 
 const REFRESH_INTERVAL = 4_000;
 
 interface LiveButtonProps {
   fetchPreviousPage?: (options?: FetchPreviousPageOptions) => Promise<unknown>;
+  columnConfig: ColumnConfig[];
 }
 
-export function LiveButton({ fetchPreviousPage }: LiveButtonProps) {
-  const [{ live, date, sort }, setSearch] = useQueryStates(searchParamsParser);
+export function LiveButton({
+  fetchPreviousPage,
+  columnConfig,
+}: LiveButtonProps) {
+  const [{ live, date, sort }, setSearch] = useQueryStates(
+    searchParamsParser(columnConfig)
+  );
   const { table } = useDataTable();
   useHotKey(handleClick, "j");
 

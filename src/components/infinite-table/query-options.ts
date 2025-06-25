@@ -7,6 +7,7 @@ import type {
   FacetMetadataSchema,
 } from "./schema";
 import { searchParamsSerializer, type SearchParamsType } from "./search-params";
+import type { ColumnConfig } from "./infinite-table";
 
 export interface LogsMeta {
   currentPercentiles: Record<Percentile, number>;
@@ -27,16 +28,24 @@ export interface InfiniteQueryResponse<TData, TMeta = unknown> {
   nextCursor: number | null;
 }
 
-export const dataOptions = (url: string, search: SearchParamsType) => {
+export const dataOptions = (
+  url: string,
+  search: SearchParamsType,
+  columnConfig: ColumnConfig[]
+) => {
   return infiniteQueryOptions({
     queryKey: [
       "data-table",
-      searchParamsSerializer({ ...search, uuid: null, live: null }),
+      searchParamsSerializer(columnConfig)({
+        ...search,
+        uuid: null,
+        live: null,
+      }),
     ], // remove uuid/live as it would otherwise retrigger a fetch
     queryFn: async ({ pageParam }) => {
       const cursor = new Date(pageParam.cursor);
       const direction = pageParam.direction as "next" | "prev" | undefined;
-      const serialize = searchParamsSerializer({
+      const serialize = searchParamsSerializer(columnConfig)({
         ...search,
         cursor,
         direction,

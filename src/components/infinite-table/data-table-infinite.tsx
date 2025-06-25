@@ -57,6 +57,7 @@ import type { BaseChartSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
 import { TimelineChart } from "./timeline-chart";
 import { SocialsFooter } from "./_components/socials-footer";
+import type { ColumnConfig } from "./infinite-table";
 
 // TODO: add a possible chartGroupBy
 export interface DataTableInfiniteProps<TData, TValue, TMeta> {
@@ -98,6 +99,7 @@ export interface DataTableInfiniteProps<TData, TValue, TMeta> {
   renderChart?: () => React.ReactNode;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   searchParamsParser: Record<string, ParserBuilder<any>>;
+  columnConfig: ColumnConfig[];
 }
 
 export function DataTableInfinite<TData, TValue, TMeta>({
@@ -128,6 +130,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
   renderLiveRow,
   renderSheetTitle,
   searchParamsParser,
+  columnConfig,
 }: DataTableInfiniteProps<TData, TValue, TMeta>) {
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>(defaultColumnFilters);
@@ -357,6 +360,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
                   <LiveButton
                     key="live"
                     fetchPreviousPage={fetchPreviousPage}
+                    columnConfig={columnConfig}
                   />
                 ) : null,
               ]}
@@ -444,6 +448,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
                         row={row}
                         table={table}
                         selected={row.getIsSelected()}
+                        columnConfig={columnConfig}
                       />
                     </React.Fragment>
                   ))
@@ -528,15 +533,17 @@ function Row<TData>({
   row,
   table,
   selected,
+  columnConfig,
 }: {
   row: Row<TData>;
   table: TTable<TData>;
   // REMINDER: row.getIsSelected(); - just for memoization
   selected?: boolean;
+  columnConfig: ColumnConfig[];
 }) {
   // REMINDER: rerender the row when live mode is toggled - used to opacity the row
   // via the `getRowClassName` prop - but for some reasons it wil render the row on data fetch
-  useQueryState("live", searchParamsParser.live);
+  useQueryState("live", searchParamsParser(columnConfig).live);
   return (
     <TableRow
       id={row.id}

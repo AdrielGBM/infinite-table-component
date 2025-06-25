@@ -25,9 +25,11 @@ export default function InfiniteTable({
 }) {
   useEffect(() => {
     async function search() {
-      const search = searchParamsCache.parse(searchParams);
+      const search = searchParamsCache(columnConfig).parse(searchParams);
       const queryClient = getQueryClient();
-      await queryClient.prefetchInfiniteQuery(dataOptions(url, search));
+      await queryClient.prefetchInfiniteQuery(
+        dataOptions(url, search, columnConfig)
+      );
     }
     void search();
   }, [url, searchParams]);

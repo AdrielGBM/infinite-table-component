@@ -3,10 +3,14 @@ import type { Table as TTable } from "@tanstack/react-table";
 import { useQueryState } from "nuqs";
 import type { FacetMetadataSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
+import type { ColumnConfig } from "./infinite-table";
 
 // TODO: make a BaseObject (incl. date and uuid e.g. for every upcoming branch of infinite table)
-export function useLiveMode<TData extends { date: Date }>(data: TData[]) {
-  const [live] = useQueryState("live", searchParamsParser.live);
+export function useLiveMode<TData extends { date: Date }>(
+  data: TData[],
+  columnConfig: ColumnConfig[]
+) {
+  const [live] = useQueryState("live", searchParamsParser(columnConfig).live);
   // REMINDER: used to capture the live mode on timestamp
   const liveTimestamp = React.useRef<number | undefined>(
     live ? new Date().getTime() : undefined
