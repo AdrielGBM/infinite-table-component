@@ -35,7 +35,7 @@ export const parseAsSort = createParser({
   },
 });
 
-export const searchParamsParser = (columnConfig: ColumnConfig[]) => {
+export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
   const types = {
     string: parseAsString,
     level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
@@ -52,11 +52,13 @@ export const searchParamsParser = (columnConfig: ColumnConfig[]) => {
   };
 
   const params: Record<string, unknown> = {};
-  columnConfig.forEach((column) => {
-    if (column.type && column.type in types) {
-      params[column.id] = params[column.type];
-    }
-  });
+  if (columnConfig.length > 0) {
+    columnConfig.forEach((column) => {
+      if (column.type && column.type in types) {
+        params[column.id] = types[column.type as keyof typeof types];
+      }
+    });
+  }
 
   return {
     ...params,
