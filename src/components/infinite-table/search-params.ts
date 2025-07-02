@@ -18,7 +18,6 @@ import {
   SORT_DELIMITER,
 } from "@/lib/delimiters";
 import { REGIONS } from "@/constants/region";
-import { METHODS } from "@/constants/method";
 import { LEVELS } from "@/constants/levels";
 import type { ColumnConfig } from "./infinite-table";
 
@@ -47,14 +46,18 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     status: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
-    method: parseAsArrayOf(parseAsStringLiteral(METHODS), ARRAY_DELIMITER),
     date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
   };
 
   const params: Record<string, unknown> = {};
   if (columnConfig.length > 0) {
     columnConfig.forEach((column) => {
-      if (column.type && column.type in types) {
+      if (column.type === "select" && Array.isArray(column.options)) {
+        params[column.id] = parseAsArrayOf(
+          parseAsStringLiteral(column.options),
+          ARRAY_DELIMITER
+        );
+      } else if (column.type && column.type in types) {
         params[column.id] = types[column.type as keyof typeof types];
       }
     });

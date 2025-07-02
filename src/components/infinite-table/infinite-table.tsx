@@ -7,6 +7,7 @@ export interface ColumnConfig {
   id: string;
   type: string;
   label?: string;
+  options?: string[];
   columnSize?: number;
   noColumn?: boolean;
   noFilter?: boolean;

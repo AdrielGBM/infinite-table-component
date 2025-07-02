@@ -34,7 +34,12 @@ function Home() {
             noFilter: true,
           },
           { id: "status", type: "status", label: "Estado" },
-          { id: "method", type: "method", label: "Method" },
+          {
+            id: "method",
+            type: "select",
+            label: "Method",
+            options: ["GET", "POST", "PUT", "DELETE"],
+          },
           {
             id: "host",
             type: "string",

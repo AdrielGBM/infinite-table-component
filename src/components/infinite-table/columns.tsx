@@ -53,21 +53,6 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
             : col.label ?? base.label),
         size: col.columnSize ?? base.size,
         minSize: col.columnSize ?? base.size,
-        meta: {
-          ...base.meta,
-          cellClassName:
-            base.meta?.cellClassName ??
-            `font-mono w-(--col-${col.id.replace(
-              ".",
-              "-"
-            )}-size) max-w-(--col-${col.id.replace(".", "-")}-size)`,
-          headerClassName:
-            base.meta?.headerClassName ??
-            `min-w-(--header-${col.id.replace(
-              ".",
-              "-"
-            )}-size) w-(--header-${col.id.replace(".", "-")}-size)`,
-        },
       };
     })
     .filter(Boolean) as ColumnDef<ColumnSchema>[];
@@ -87,6 +72,26 @@ const columns: Record<
     },
     size: 130,
     minSize: 130,
+    meta: {
+      cellClassName:
+        "font-mono w-(--col-string-size) max-w-(--col-string-size)",
+      headerClassName: "min-w-(--header-string-size) w-(--header-string-size)",
+    },
+  },
+  select: {
+    accessorKey: "select",
+    label: "select",
+    header: "Select",
+    filterFn: "arrIncludesSome",
+    enableResizing: false,
+    size: 69,
+    minSize: 69,
+    meta: {
+      cellClassName:
+        "font-mono text-muted-foreground w-(--col-select-size) max-w-(--col-select-size) min-w-(--col-select-size)",
+      headerClassName:
+        "w-(--header-select-size) max-w-(--header-select-size) min-w-(--header-select-size)",
+    },
   },
   level: {
     accessorKey: "level",
@@ -169,22 +174,6 @@ const columns: Record<
         "w-(--header-status-size) max-w-(--header-status-size) min-w-(--header-status-size)",
       cellClassName:
         "font-mono w-(--col-status-size) max-w-(--col-status-size) min-w-(--col-status-size)",
-    },
-  },
-  method: {
-    // TODO: make it a type of MethodSchema!
-    accessorKey: "method",
-    label: "method",
-    header: "Method",
-    filterFn: "arrIncludesSome",
-    enableResizing: false,
-    size: 69,
-    minSize: 69,
-    meta: {
-      cellClassName:
-        "font-mono text-muted-foreground w-(--col-method-size) max-w-(--col-method-size) min-w-(--col-method-size)",
-      headerClassName:
-        "w-(--header-method-size) max-w-(--header-method-size) min-w-(--header-method-size)",
     },
   },
   latency: {

@@ -3,7 +3,6 @@ import {
   RANGE_DELIMITER,
   SLIDER_DELIMITER,
 } from "@/lib/delimiters";
-import { METHODS } from "@/constants/method";
 import { REGIONS } from "@/constants/region";
 import { z } from "zod";
 import { LEVELS } from "@/constants/levels";
@@ -21,8 +20,8 @@ export const timingSchema = z.object({
 export const columnSchema = z
   .object({
     string: z.string().optional(),
+    select: z.string(),
     uuid: z.string(),
-    method: z.enum(METHODS),
     pathname: z.string(),
     level: z.enum(LEVELS),
     latency: z.number(),
@@ -41,15 +40,15 @@ export type TimingSchema = z.infer<typeof timingSchema>;
 // TODO: can we get rid of this in favor of nuqs search-params?
 export const columnFilterSchema = z.object({
   string: z.string().optional(),
+  select: z
+    .string()
+    .transform((val) => val.split(ARRAY_DELIMITER))
+    .pipe(z.string().array())
+    .optional(),
   level: z
     .string()
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.enum(LEVELS).array())
-    .optional(),
-  method: z
-    .string()
-    .transform((val) => val.split(ARRAY_DELIMITER))
-    .pipe(z.enum(METHODS).array())
     .optional(),
   pathname: z.string().optional(),
   latency: z

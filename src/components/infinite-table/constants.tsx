@@ -7,7 +7,6 @@ import type {
   SheetField,
 } from "@/components/data-table/types";
 import { LEVELS } from "@/constants/levels";
-import { METHODS } from "@/constants/method";
 import { REGIONS } from "@/constants/region";
 import { formatMilliseconds } from "@/lib/format";
 import { getLevelColor, getLevelLabel } from "@/lib/request/level";
@@ -36,6 +35,13 @@ export function getFilterFields(
         ...base,
         label: col.label ?? col.id,
         value: col.id,
+        options:
+          col.type === "select" && col.options
+            ? col.options.map((option: string) => ({
+                label: option,
+                value: option,
+              }))
+            : undefined,
       };
     })
     .filter(Boolean) as DataTableFilterField<ColumnSchema>[];
@@ -46,6 +52,15 @@ const filterFields = {
     label: "String",
     value: "string",
     type: "input",
+  },
+  select: {
+    label: "Select",
+    value: "select",
+    type: "checkbox",
+    options: [].map((option) => ({ label: option, value: option })),
+    component: (props: Option) => {
+      return <span className="font-mono">{props.value}</span>;
+    },
   },
   date: {
     label: "Time Range",
@@ -102,15 +117,6 @@ const filterFields = {
           {props.value}
         </span>
       );
-    },
-  },
-  method: {
-    label: "Method",
-    value: "method",
-    type: "checkbox",
-    options: METHODS.map((region) => ({ label: region, value: region })),
-    component: (props: Option) => {
-      return <span className="font-mono">{props.value}</span>;
     },
   },
   regions: {
@@ -186,6 +192,14 @@ export function getSheetFields(
           "className" in base
             ? col.sheetClassName ?? base.className
             : undefined,
+        component:
+          "component" in base && typeof base.component === "function"
+            ? (props: Record<string, unknown>) =>
+                base.component({
+                  ...props,
+                  id: col.id,
+                }) // TODO: Este error se solucionará al volver dinámicos todos los types
+            : undefined,
       };
     })
     .filter(Boolean) as SheetField<ColumnSchema, LogsMeta>[];
@@ -197,6 +211,17 @@ const sheetFields = {
     label: "String",
     type: "input",
     skeletonClassName: "w-56",
+  },
+  select: {
+    id: "select",
+    label: "Select",
+    type: "checkbox",
+    component: (props: Record<string, unknown> & { id?: string }) => {
+      return (
+        <span className="font-mono">{String(props[props.id ?? "select"])}</span>
+      );
+    },
+    skeletonClassName: "w-10",
   },
   uuid: {
     id: "uuid",
@@ -224,15 +249,6 @@ const sheetFields = {
       );
     },
     skeletonClassName: "w-12",
-  },
-  method: {
-    id: "method",
-    label: "Method",
-    type: "checkbox",
-    component: (props: { method: string }) => {
-      return <span className="font-mono">{props.method}</span>;
-    },
-    skeletonClassName: "w-10",
   },
   regions: {
     id: "regions",
