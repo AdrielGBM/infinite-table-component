@@ -36,11 +36,13 @@ export function getFilterFields(
         label: col.label ?? col.id,
         value: col.id,
         options:
-          col.type === "select" && col.options
-            ? col.options.map((option: string) => ({
-                label: option,
-                value: option,
-              }))
+          "options" in base
+            ? col.type === "select" && col.options
+              ? col.options.map((option: string) => ({
+                  label: option,
+                  value: option,
+                }))
+              : base.options
             : undefined,
       };
     })
