@@ -225,19 +225,19 @@ const sheetFields = {
     },
     skeletonClassName: "w-10",
   },
+  date: {
+    id: "date",
+    label: "Date",
+    type: "timerange",
+    component: (props: Record<string, unknown> & { id?: string }) =>
+      format(new Date(String(props[props.id ?? "date"])), "LLL dd, y HH:mm:ss"),
+    skeletonClassName: "w-36",
+  },
   uuid: {
     id: "uuid",
     label: "Request ID",
     type: "readonly",
     skeletonClassName: "w-64",
-  },
-  date: {
-    id: "date",
-    label: "Date",
-    type: "timerange",
-    component: (props: { date: string | number | Date }) =>
-      format(new Date(props.date), "LLL dd, y HH:mm:ss"),
-    skeletonClassName: "w-36",
   },
   status: {
     id: "status",

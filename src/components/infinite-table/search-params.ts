@@ -37,6 +37,7 @@ export const parseAsSort = createParser({
 export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
   const types = {
     string: parseAsString,
+    date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
     level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
     latency: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.dns": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
@@ -46,7 +47,6 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     status: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
-    date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
   };
 
   const params: Record<string, unknown> = {};

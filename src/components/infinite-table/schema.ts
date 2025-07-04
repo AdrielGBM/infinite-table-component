@@ -21,13 +21,13 @@ export const columnSchema = z
   .object({
     string: z.string().optional(),
     select: z.string(),
+    date: z.date(),
     uuid: z.string(),
     pathname: z.string(),
     level: z.enum(LEVELS),
     latency: z.number(),
     status: z.number(),
     regions: z.enum(REGIONS).array(),
-    date: z.date(),
     headers: z.record(z.string()),
     message: z.string().optional(),
     percentile: z.number().optional(),
@@ -44,6 +44,11 @@ export const columnFilterSchema = z.object({
     .string()
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.string().array())
+    .optional(),
+  date: z
+    .string()
+    .transform((val) => val.split(RANGE_DELIMITER).map(Number))
+    .pipe(z.coerce.date().array())
     .optional(),
   level: z
     .string()
@@ -90,11 +95,6 @@ export const columnFilterSchema = z.object({
     .string()
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.enum(REGIONS).array())
-    .optional(),
-  date: z
-    .string()
-    .transform((val) => val.split(RANGE_DELIMITER).map(Number))
-    .pipe(z.coerce.date().array())
     .optional(),
 });
 

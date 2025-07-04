@@ -93,6 +93,30 @@ const columns: Record<
         "w-(--header-select-size) max-w-(--header-select-size) min-w-(--header-select-size)",
     },
   },
+  date: {
+    accessorKey: "date",
+    label: "date",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={"label" in column ? String(column.label) : "Date"}
+      />
+    ),
+    cell: ({ row, column }) => {
+      const date = new Date(row.getValue<ColumnSchema["date"]>(column.id));
+      return <HoverCardTimestamp date={date} />;
+    },
+    filterFn: "inDateRange",
+    enableResizing: false,
+    size: 200,
+    minSize: 200,
+    meta: {
+      headerClassName:
+        "w-(--header-date-size) max-w-(--header-date-size) min-w-(--header-date-size)",
+      cellClassName:
+        "font-mono w-(--col-date-size) max-w-(--col-date-size) min-w-(--col-date-size)",
+    },
+  },
   level: {
     accessorKey: "level",
     label: "level",
@@ -114,30 +138,7 @@ const columns: Record<
         "w-(--col-level-size) max-w-(--col-level-size) min-w-(--col-level-size)",
     },
   },
-  date: {
-    accessorKey: "date",
-    label: "date",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title={"label" in column ? String(column.label) : "Date"}
-      />
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.getValue<ColumnSchema["date"]>("date"));
-      return <HoverCardTimestamp date={date} />;
-    },
-    filterFn: "inDateRange",
-    enableResizing: false,
-    size: 200,
-    minSize: 200,
-    meta: {
-      headerClassName:
-        "w-(--header-date-size) max-w-(--header-date-size) min-w-(--header-date-size)",
-      cellClassName:
-        "font-mono w-(--col-date-size) max-w-(--col-date-size) min-w-(--col-date-size)",
-    },
-  },
+
   uuid: {
     id: "uuid",
     accessorKey: "uuid",
