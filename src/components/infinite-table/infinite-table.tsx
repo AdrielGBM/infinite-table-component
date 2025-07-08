@@ -8,6 +8,7 @@ export interface ColumnConfig {
   type: string;
   label?: string;
   options?: string[];
+  colors?: string[];
   columnSize?: number;
   noColumn?: boolean;
   noFilter?: boolean;

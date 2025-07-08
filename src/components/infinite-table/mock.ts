@@ -4,7 +4,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -27,7 +27,7 @@ export const mock = [
     level: "success",
     latency: 768,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -50,7 +50,7 @@ export const mock = [
     level: "success",
     latency: 1347,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -73,7 +73,7 @@ export const mock = [
     level: "warning",
     latency: 1174,
     regions: ["syd"],
-    status: 400,
+    status: "400",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -96,7 +96,7 @@ export const mock = [
     level: "success",
     latency: 884,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -119,7 +119,7 @@ export const mock = [
     level: "warning",
     latency: 1232,
     regions: ["hkg"],
-    status: 404,
+    status: "404",
     date: "2025-05-28T00:05:16.297Z",
     headers: {
       Age: "0",
@@ -142,7 +142,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -165,7 +165,7 @@ export const mock = [
     level: "success",
     latency: 994,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -188,7 +188,7 @@ export const mock = [
     level: "success",
     latency: 1009,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -211,7 +211,7 @@ export const mock = [
     level: "success",
     latency: 1005,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -234,7 +234,7 @@ export const mock = [
     level: "warning",
     latency: 997,
     regions: ["fra"],
-    status: 400,
+    status: "400",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -257,7 +257,7 @@ export const mock = [
     level: "success",
     latency: 1006,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T23:05:16.297Z",
     headers: {
       Age: "0",
@@ -280,7 +280,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -303,7 +303,7 @@ export const mock = [
     level: "success",
     latency: 815,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -326,7 +326,7 @@ export const mock = [
     level: "success",
     latency: 1278,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -349,7 +349,7 @@ export const mock = [
     level: "success",
     latency: 1139,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -372,7 +372,7 @@ export const mock = [
     level: "success",
     latency: 907,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -395,7 +395,7 @@ export const mock = [
     level: "success",
     latency: 1185,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T22:05:16.297Z",
     headers: {
       Age: "0",
@@ -418,7 +418,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -441,7 +441,7 @@ export const mock = [
     level: "success",
     latency: 729,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -464,7 +464,7 @@ export const mock = [
     level: "success",
     latency: 1406,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -487,7 +487,7 @@ export const mock = [
     level: "success",
     latency: 1203,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -510,7 +510,7 @@ export const mock = [
     level: "success",
     latency: 865,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -533,7 +533,7 @@ export const mock = [
     level: "success",
     latency: 1271,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T21:05:16.297Z",
     headers: {
       Age: "0",
@@ -556,7 +556,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -579,7 +579,7 @@ export const mock = [
     level: "success",
     latency: 712,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -602,7 +602,7 @@ export const mock = [
     level: "success",
     latency: 1432,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -625,7 +625,7 @@ export const mock = [
     level: "success",
     latency: 1216,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -648,7 +648,7 @@ export const mock = [
     level: "warning",
     latency: 856,
     regions: ["fra"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -671,7 +671,7 @@ export const mock = [
     level: "success",
     latency: 1288,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T20:05:16.297Z",
     headers: {
       Age: "0",
@@ -694,7 +694,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -717,7 +717,7 @@ export const mock = [
     level: "success",
     latency: 909,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -740,7 +740,7 @@ export const mock = [
     level: "warning",
     latency: 1137,
     regions: ["gru"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -763,7 +763,7 @@ export const mock = [
     level: "success",
     latency: 1069,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -786,7 +786,7 @@ export const mock = [
     level: "success",
     latency: 954,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -809,7 +809,7 @@ export const mock = [
     level: "success",
     latency: 1091,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T19:05:16.298Z",
     headers: {
       Age: "0",
@@ -832,7 +832,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -855,7 +855,7 @@ export const mock = [
     level: "success",
     latency: 820,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -878,7 +878,7 @@ export const mock = [
     level: "success",
     latency: 1271,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -901,7 +901,7 @@ export const mock = [
     level: "success",
     latency: 1135,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -924,7 +924,7 @@ export const mock = [
     level: "warning",
     latency: 910,
     regions: ["fra"],
-    status: 400,
+    status: "400",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -947,7 +947,7 @@ export const mock = [
     level: "success",
     latency: 1180,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T18:05:16.298Z",
     headers: {
       Age: "0",
@@ -970,7 +970,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -993,7 +993,7 @@ export const mock = [
     level: "success",
     latency: 658,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -1016,7 +1016,7 @@ export const mock = [
     level: "success",
     latency: 1513,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -1039,7 +1039,7 @@ export const mock = [
     level: "success",
     latency: 1256,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -1062,7 +1062,7 @@ export const mock = [
     level: "success",
     latency: 829,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -1085,7 +1085,7 @@ export const mock = [
     level: "warning",
     latency: 1342,
     regions: ["hkg"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T17:05:41.109Z",
     headers: {
       Age: "0",
@@ -1108,7 +1108,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1131,7 +1131,7 @@ export const mock = [
     level: "success",
     latency: 941,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1154,7 +1154,7 @@ export const mock = [
     level: "success",
     latency: 1088,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1177,7 +1177,7 @@ export const mock = [
     level: "success",
     latency: 1044,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1200,7 +1200,7 @@ export const mock = [
     level: "warning",
     latency: 971,
     regions: ["fra"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1223,7 +1223,7 @@ export const mock = [
     level: "success",
     latency: 1059,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T16:05:41.109Z",
     headers: {
       Age: "0",
@@ -1246,7 +1246,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1269,7 +1269,7 @@ export const mock = [
     level: "success",
     latency: 720,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1292,7 +1292,7 @@ export const mock = [
     level: "success",
     latency: 1421,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1315,7 +1315,7 @@ export const mock = [
     level: "success",
     latency: 1210,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1338,7 +1338,7 @@ export const mock = [
     level: "success",
     latency: 860,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1361,7 +1361,7 @@ export const mock = [
     level: "success",
     latency: 1280,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T15:05:41.109Z",
     headers: {
       Age: "0",
@@ -1384,7 +1384,7 @@ export const mock = [
     level: "error",
     latency: 1000,
     regions: ["ams"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1408,7 +1408,7 @@ export const mock = [
     level: "success",
     latency: 723,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1431,7 +1431,7 @@ export const mock = [
     level: "success",
     latency: 1416,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1454,7 +1454,7 @@ export const mock = [
     level: "warning",
     latency: 1208,
     regions: ["syd"],
-    status: 400,
+    status: "400",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1477,7 +1477,7 @@ export const mock = [
     level: "success",
     latency: 861,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1500,7 +1500,7 @@ export const mock = [
     level: "success",
     latency: 1277,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T14:05:41.109Z",
     headers: {
       Age: "0",
@@ -1523,7 +1523,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1546,7 +1546,7 @@ export const mock = [
     level: "success",
     latency: 861,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1569,7 +1569,7 @@ export const mock = [
     level: "error",
     latency: 1209,
     regions: ["gru"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1593,7 +1593,7 @@ export const mock = [
     level: "success",
     latency: 1104,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1616,7 +1616,7 @@ export const mock = [
     level: "success",
     latency: 930,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1639,7 +1639,7 @@ export const mock = [
     level: "success",
     latency: 1139,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T13:05:41.109Z",
     headers: {
       Age: "0",
@@ -1662,7 +1662,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1685,7 +1685,7 @@ export const mock = [
     level: "success",
     latency: 877,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1708,7 +1708,7 @@ export const mock = [
     level: "success",
     latency: 1184,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1731,7 +1731,7 @@ export const mock = [
     level: "success",
     latency: 1092,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1754,7 +1754,7 @@ export const mock = [
     level: "success",
     latency: 939,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1777,7 +1777,7 @@ export const mock = [
     level: "success",
     latency: 1123,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T12:05:41.109Z",
     headers: {
       Age: "0",
@@ -1800,7 +1800,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1823,7 +1823,7 @@ export const mock = [
     level: "success",
     latency: 870,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1846,7 +1846,7 @@ export const mock = [
     level: "success",
     latency: 1194,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1869,7 +1869,7 @@ export const mock = [
     level: "success",
     latency: 1097,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1892,7 +1892,7 @@ export const mock = [
     level: "success",
     latency: 935,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1915,7 +1915,7 @@ export const mock = [
     level: "error",
     latency: 1130,
     regions: ["hkg"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T11:05:41.109Z",
     headers: {
       Age: "0",
@@ -1939,7 +1939,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -1962,7 +1962,7 @@ export const mock = [
     level: "success",
     latency: 659,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -1985,7 +1985,7 @@ export const mock = [
     level: "success",
     latency: 1511,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -2008,7 +2008,7 @@ export const mock = [
     level: "success",
     latency: 1256,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -2031,7 +2031,7 @@ export const mock = [
     level: "warning",
     latency: 830,
     regions: ["fra"],
-    status: 400,
+    status: "400",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -2054,7 +2054,7 @@ export const mock = [
     level: "success",
     latency: 1341,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T10:05:41.109Z",
     headers: {
       Age: "0",
@@ -2077,7 +2077,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2100,7 +2100,7 @@ export const mock = [
     level: "warning",
     latency: 767,
     regions: ["iad"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2123,7 +2123,7 @@ export const mock = [
     level: "success",
     latency: 1349,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2146,7 +2146,7 @@ export const mock = [
     level: "success",
     latency: 1174,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2169,7 +2169,7 @@ export const mock = [
     level: "success",
     latency: 884,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2192,7 +2192,7 @@ export const mock = [
     level: "warning",
     latency: 1233,
     regions: ["hkg"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T09:05:41.109Z",
     headers: {
       Age: "0",
@@ -2215,7 +2215,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2238,7 +2238,7 @@ export const mock = [
     level: "success",
     latency: 844,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2261,7 +2261,7 @@ export const mock = [
     level: "success",
     latency: 1234,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2284,7 +2284,7 @@ export const mock = [
     level: "success",
     latency: 1117,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2307,7 +2307,7 @@ export const mock = [
     level: "success",
     latency: 922,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2330,7 +2330,7 @@ export const mock = [
     level: "success",
     latency: 1156,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T08:05:41.109Z",
     headers: {
       Age: "0",
@@ -2353,7 +2353,7 @@ export const mock = [
     level: "error",
     latency: 1000,
     regions: ["ams"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2377,7 +2377,7 @@ export const mock = [
     level: "success",
     latency: 709,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2400,7 +2400,7 @@ export const mock = [
     level: "success",
     latency: 1436,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2423,7 +2423,7 @@ export const mock = [
     level: "success",
     latency: 1218,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2446,7 +2446,7 @@ export const mock = [
     level: "success",
     latency: 855,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2469,7 +2469,7 @@ export const mock = [
     level: "success",
     latency: 1291,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T07:05:41.109Z",
     headers: {
       Age: "0",
@@ -2492,7 +2492,7 @@ export const mock = [
     level: "error",
     latency: 1000,
     regions: ["ams"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2516,7 +2516,7 @@ export const mock = [
     level: "success",
     latency: 899,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2539,7 +2539,7 @@ export const mock = [
     level: "success",
     latency: 1151,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2562,7 +2562,7 @@ export const mock = [
     level: "success",
     latency: 1076,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2585,7 +2585,7 @@ export const mock = [
     level: "success",
     latency: 950,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2608,7 +2608,7 @@ export const mock = [
     level: "success",
     latency: 1101,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T06:05:41.109Z",
     headers: {
       Age: "0",
@@ -2631,7 +2631,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2654,7 +2654,7 @@ export const mock = [
     level: "success",
     latency: 695,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2677,7 +2677,7 @@ export const mock = [
     level: "success",
     latency: 1457,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2700,7 +2700,7 @@ export const mock = [
     level: "success",
     latency: 1228,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2723,7 +2723,7 @@ export const mock = [
     level: "success",
     latency: 848,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2746,7 +2746,7 @@ export const mock = [
     level: "success",
     latency: 1305,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T05:05:41.109Z",
     headers: {
       Age: "0",
@@ -2769,7 +2769,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2792,7 +2792,7 @@ export const mock = [
     level: "success",
     latency: 679,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2815,7 +2815,7 @@ export const mock = [
     level: "error",
     latency: 1481,
     regions: ["gru"],
-    status: 500,
+    status: "500",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2839,7 +2839,7 @@ export const mock = [
     level: "success",
     latency: 1240,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2862,7 +2862,7 @@ export const mock = [
     level: "success",
     latency: 840,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2885,7 +2885,7 @@ export const mock = [
     level: "success",
     latency: 1321,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T04:05:41.109Z",
     headers: {
       Age: "0",
@@ -2908,7 +2908,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -2931,7 +2931,7 @@ export const mock = [
     level: "success",
     latency: 933,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -2954,7 +2954,7 @@ export const mock = [
     level: "success",
     latency: 1100,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -2977,7 +2977,7 @@ export const mock = [
     level: "success",
     latency: 1050,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -3000,7 +3000,7 @@ export const mock = [
     level: "success",
     latency: 967,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -3023,7 +3023,7 @@ export const mock = [
     level: "success",
     latency: 1067,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T03:05:41.109Z",
     headers: {
       Age: "0",
@@ -3046,7 +3046,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3069,7 +3069,7 @@ export const mock = [
     level: "success",
     latency: 712,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3092,7 +3092,7 @@ export const mock = [
     level: "success",
     latency: 1431,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3115,7 +3115,7 @@ export const mock = [
     level: "success",
     latency: 1216,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3138,7 +3138,7 @@ export const mock = [
     level: "success",
     latency: 856,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3161,7 +3161,7 @@ export const mock = [
     level: "success",
     latency: 1288,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T02:05:41.109Z",
     headers: {
       Age: "0",
@@ -3184,7 +3184,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3207,7 +3207,7 @@ export const mock = [
     level: "success",
     latency: 741,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3230,7 +3230,7 @@ export const mock = [
     level: "warning",
     latency: 1388,
     regions: ["gru"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3253,7 +3253,7 @@ export const mock = [
     level: "warning",
     latency: 1194,
     regions: ["syd"],
-    status: 404,
+    status: "404",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3276,7 +3276,7 @@ export const mock = [
     level: "warning",
     latency: 871,
     regions: ["fra"],
-    status: 400,
+    status: "400",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3299,7 +3299,7 @@ export const mock = [
     level: "success",
     latency: 1259,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T01:05:41.109Z",
     headers: {
       Age: "0",
@@ -3322,7 +3322,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3345,7 +3345,7 @@ export const mock = [
     level: "success",
     latency: 662,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3368,7 +3368,7 @@ export const mock = [
     level: "success",
     latency: 1507,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3391,7 +3391,7 @@ export const mock = [
     level: "success",
     latency: 1254,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3414,7 +3414,7 @@ export const mock = [
     level: "success",
     latency: 831,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3437,7 +3437,7 @@ export const mock = [
     level: "success",
     latency: 1338,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-27T00:05:41.109Z",
     headers: {
       Age: "0",
@@ -3460,7 +3460,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3483,7 +3483,7 @@ export const mock = [
     level: "success",
     latency: 906,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3506,7 +3506,7 @@ export const mock = [
     level: "warning",
     latency: 1141,
     regions: ["gru"],
-    status: 404,
+    status: "404",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3529,7 +3529,7 @@ export const mock = [
     level: "success",
     latency: 1071,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3552,7 +3552,7 @@ export const mock = [
     level: "success",
     latency: 953,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3575,7 +3575,7 @@ export const mock = [
     level: "success",
     latency: 1094,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T23:05:41.109Z",
     headers: {
       Age: "0",
@@ -3598,7 +3598,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3621,7 +3621,7 @@ export const mock = [
     level: "success",
     latency: 615,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3644,7 +3644,7 @@ export const mock = [
     level: "success",
     latency: 1577,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3667,7 +3667,7 @@ export const mock = [
     level: "success",
     latency: 1289,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3690,7 +3690,7 @@ export const mock = [
     level: "success",
     latency: 808,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3713,7 +3713,7 @@ export const mock = [
     level: "success",
     latency: 1385,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T22:05:41.109Z",
     headers: {
       Age: "0",
@@ -3736,7 +3736,7 @@ export const mock = [
     level: "success",
     latency: 1000,
     regions: ["ams"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",
@@ -3759,7 +3759,7 @@ export const mock = [
     level: "success",
     latency: 772,
     regions: ["iad"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",
@@ -3782,7 +3782,7 @@ export const mock = [
     level: "success",
     latency: 1341,
     regions: ["gru"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",
@@ -3805,7 +3805,7 @@ export const mock = [
     level: "success",
     latency: 1171,
     regions: ["syd"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",
@@ -3828,7 +3828,7 @@ export const mock = [
     level: "success",
     latency: 886,
     regions: ["fra"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",
@@ -3851,7 +3851,7 @@ export const mock = [
     level: "success",
     latency: 1228,
     regions: ["hkg"],
-    status: 200,
+    status: "200",
     date: "2025-05-26T21:05:41.109Z",
     headers: {
       Age: "0",

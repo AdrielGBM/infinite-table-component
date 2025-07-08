@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
 import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
@@ -10,7 +14,7 @@ import { LEVELS } from "@/constants/levels";
 import { REGIONS } from "@/constants/region";
 import { formatMilliseconds } from "@/lib/format";
 import { getLevelColor, getLevelLabel } from "@/lib/request/level";
-import { getStatusColor } from "@/lib/request/status-code";
+import { getColor } from "@/lib/request/colors";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { PopoverPercentile } from "./_components/popover-percentile";
@@ -44,6 +48,17 @@ export function getFilterFields(
                 }))
               : base.options
             : undefined,
+        component:
+          "component" in base && typeof base.component === "function"
+            ? (props: Option) =>
+                base.component({
+                  ...props,
+                  options: col.options ?? undefined,
+                  colors: col.colors ?? undefined,
+                })
+            : "component" in base
+            ? base.component
+            : undefined,
       };
     })
     .filter(Boolean) as DataTableFilterField<ColumnSchema>[];
@@ -60,8 +75,20 @@ const filterFields = {
     value: "select",
     type: "checkbox",
     options: [].map((option) => ({ label: option, value: option })),
-    component: (props: Option) => {
-      return <span className="font-mono">{props.value}</span>;
+    component: (props: Option & { colors?: string[]; options?: string[] }) => {
+      const idx =
+        props.options && Array.isArray(props.options)
+          ? props.options.indexOf(String(props.value))
+          : -1;
+      const color =
+        idx !== -1 && props.colors && Array.isArray(props.colors)
+          ? props.colors[idx]
+          : "default";
+      return (
+        <span className={cn("font-mono", getColor(color).text)}>
+          {props.value}
+        </span>
+      );
     },
   },
   date: {
@@ -97,27 +124,6 @@ const filterFields = {
             </span>
           </div>
         </div>
-      );
-    },
-  },
-  status: {
-    label: "Status Code",
-    value: "status",
-    type: "checkbox",
-    options: [
-      { label: "200", value: 200 },
-      { label: "400", value: 400 },
-      { label: "404", value: 404 },
-      { label: "500", value: 500 },
-    ], // REMINDER: this is a placeholder to set the type in the client.tsx
-    component: (props: Option) => {
-      if (typeof props.value === "boolean") return null;
-      if (typeof props.value === "undefined") return null;
-      if (typeof props.value === "string") return null;
-      return (
-        <span className={cn("font-mono", getStatusColor(props.value).text)}>
-          {props.value}
-        </span>
       );
     },
   },
@@ -200,7 +206,11 @@ export function getSheetFields(
                 base.component({
                   ...props,
                   id: col.id,
+                  options: col.options ?? undefined,
+                  colors: col.colors ?? undefined,
                 }) // TODO: Este error se solucionará al volver dinámicos todos los types
+            : "component" in base
+            ? base.component
             : undefined,
       };
     })
@@ -218,9 +228,26 @@ const sheetFields = {
     id: "select",
     label: "Select",
     type: "checkbox",
-    component: (props: Record<string, unknown> & { id?: string }) => {
+    component: (
+      props: Record<string, unknown> & {
+        id?: string;
+        colors?: string[];
+        options?: string[];
+      }
+    ) => {
+      const idx =
+        props.options && Array.isArray(props.options)
+          ? props.options.indexOf(String(props[props.id ?? "select"]))
+          : -1;
+      const color =
+        idx !== -1 && props.colors && Array.isArray(props.colors)
+          ? props.colors[idx]
+          : "default";
+      console.log(color);
       return (
-        <span className="font-mono">{String(props[props.id ?? "select"])}</span>
+        <span className={cn("font-mono", getColor(color).text)}>
+          {String(props[props.id ?? "select"])}
+        </span>
       );
     },
     skeletonClassName: "w-10",
@@ -238,19 +265,6 @@ const sheetFields = {
     label: "Request ID",
     type: "readonly",
     skeletonClassName: "w-64",
-  },
-  status: {
-    id: "status",
-    label: "Status",
-    type: "checkbox",
-    component: (props: { status: number }) => {
-      return (
-        <span className={cn("font-mono", getStatusColor(props.status).text)}>
-          {props.status}
-        </span>
-      );
-    },
-    skeletonClassName: "w-12",
   },
   regions: {
     id: "regions",

@@ -33,7 +33,15 @@ function Home() {
             label: "ID",
             noFilter: true,
           },
-          { id: "status", type: "status", label: "Estado" },
+          {
+            id: "status",
+            type: "select",
+            label: "Estado",
+            options: ["200", "400", "404", "500"],
+            colors: ["green", "yellow", "yellow", "red"],
+            columnSize: 60,
+            sheetClassName: "w-12",
+          },
           {
             id: "method",
             type: "select",

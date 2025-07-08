@@ -10,7 +10,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { DataTableColumnLatency } from "@/components/data-table/data-table-column/data-table-column-latency";
 import { DataTableColumnLevelIndicator } from "@/components/data-table/data-table-column/data-table-column-level-indicator";
 import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
-import { DataTableColumnStatusCode } from "@/components/data-table/data-table-column/data-table-column-status-code";
+import { DataTableColumnSelectCode } from "@/components/data-table/data-table-column/data-table-column-select-code";
 import {
   HoverCard,
   HoverCardContent,
@@ -53,6 +53,20 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
             : col.label ?? base.label),
         size: col.columnSize ?? base.size,
         minSize: col.columnSize ?? base.size,
+        cell:
+          "cell" in base && typeof base.cell === "function"
+            ? (props: any) =>
+                (base.cell as Function)({
+                  ...props,
+                  column: {
+                    ...props.column,
+                    options: col.options ?? undefined,
+                    colors: col.colors ?? undefined,
+                  },
+                })
+            : "cell" in base
+            ? base.cell
+            : undefined,
       };
     })
     .filter(Boolean) as ColumnDef<ColumnSchema>[];
@@ -82,13 +96,27 @@ const columns: Record<
     accessorKey: "select",
     label: "select",
     header: "Select",
+    cell: ({ row, column }) => {
+      const value = row.getValue<ColumnSchema["select"]>(column.id);
+      const idx =
+        "options" in column && Array.isArray(column.options)
+          ? (column.options as string[]).indexOf(value)
+          : -1;
+      const color =
+        idx !== -1 && "colors" in column && Array.isArray(column.colors)
+          ? (column.colors as string[])[idx]
+          : undefined;
+      return (
+        <DataTableColumnSelectCode value={value} color={color ?? "default"} />
+      );
+    },
     filterFn: "arrIncludesSome",
     enableResizing: false,
     size: 69,
     minSize: 69,
     meta: {
       cellClassName:
-        "font-mono text-muted-foreground w-(--col-select-size) max-w-(--col-select-size) min-w-(--col-select-size)",
+        "font-mono w-(--col-select-size) max-w-(--col-select-size) min-w-(--col-select-size)",
       headerClassName:
         "w-(--header-select-size) max-w-(--header-select-size) min-w-(--header-select-size)",
     },
@@ -138,7 +166,6 @@ const columns: Record<
         "w-(--col-level-size) max-w-(--col-level-size) min-w-(--col-level-size)",
     },
   },
-
   uuid: {
     id: "uuid",
     accessorKey: "uuid",
@@ -156,25 +183,6 @@ const columns: Record<
         "font-mono w-(--col-uuid-size) max-w-(--col-uuid-size) min-w-(--col-uuid-size)",
       headerClassName:
         "min-w-(--header-uuid-size) w-(--header-uuid-size) max-w-(--header-uuid-size)",
-    },
-  },
-  status: {
-    accessorKey: "status",
-    label: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["status"]>("status");
-      return <DataTableColumnStatusCode value={value} />;
-    },
-    filterFn: "arrSome",
-    enableResizing: false,
-    size: 60,
-    minSize: 60,
-    meta: {
-      headerClassName:
-        "w-(--header-status-size) max-w-(--header-status-size) min-w-(--header-status-size)",
-      cellClassName:
-        "font-mono w-(--col-status-size) max-w-(--col-status-size) min-w-(--col-status-size)",
     },
   },
   latency: {

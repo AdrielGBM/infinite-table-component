@@ -45,7 +45,6 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.ttfb": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    status: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
   };
 

@@ -26,7 +26,6 @@ export const columnSchema = z
     pathname: z.string(),
     level: z.enum(LEVELS),
     latency: z.number(),
-    status: z.number(),
     regions: z.enum(REGIONS).array(),
     headers: z.record(z.string()),
     message: z.string().optional(),
@@ -85,11 +84,6 @@ export const columnFilterSchema = z.object({
     .string()
     .transform((val) => val.split(SLIDER_DELIMITER))
     .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  status: z
-    .string()
-    .transform((val) => val.split(ARRAY_DELIMITER))
-    .pipe(z.coerce.number().array())
     .optional(),
   regions: z
     .string()
