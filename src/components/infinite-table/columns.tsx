@@ -7,7 +7,7 @@
 
 import { TextWithTooltip } from "@/components/custom/text-with-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { DataTableColumnLatency } from "@/components/data-table/data-table-column/data-table-column-latency";
+import { DataTableColumnNumber } from "@/components/data-table/data-table-column/data-table-column-number";
 import { DataTableColumnLevelIndicator } from "@/components/data-table/data-table-column/data-table-column-level-indicator";
 import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
 import { DataTableColumnSelectCode } from "@/components/data-table/data-table-column/data-table-column-select-code";
@@ -62,6 +62,8 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                     ...props.column,
                     options: col.options ?? undefined,
                     colors: col.colors ?? undefined,
+                    left: col.left ?? undefined,
+                    right: col.right ?? undefined,
                   },
                 })
             : "cell" in base
@@ -145,6 +147,44 @@ const columns: Record<
         "font-mono w-(--col-date-size) max-w-(--col-date-size) min-w-(--col-date-size)",
     },
   },
+  number: {
+    accessorKey: "number",
+    label: "number",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title={"label" in column ? String(column.label) : "Number"}
+      />
+    ),
+    cell: ({ row, column }) => {
+      const value = row.getValue<ColumnSchema["number"]>(column.id);
+      return (
+        <DataTableColumnNumber
+          left={
+            "left" in column && typeof column.left == "string"
+              ? column.left
+              : undefined
+          }
+          value={value}
+          right={
+            "right" in column && typeof column.right == "string"
+              ? column.right
+              : undefined
+          }
+        />
+      );
+    },
+    filterFn: "inNumberRange",
+    enableResizing: false,
+    size: 110,
+    minSize: 110,
+    meta: {
+      headerClassName:
+        "w-(--header-number-size) max-w-(--header-number-size) min-w-(--header-number-size)",
+      cellClassName:
+        "font-mono w-(--col-number-size) max-w-(--col-number-size) min-w-(--col-number-size)",
+    },
+  },
   level: {
     accessorKey: "level",
     label: "level",
@@ -183,31 +223,6 @@ const columns: Record<
         "font-mono w-(--col-uuid-size) max-w-(--col-uuid-size) min-w-(--col-uuid-size)",
       headerClassName:
         "min-w-(--header-uuid-size) w-(--header-uuid-size) max-w-(--header-uuid-size)",
-    },
-  },
-  latency: {
-    accessorKey: "latency",
-    label: "latency",
-    // TODO: check if we can right align the table header/cell (makes is easier to read)
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title={"label" in column ? String(column.label) : "Latency"}
-      />
-    ),
-    cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["latency"]>("latency");
-      return <DataTableColumnLatency value={value} />;
-    },
-    filterFn: "inNumberRange",
-    enableResizing: false,
-    size: 110,
-    minSize: 110,
-    meta: {
-      headerClassName:
-        "w-(--header-latency-size) max-w-(--header-latency-size) min-w-(--header-latency-size)",
-      cellClassName:
-        "font-mono w-(--col-latency-size) max-w-(--col-latency-size) min-w-(--col-latency-size)",
     },
   },
   regions: {
@@ -347,7 +362,7 @@ const columns: Record<
     ),
     cell: ({ row }) => {
       const value = row.getValue<ColumnSchema["timing.dns"]>("timing.dns");
-      return <DataTableColumnLatency value={value} />;
+      return <DataTableColumnNumber value={value} />;
     },
     filterFn: "inNumberRange",
     enableResizing: false,
@@ -374,7 +389,7 @@ const columns: Record<
     cell: ({ row }) => {
       const value =
         row.getValue<ColumnSchema["timing.connection"]>("timing.connection");
-      return <DataTableColumnLatency value={value} />;
+      return <DataTableColumnNumber value={value} />;
     },
     filterFn: "inNumberRange",
     enableResizing: false,
@@ -400,7 +415,7 @@ const columns: Record<
     ),
     cell: ({ row }) => {
       const value = row.getValue<ColumnSchema["timing.tls"]>("timing.tls");
-      return <DataTableColumnLatency value={value} />;
+      return <DataTableColumnNumber value={value} />;
     },
     filterFn: "inNumberRange",
     enableResizing: false,
@@ -426,7 +441,7 @@ const columns: Record<
     ),
     cell: ({ row }) => {
       const value = row.getValue<ColumnSchema["timing.ttfb"]>("timing.ttfb");
-      return <DataTableColumnLatency value={value} />;
+      return <DataTableColumnNumber value={value} />;
     },
     filterFn: "inNumberRange",
     enableResizing: false,
@@ -453,7 +468,7 @@ const columns: Record<
     cell: ({ row }) => {
       const value =
         row.getValue<ColumnSchema["timing.transfer"]>("timing.transfer");
-      return <DataTableColumnLatency value={value} />;
+      return <DataTableColumnNumber value={value} />;
     },
     filterFn: "inNumberRange",
     enableResizing: false,

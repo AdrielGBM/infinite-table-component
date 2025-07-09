@@ -9,6 +9,10 @@ export interface ColumnConfig {
   label?: string;
   options?: string[];
   colors?: string[];
+  min?: number;
+  max?: number;
+  left?: string;
+  right?: string;
   columnSize?: number;
   noColumn?: boolean;
   noFilter?: boolean;

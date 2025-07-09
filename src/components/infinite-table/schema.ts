@@ -22,10 +22,10 @@ export const columnSchema = z
     string: z.string().optional(),
     select: z.string(),
     date: z.date(),
+    number: z.number(),
     uuid: z.string(),
     pathname: z.string(),
     level: z.enum(LEVELS),
-    latency: z.number(),
     regions: z.enum(REGIONS).array(),
     headers: z.record(z.string()),
     message: z.string().optional(),
@@ -49,17 +49,17 @@ export const columnFilterSchema = z.object({
     .transform((val) => val.split(RANGE_DELIMITER).map(Number))
     .pipe(z.coerce.date().array())
     .optional(),
+  number: z
+    .string()
+    .transform((val) => val.split(SLIDER_DELIMITER))
+    .pipe(z.coerce.number().array().max(2))
+    .optional(),
   level: z
     .string()
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.enum(LEVELS).array())
     .optional(),
   pathname: z.string().optional(),
-  latency: z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
   "timing.dns": z
     .string()
     .transform((val) => val.split(SLIDER_DELIMITER))

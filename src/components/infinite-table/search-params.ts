@@ -39,7 +39,7 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     string: parseAsString,
     date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
     level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
-    latency: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    number: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.dns": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.connection": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),

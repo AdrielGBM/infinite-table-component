@@ -48,6 +48,18 @@ export function getFilterFields(
                 }))
               : base.options
             : undefined,
+        min:
+          "min" in base
+            ? col.type === "number" && col.min
+              ? (col.min as number)
+              : base.min
+            : undefined,
+        max:
+          "max" in base
+            ? col.type === "number" && col.max
+              ? (col.max as number)
+              : base.max
+            : undefined,
         component:
           "component" in base && typeof base.component === "function"
             ? (props: Option) =>
@@ -98,6 +110,13 @@ const filterFields = {
     defaultOpen: true,
     commandDisabled: true,
   },
+  number: {
+    label: "Number",
+    value: "number",
+    type: "slider",
+    min: 0,
+    max: 5000,
+  },
   level: {
     label: "Level",
     value: "level",
@@ -135,13 +154,6 @@ const filterFields = {
     component: (props: Option) => {
       return <span className="font-mono">{props.value}</span>;
     },
-  },
-  latency: {
-    label: "Latency",
-    value: "latency",
-    type: "slider",
-    min: 0,
-    max: 5000,
   },
   timing_dns: {
     label: "DNS",
@@ -208,6 +220,8 @@ export function getSheetFields(
                   id: col.id,
                   options: col.options ?? undefined,
                   colors: col.colors ?? undefined,
+                  left: col.left ?? undefined,
+                  right: col.right ?? undefined,
                 }) // TODO: Este error se solucionará al volver dinámicos todos los types
             : "component" in base
             ? base.component
@@ -260,6 +274,23 @@ const sheetFields = {
       format(new Date(String(props[props.id ?? "date"])), "LLL dd, y HH:mm:ss"),
     skeletonClassName: "w-36",
   },
+  number: {
+    id: "number",
+    label: "Number",
+    type: "slider",
+    component: (props: Record<string, unknown> & { id?: string }) => (
+      <>
+        {"left" in props && typeof props.left === "string" && (
+          <span className="text-muted-foreground">{props.left}</span>
+        )}
+        {formatMilliseconds(Number(props[props.id ?? "number"]))}
+        {"right" in props && typeof props.right === "string" && (
+          <span className="text-muted-foreground">{props.right}</span>
+        )}
+      </>
+    ),
+    skeletonClassName: "w-16",
+  },
   uuid: {
     id: "uuid",
     label: "Request ID",
@@ -274,18 +305,6 @@ const sheetFields = {
     component: (props: { regions: string[] }) => (
       <DataTableColumnRegion value={props.regions[0]} reverse showFlag />
     ),
-  },
-  latency: {
-    id: "latency",
-    label: "Latency",
-    type: "slider",
-    component: (props: { latency: number }) => (
-      <>
-        {formatMilliseconds(props.latency)}
-        <span className="text-muted-foreground">ms</span>
-      </>
-    ),
-    skeletonClassName: "w-16",
   },
   percentile: {
     id: "percentile",

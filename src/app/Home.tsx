@@ -62,7 +62,14 @@ function Home() {
             columnSize: 130,
             sheetClassName: "w-56",
           },
-          { id: "latency", type: "latency", label: "Latencia" },
+          {
+            id: "latency",
+            type: "number",
+            label: "Latencia",
+            min: 0,
+            max: 5000,
+            right: "ms",
+          },
           { id: "regions", type: "regions", label: "Regiones" },
           {
             id: "timing",
