@@ -8,6 +8,7 @@ export interface ColumnConfig {
   type: string;
   label?: string;
   options?: string[];
+  labels?: string[];
   colors?: string[];
   min?: number;
   max?: number;

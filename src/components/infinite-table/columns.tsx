@@ -61,6 +61,7 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                   column: {
                     ...props.column,
                     options: col.options ?? undefined,
+                    labels: col.labels ?? undefined,
                     colors: col.colors ?? undefined,
                     left: col.left ?? undefined,
                     right: col.right ?? undefined,
@@ -100,17 +101,53 @@ const columns: Record<
     header: "Select",
     cell: ({ row, column }) => {
       const value = row.getValue<ColumnSchema["select"]>(column.id);
-      const idx =
-        "options" in column && Array.isArray(column.options)
-          ? (column.options as string[]).indexOf(value)
-          : -1;
-      const color =
-        idx !== -1 && "colors" in column && Array.isArray(column.colors)
-          ? (column.colors as string[])[idx]
-          : undefined;
-      return (
-        <DataTableColumnSelectCode value={value} color={color ?? "default"} />
-      );
+
+      const getOptionalData = (val: string) => {
+        const idx =
+          "options" in column && Array.isArray(column.options)
+            ? (column.options as string[]).indexOf(val)
+            : -1;
+        const color =
+          idx !== -1 && "colors" in column && Array.isArray(column.colors)
+            ? (column.colors as string[])[idx]
+            : undefined;
+        const label =
+          idx !== -1 && "labels" in column && Array.isArray(column.labels)
+            ? (column.labels as string[])[idx]
+            : undefined;
+        return { label, color: color ?? "default" };
+      };
+
+      if (Array.isArray(value)) {
+        return (
+          <>
+            {value.map((val, i) => {
+              const { label, color } = getOptionalData(val);
+              return (
+                <DataTableColumnSelectCode
+                  key={val + String(i)}
+                  value={val + (!label && i < value.length - 1 ? ", " : "")}
+                  label={
+                    label
+                      ? label + (i < value.length - 1 ? ", " : "")
+                      : undefined
+                  }
+                  color={color}
+                />
+              );
+            })}
+          </>
+        );
+      } else {
+        const { label, color } = getOptionalData(value);
+        return (
+          <DataTableColumnSelectCode
+            value={value}
+            label={label}
+            color={color}
+          />
+        );
+      }
     },
     filterFn: "arrIncludesSome",
     enableResizing: false,
@@ -223,41 +260,6 @@ const columns: Record<
         "font-mono w-(--col-uuid-size) max-w-(--col-uuid-size) min-w-(--col-uuid-size)",
       headerClassName:
         "min-w-(--header-uuid-size) w-(--header-uuid-size) max-w-(--header-uuid-size)",
-    },
-  },
-  regions: {
-    accessorKey: "regions",
-    label: "regions",
-    header: "Region",
-    cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["regions"]>("regions");
-      if (Array.isArray(value)) {
-        if (value.length > 1) {
-          return (
-            <div className="text-muted-foreground">{value.join(", ")}</div>
-          );
-        } else {
-          return (
-            <div className="whitespace-nowrap">
-              <DataTableColumnRegion value={value[0]} />
-            </div>
-          );
-        }
-      }
-      if (typeof value === "string") {
-        return <DataTableColumnRegion value={value} />;
-      }
-      return <Minus className="h-4 w-4 text-muted-foreground/50" />;
-    },
-    filterFn: "arrIncludesSome",
-    enableResizing: false,
-    size: 163,
-    minSize: 163,
-    meta: {
-      headerClassName:
-        "w-(--header-regions-size) max-w-(--header-regions-size) min-w-(--header-regions-size)",
-      cellClassName:
-        "font-mono w-(--col-regions-size) max-w-(--col-regions-size) min-w-(--col-regions-size)",
     },
   },
   timing: {

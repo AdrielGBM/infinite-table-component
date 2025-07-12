@@ -17,7 +17,6 @@ import {
   SLIDER_DELIMITER,
   SORT_DELIMITER,
 } from "@/lib/delimiters";
-import { REGIONS } from "@/constants/region";
 import { LEVELS } from "@/constants/levels";
 import type { ColumnConfig } from "./infinite-table";
 
@@ -45,7 +44,6 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.ttfb": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
     "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    regions: parseAsArrayOf(parseAsStringLiteral(REGIONS), ARRAY_DELIMITER),
   };
 
   const params: Record<string, unknown> = {};

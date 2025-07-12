@@ -4,14 +4,12 @@
 
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
-import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
 import type {
   DataTableFilterField,
   Option,
   SheetField,
 } from "@/components/data-table/types";
 import { LEVELS } from "@/constants/levels";
-import { REGIONS } from "@/constants/region";
 import { formatMilliseconds } from "@/lib/format";
 import { getLevelColor, getLevelLabel } from "@/lib/request/level";
 import { getColor } from "@/lib/request/colors";
@@ -23,6 +21,7 @@ import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
 import type { ColumnConfig } from "./infinite-table";
 import type { Percentile } from "@/lib/request/percentile";
+import { DataTableColumnSelectCode } from "../data-table/data-table-column/data-table-column-select-code";
 
 // instead of filterFields, maybe just 'fields' with a filterDisabled prop?
 // that way, we could have 'message' or 'headers' field with label and value as well as type!
@@ -51,13 +50,13 @@ export function getFilterFields(
         min:
           "min" in base
             ? col.type === "number" && col.min
-              ? (col.min as number)
+              ? col.min
               : base.min
             : undefined,
         max:
           "max" in base
             ? col.type === "number" && col.max
-              ? (col.max as number)
+              ? col.max
               : base.max
             : undefined,
         component:
@@ -146,15 +145,6 @@ const filterFields = {
       );
     },
   },
-  regions: {
-    label: "Regions",
-    value: "regions",
-    type: "checkbox",
-    options: REGIONS.map((region) => ({ label: region, value: region })),
-    component: (props: Option) => {
-      return <span className="font-mono">{props.value}</span>;
-    },
-  },
   timing_dns: {
     label: "DNS",
     value: "timing.dns",
@@ -219,6 +209,7 @@ export function getSheetFields(
                   ...props,
                   id: col.id,
                   options: col.options ?? undefined,
+                  labels: col.labels ?? undefined,
                   colors: col.colors ?? undefined,
                   left: col.left ?? undefined,
                   right: col.right ?? undefined,
@@ -245,24 +236,60 @@ const sheetFields = {
     component: (
       props: Record<string, unknown> & {
         id?: string;
-        colors?: string[];
         options?: string[];
+        labels?: string[];
+        colors?: string[];
       }
     ) => {
-      const idx =
-        props.options && Array.isArray(props.options)
-          ? props.options.indexOf(String(props[props.id ?? "select"]))
-          : -1;
-      const color =
-        idx !== -1 && props.colors && Array.isArray(props.colors)
-          ? props.colors[idx]
-          : "default";
-      console.log(color);
-      return (
-        <span className={cn("font-mono", getColor(color).text)}>
-          {String(props[props.id ?? "select"])}
-        </span>
-      );
+      const value = props[props.id ?? "select"] as
+        | string
+        | string[]
+        | undefined;
+
+      const getOptionalData = (val: string) => {
+        const idx =
+          props.options && Array.isArray(props.options)
+            ? props.options.indexOf(val)
+            : -1;
+        const color =
+          idx !== -1 && props.colors && Array.isArray(props.colors)
+            ? props.colors[idx]
+            : undefined;
+        const label =
+          idx !== -1 && props.labels && Array.isArray(props.labels)
+            ? props.labels[idx]
+            : undefined;
+        return { label, color: color ?? "default" };
+      };
+
+      if (Array.isArray(value)) {
+        return (
+          <>
+            {value.map((val, i) => {
+              const { label, color } = getOptionalData(val);
+              return (
+                <DataTableColumnSelectCode
+                  key={val + String(i)}
+                  value={val + (i < value.length - 1 ? ", " : "")}
+                  label={label}
+                  color={color}
+                  reverse
+                />
+              );
+            })}
+          </>
+        );
+      } else {
+        const { label, color } = getOptionalData(value ?? "");
+        return (
+          <DataTableColumnSelectCode
+            value={value}
+            label={label}
+            color={color}
+            reverse
+          />
+        );
+      }
     },
     skeletonClassName: "w-10",
   },
@@ -296,15 +323,6 @@ const sheetFields = {
     label: "Request ID",
     type: "readonly",
     skeletonClassName: "w-64",
-  },
-  regions: {
-    id: "regions",
-    label: "Regions",
-    type: "checkbox",
-    skeletonClassName: "w-12",
-    component: (props: { regions: string[] }) => (
-      <DataTableColumnRegion value={props.regions[0]} reverse showFlag />
-    ),
   },
   percentile: {
     id: "percentile",

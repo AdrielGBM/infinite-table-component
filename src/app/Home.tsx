@@ -70,7 +70,22 @@ function Home() {
             max: 5000,
             right: "ms",
           },
-          { id: "regions", type: "regions", label: "Regiones" },
+          {
+            id: "regions",
+            type: "select",
+            label: "Regiones",
+            options: ["ams", "fra", "gru", "hkg", "iad", "syd"],
+            labels: [
+              "Amsterdam",
+              "Frankfurt",
+              "Sao Paulo",
+              "Hong Kong",
+              "Washington D.C.",
+              "Sydney",
+            ],
+            columnSize: 163,
+            sheetClassName: "w-12",
+          },
           {
             id: "timing",
             type: "timing",

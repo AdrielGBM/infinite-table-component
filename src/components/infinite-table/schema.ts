@@ -3,7 +3,6 @@ import {
   RANGE_DELIMITER,
   SLIDER_DELIMITER,
 } from "@/lib/delimiters";
-import { REGIONS } from "@/constants/region";
 import { z } from "zod";
 import { LEVELS } from "@/constants/levels";
 
@@ -20,13 +19,12 @@ export const timingSchema = z.object({
 export const columnSchema = z
   .object({
     string: z.string().optional(),
-    select: z.string(),
+    select: z.union([z.string(), z.string().array()]),
     date: z.date(),
     number: z.number(),
     uuid: z.string(),
     pathname: z.string(),
     level: z.enum(LEVELS),
-    regions: z.enum(REGIONS).array(),
     headers: z.record(z.string()),
     message: z.string().optional(),
     percentile: z.number().optional(),
@@ -84,11 +82,6 @@ export const columnFilterSchema = z.object({
     .string()
     .transform((val) => val.split(SLIDER_DELIMITER))
     .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  regions: z
-    .string()
-    .transform((val) => val.split(ARRAY_DELIMITER))
-    .pipe(z.enum(REGIONS).array())
     .optional(),
 });
 
