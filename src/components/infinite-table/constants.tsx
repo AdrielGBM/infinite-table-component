@@ -86,7 +86,9 @@ const filterFields = {
     value: "select",
     type: "checkbox",
     options: [].map((option) => ({ label: option, value: option })),
-    component: (props: Option & { colors?: string[]; options?: string[] }) => {
+    component: (
+      props: Option & { options?: string[]; colors?: (string | null)[] }
+    ) => {
       const idx =
         props.options && Array.isArray(props.options)
           ? props.options.indexOf(String(props.value))
@@ -96,7 +98,7 @@ const filterFields = {
           ? props.colors[idx]
           : "default";
       return (
-        <span className={cn("font-mono", getColor(color).text)}>
+        <span className={cn("font-mono", getColor(color ?? "default").text)}>
           {props.value}
         </span>
       );
@@ -237,8 +239,8 @@ const sheetFields = {
       props: Record<string, unknown> & {
         id?: string;
         options?: string[];
-        labels?: string[];
-        colors?: string[];
+        labels?: (string | null)[];
+        colors?: (string | null)[];
       }
     ) => {
       const value = props[props.id ?? "select"] as

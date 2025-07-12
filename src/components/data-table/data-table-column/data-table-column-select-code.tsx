@@ -4,7 +4,7 @@ import { Minus } from "lucide-react";
 
 interface DataTableColumnSelectCodeProps {
   value?: string;
-  label?: string;
+  label?: string | null;
   color?: string;
   reverse?: boolean;
 }

@@ -9,7 +9,6 @@ import { TextWithTooltip } from "@/components/custom/text-with-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableColumnNumber } from "@/components/data-table/data-table-column/data-table-column-number";
 import { DataTableColumnLevelIndicator } from "@/components/data-table/data-table-column/data-table-column-level-indicator";
-import { DataTableColumnRegion } from "@/components/data-table/data-table-column/data-table-column-region";
 import { DataTableColumnSelectCode } from "@/components/data-table/data-table-column/data-table-column-select-code";
 import {
   HoverCard,
@@ -24,7 +23,6 @@ import {
 } from "@/lib/request/timing";
 import { cn } from "@/lib/utils";
 import { HoverCardPortal } from "@radix-ui/react-hover-card";
-import { Minus } from "lucide-react";
 import { HoverCardTimestamp } from "./_components/hover-card-timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ColumnSchema } from "./schema";
@@ -109,11 +107,11 @@ const columns: Record<
             : -1;
         const color =
           idx !== -1 && "colors" in column && Array.isArray(column.colors)
-            ? (column.colors as string[])[idx]
+            ? (column.colors as (string | null)[])[idx]
             : undefined;
         const label =
           idx !== -1 && "labels" in column && Array.isArray(column.labels)
-            ? (column.labels as string[])[idx]
+            ? (column.labels as (string | null)[])[idx]
             : undefined;
         return { label, color: color ?? "default" };
       };
