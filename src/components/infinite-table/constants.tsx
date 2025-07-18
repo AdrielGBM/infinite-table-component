@@ -16,7 +16,7 @@ import { getColor } from "@/lib/request/colors";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { PopoverPercentile } from "./_components/popover-percentile";
-import { SheetTimingPhases } from "./_components/sheet-timing-phases";
+import { SheetTimelinePhases } from "./_components/sheet-timeline-phases";
 import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
 import type { ColumnConfig } from "./infinite-table";
@@ -146,41 +146,6 @@ const filterFields = {
         </div>
       );
     },
-  },
-  timing_dns: {
-    label: "DNS",
-    value: "timing.dns",
-    type: "slider",
-    min: 0,
-    max: 5000,
-  },
-  timing_connection: {
-    label: "Connection",
-    value: "timing.connection",
-    type: "slider",
-    min: 0,
-    max: 5000,
-  },
-  timing_tls: {
-    label: "TLS",
-    value: "timing.tls",
-    type: "slider",
-    min: 0,
-    max: 5000,
-  },
-  timing_ttfb: {
-    label: "TTFB",
-    value: "timing.ttfb",
-    type: "slider",
-    min: 0,
-    max: 5000,
-  },
-  timing_transfer: {
-    label: "Transfer",
-    value: "timing.transfer",
-    type: "slider",
-    min: 0,
-    max: 5000,
   },
 };
 
@@ -349,20 +314,37 @@ const sheetFields = {
     },
     skeletonClassName: "w-12",
   },
-  timing_dns: {
-    id: "timing.dns", // REMINDER: cannot be 'timing' as it is a property of the object
-    label: "Timing Phases",
+  timeline: {
+    id: "timeline",
+    label: "Timeline",
     type: "readonly",
     component: (
-      props: Record<
-        | "timing.dns"
-        | "timing.connection"
-        | "timing.tls"
-        | "timing.ttfb"
-        | "timing.transfer",
-        number
-      > & { latency: number }
-    ) => <SheetTimingPhases latency={props.latency} timing={props} />,
+      props: Record<string, unknown> & {
+        id?: string;
+        options?: string[];
+        labels?: (string | null)[];
+        colors?: (string | null)[];
+        left?: string;
+        right?: string;
+      }
+    ) => {
+      const values =
+        props.options && props.options.length > 0
+          ? props.options.map((key) => props[key] as number)
+          : [];
+      const total = values.reduce((acc, curr) => acc + curr, 0);
+      return (
+        <SheetTimelinePhases
+          total={total}
+          options={props.options ?? []}
+          labels={props.labels ?? []}
+          values={values}
+          colors={props.colors ?? []}
+          left={props.left}
+          right={props.right}
+        />
+      );
+    },
     className: "flex-col items-start w-full gap-1",
   },
   headers: {

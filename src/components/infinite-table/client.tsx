@@ -104,11 +104,11 @@ export function Client({
       // FIXME: make it configurable - TODO: use `columnHidden: boolean` in `filterFields`
       defaultColumnVisibility={{
         uuid: false,
-        "timing.dns": false,
-        "timing.connection": false,
-        "timing.tls": false,
-        "timing.ttfb": false,
-        "timing.transfer": false,
+        dns: false,
+        connection: false,
+        tls: false,
+        ttfb: false,
+        transfer: false,
       }}
       meta={metadata ?? ({} as LogsMeta)}
       filterFields={filterFields}

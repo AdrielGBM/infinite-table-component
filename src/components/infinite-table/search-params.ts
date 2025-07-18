@@ -37,13 +37,8 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
   const types = {
     string: parseAsString,
     date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
-    level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
     number: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    "timing.dns": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    "timing.connection": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    "timing.tls": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    "timing.ttfb": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    "timing.transfer": parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
+    level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
   };
 
   const params: Record<string, unknown> = {};

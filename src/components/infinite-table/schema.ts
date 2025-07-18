@@ -8,31 +8,20 @@ import { LEVELS } from "@/constants/levels";
 
 // https://github.com/colinhacks/zod/issues/2985#issue-2008642190
 
-export const timingSchema = z.object({
-  "timing.dns": z.number(),
-  "timing.connection": z.number(),
-  "timing.tls": z.number(),
-  "timing.ttfb": z.number(),
-  "timing.transfer": z.number(),
+export const columnSchema = z.object({
+  string: z.string().optional(),
+  select: z.union([z.string(), z.string().array()]),
+  date: z.date(),
+  number: z.number(),
+  uuid: z.string(),
+  pathname: z.string(),
+  level: z.enum(LEVELS),
+  headers: z.record(z.string()),
+  message: z.string().optional(),
+  percentile: z.number().optional(),
 });
 
-export const columnSchema = z
-  .object({
-    string: z.string().optional(),
-    select: z.union([z.string(), z.string().array()]),
-    date: z.date(),
-    number: z.number(),
-    uuid: z.string(),
-    pathname: z.string(),
-    level: z.enum(LEVELS),
-    headers: z.record(z.string()),
-    message: z.string().optional(),
-    percentile: z.number().optional(),
-  })
-  .merge(timingSchema);
-
 export type ColumnSchema = z.infer<typeof columnSchema>;
-export type TimingSchema = z.infer<typeof timingSchema>;
 
 // TODO: can we get rid of this in favor of nuqs search-params?
 export const columnFilterSchema = z.object({
@@ -58,31 +47,6 @@ export const columnFilterSchema = z.object({
     .pipe(z.enum(LEVELS).array())
     .optional(),
   pathname: z.string().optional(),
-  "timing.dns": z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  "timing.connection": z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  "timing.tls": z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  "timing.ttfb": z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
-  "timing.transfer": z
-    .string()
-    .transform((val) => val.split(SLIDER_DELIMITER))
-    .pipe(z.coerce.number().array().max(2))
-    .optional(),
 });
 
 export type ColumnFilterSchema = z.infer<typeof columnFilterSchema>;
