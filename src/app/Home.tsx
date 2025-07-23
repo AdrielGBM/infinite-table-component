@@ -21,6 +21,10 @@ function Home() {
   const searchParams = useSearchParamsObject();
   return (
     <>
+      {/* TODO: Se debe agregar una configuración general de la tabla, debe incluir el título que aparece en la sidebar. */
+      /* TODO: Se debe agregar una configuración dinámica a las columnas para que no se muestren por defecto. */
+      /* TODO: Falta trabajar los types de level, percentile, headers y message. */
+      /* TODO: Se deben corregir errores de compilación que han aparecido con la modificación de los types. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
         searchParams={searchParams}

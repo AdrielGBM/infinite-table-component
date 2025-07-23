@@ -14,7 +14,6 @@ export const columnSchema = z.object({
   date: z.date(),
   number: z.number(),
   uuid: z.string(),
-  pathname: z.string(),
   level: z.enum(LEVELS),
   headers: z.record(z.string()),
   message: z.string().optional(),
@@ -46,7 +45,6 @@ export const columnFilterSchema = z.object({
     .transform((val) => val.split(ARRAY_DELIMITER))
     .pipe(z.enum(LEVELS).array())
     .optional(),
-  pathname: z.string().optional(),
 });
 
 export type ColumnFilterSchema = z.infer<typeof columnFilterSchema>;
