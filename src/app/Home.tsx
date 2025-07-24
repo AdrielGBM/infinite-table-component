@@ -22,7 +22,6 @@ function Home() {
   return (
     <>
       {/* TODO: Se debe agregar una configuración general de la tabla, debe incluir el título que aparece en la sidebar. */
-      /* TODO: Se debe agregar una configuración dinámica a las columnas para que no se muestren por defecto. */
       /* TODO: Falta trabajar los types de level, percentile, headers y message. */
       /* TODO: Se deben corregir errores de compilación que han aparecido con la modificación de los types. */}
       <InfiniteTable
@@ -35,6 +34,7 @@ function Home() {
             id: "uuid",
             type: "uuid",
             label: "ID",
+            default: false,
             noFilter: true,
           },
           {
@@ -103,6 +103,7 @@ function Home() {
             type: "number",
             label: "DNS",
             right: "ms",
+            default: false,
             noSheet: true,
           },
           {
@@ -110,6 +111,7 @@ function Home() {
             type: "number",
             label: "Conexión",
             right: "ms",
+            default: false,
             noSheet: true,
           },
           {
@@ -117,6 +119,7 @@ function Home() {
             type: "number",
             label: "TLS",
             right: "ms",
+            default: false,
             noSheet: true,
           },
           {
@@ -124,6 +127,7 @@ function Home() {
             type: "number",
             label: "TTFB",
             right: "ms",
+            default: false,
             noSheet: true,
           },
           {
@@ -131,6 +135,7 @@ function Home() {
             type: "number",
             label: "Transferencia",
             right: "ms",
+            default: false,
             noSheet: true,
           },
           {

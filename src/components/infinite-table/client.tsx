@@ -102,14 +102,11 @@ export function Client({
       defaultColumnSorting={sort ? [sort] : undefined}
       defaultRowSelection={search.uuid ? { [search.uuid]: true } : undefined}
       // FIXME: make it configurable - TODO: use `columnHidden: boolean` in `filterFields`
-      defaultColumnVisibility={{
-        uuid: false,
-        dns: false,
-        connection: false,
-        tls: false,
-        ttfb: false,
-        transfer: false,
-      }}
+      defaultColumnVisibility={Object.fromEntries(
+        columnConfig
+          .filter((col) => Object.prototype.hasOwnProperty.call(col, "default"))
+          .map((col) => [col.id, Boolean(col.default)])
+      )}
       meta={metadata ?? ({} as LogsMeta)}
       filterFields={filterFields}
       sheetFields={getSheetFields(columnConfig)}

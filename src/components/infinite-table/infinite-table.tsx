@@ -15,6 +15,7 @@ export interface ColumnConfig {
   left?: string;
   right?: string;
   columnSize?: number;
+  default?: boolean;
   noColumn?: boolean;
   noFilter?: boolean;
   sheetClassName?: string;
