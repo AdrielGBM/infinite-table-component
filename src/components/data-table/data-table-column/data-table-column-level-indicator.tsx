@@ -12,7 +12,7 @@ export function DataTableColumnLevelIndicator({
   return (
     <div className={cn("flex items-center justify-center", className)}>
       <div
-        className={cn("h-2.5 w-2.5 rounded-[2px]", getLevelColor(value).bg)}
+        className={cn("h-2.5 w-2.5 rounded-[2px]", getLevelColor(value).shape)}
       />
     </div>
   );

@@ -294,7 +294,7 @@ const columns: Record<
               {values.map((value, idx) => (
                 <div
                   key={idx}
-                  className={cn(getColor(colors[idx]).bg, "h-4")}
+                  className={cn(getColor(colors[idx]).shape, "h-4")}
                   style={{ width: String((value / total) * 100) + "%" }}
                 />
               ))}
@@ -314,7 +314,7 @@ const columns: Record<
                       <div className="flex items-center gap-2">
                         <div
                           className={cn(
-                            getColor(colors[idx]).bg,
+                            getColor(colors[idx]).shape,
                             "h-2 w-2 rounded-full"
                           )}
                         />

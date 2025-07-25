@@ -1,40 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { composeRefs } from "@/lib/compose-refs";
+import { getColor } from "@/lib/request/colors";
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
 import { Check, Copy, Plus } from "lucide-react";
 import * as React from "react";
 
-const containerVariants = cva(
-  "peer whitespace-pre-wrap break-all rounded-md border p-2 font-mono text-sm",
-  {
-    variants: {
-      variant: {
-        default: "border-border/50 bg-border/30",
-        destructive: "border-destructive/50 bg-destructive/30",
-      },
-      defaultVariants: {
-        variant: "default",
-      },
-    },
-  }
-);
-
 export interface CopyToClipboardContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof containerVariants> {
+  extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * If set and the content exceeds the maximum height,
    * a "Show content" button will collapse the full content
    */
   maxHeight?: number;
+  color?: string;
 }
 
 export const CopyToClipboardContainer = React.forwardRef<
   HTMLDivElement,
   CopyToClipboardContainerProps
->(({ children, variant, maxHeight, className, ...props }, ref) => {
+>(({ children, maxHeight, className, color = "default", ...props }, ref) => {
   const [open, setOpen] = React.useState(false);
   const [collapsible, setCollapsible] = React.useState(!!maxHeight);
   const innerRef = React.useRef<HTMLDivElement>(null);
@@ -51,6 +36,14 @@ export const CopyToClipboardContainer = React.forwardRef<
     }
   }, [innerRef.current, maxHeight]);
 
+  const colorClasses = getColor(color);
+  const containerClass = cn(
+    "peer whitespace-pre-wrap break-all rounded-md p-2 font-mono text-sm",
+    colorClasses.bg,
+    colorClasses.border,
+    className
+  );
+
   return (
     <div
       className="group relative text-left"
@@ -65,11 +58,10 @@ export const CopyToClipboardContainer = React.forwardRef<
       <div
         ref={composeRefs(ref, innerRef)}
         className={cn(
-          containerVariants({ variant }),
+          containerClass,
           collapsible && !open
             ? "max-h-(--max-height) overflow-hidden"
-            : undefined,
-          className
+            : undefined
         )}
         {...props}
       >

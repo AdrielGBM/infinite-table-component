@@ -47,7 +47,7 @@ export function SheetTimelinePhases({
               </div>
             </div>
             <div
-              className={cn(getColor(colors[idx] ?? "default").bg, "h-4")}
+              className={cn(getColor(colors[idx] ?? "default").shape, "h-4")}
               style={{ width: `${String((values[idx] / total) * 100)}%` }}
             />
           </div>

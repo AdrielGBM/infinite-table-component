@@ -136,7 +136,7 @@ const filterFields = {
             <div
               className={cn(
                 "h-2.5 w-2.5 rounded-[2px]",
-                getLevelColor(value).bg
+                getLevelColor(value).shape
               )}
             />
             <span className="text-xs text-muted-foreground/70">
@@ -362,8 +362,14 @@ const sheetFields = {
     label: "Message",
     type: "readonly",
     condition: (props: { message?: string }) => props.message !== undefined,
-    component: (props: { message?: string }) => (
-      <CopyToClipboardContainer variant="destructive">
+    component: (props: { message?: string; colors?: (string | null)[] }) => (
+      <CopyToClipboardContainer
+        color={
+          props.colors && props.colors.length > 0 && props.colors[0]
+            ? props.colors[0]
+            : "default"
+        }
+      >
         {JSON.stringify(props.message, null, 2)}
       </CopyToClipboardContainer>
     ),

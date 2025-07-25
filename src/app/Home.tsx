@@ -22,14 +22,13 @@ function Home() {
   return (
     <>
       {/* TODO: Se debe agregar una configuración general de la tabla, debe incluir el título que aparece en la sidebar. */
-      /* TODO: Falta trabajar los types de level, percentile, headers y message. */
+      /* TODO: Falta trabajar los types de level, percentile y headers. */
       /* TODO: Se deben corregir errores de compilación que han aparecido con la modificación de los types. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
         searchParams={searchParams}
         columnConfig={[
           { id: "level", type: "level", label: "Nivel", noSheet: true },
-          { id: "date", type: "date", label: "Fecha" },
           {
             id: "uuid",
             type: "uuid",
@@ -37,6 +36,7 @@ function Home() {
             default: false,
             noFilter: true,
           },
+          { id: "date", type: "date", label: "Fecha" },
           {
             id: "status",
             type: "select",
@@ -156,6 +156,7 @@ function Home() {
             id: "message",
             type: "message",
             label: "Mensaje",
+            colors: ["red"],
             noColumn: true,
             noFilter: true,
           },
