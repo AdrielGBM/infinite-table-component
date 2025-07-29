@@ -16,13 +16,15 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
 } from "./useLiveMode";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig, RowConfig } from "./infinite-table";
 
 export function Client({
   url,
   columnConfig,
+  rowConfig,
 }: {
   columnConfig: ColumnConfig[];
+  rowConfig: RowConfig;
   url: string;
 }) {
   const [search] = useQueryStates(searchParamsParser(columnConfig));
@@ -136,7 +138,23 @@ export function Client({
         if (props?.row.original.uuid !== liveMode.row?.uuid) return null;
         return <LiveRow length={columnConfig.length} />;
       }}
-      renderSheetTitle={(props) => props.row?.original.pathname}
+      renderSheetTitle={(props) =>
+        (() => {
+          if (props.row?.original && rowConfig.label in props.row.original) {
+            const value = (props.row.original as Record<string, unknown>)[
+              rowConfig.label
+            ];
+            if (
+              typeof value === "string" ||
+              typeof value === "number" ||
+              typeof value === "boolean"
+            ) {
+              return String(value);
+            }
+          }
+          return rowConfig.label;
+        })()
+      }
       searchParamsParser={searchParamsParser(columnConfig)}
     />
   );

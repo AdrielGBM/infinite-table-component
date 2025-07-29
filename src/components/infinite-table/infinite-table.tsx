@@ -3,6 +3,7 @@ import { getQueryClient } from "@/providers/get-query-client";
 import { dataOptions } from "./query-options";
 import { Client } from "./client";
 import { useEffect } from "react";
+
 export interface ColumnConfig {
   id: string;
   type: string;
@@ -22,14 +23,20 @@ export interface ColumnConfig {
   noSheet?: boolean;
 }
 
+export interface RowConfig {
+  label: string;
+}
+
 export default function InfiniteTable({
   url,
   searchParams,
   columnConfig,
+  rowConfig,
 }: {
   url: string;
   searchParams: Record<string, string | string[] | undefined>;
   columnConfig: ColumnConfig[];
+  rowConfig: RowConfig;
 }) {
   useEffect(() => {
     async function search() {
@@ -42,5 +49,5 @@ export default function InfiniteTable({
     void search();
   }, [url, searchParams]);
 
-  return <Client url={url} columnConfig={columnConfig} />;
+  return <Client url={url} columnConfig={columnConfig} rowConfig={rowConfig} />;
 }
