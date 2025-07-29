@@ -57,7 +57,7 @@ import type { BaseChartSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
 import { TimelineChart } from "./timeline-chart";
 import { SocialsFooter } from "./_components/socials-footer";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig } from "./config-types";
 
 // TODO: add a possible chartGroupBy
 export interface DataTableInfiniteProps<TData, TValue, TMeta> {

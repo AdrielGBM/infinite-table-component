@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
 import type {
@@ -19,7 +15,7 @@ import { PopoverPercentile } from "./_components/popover-percentile";
 import { SheetTimelinePhases } from "./_components/sheet-timeline-phases";
 import type { LogsMeta } from "./query-options";
 import { type ColumnSchema } from "./schema";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig, ColumnOption } from "./config-types";
 import type { Percentile } from "@/lib/request/percentile";
 import { DataTableColumnSelectCode } from "../data-table/data-table-column/data-table-column-select-code";
 
@@ -40,10 +36,10 @@ export function getFilterFields(
         value: col.id,
         options:
           "options" in base
-            ? col.type === "select" && col.options
-              ? col.options.map((option: string) => ({
-                  label: option,
-                  value: option,
+            ? col.type === "select"
+              ? col.options.map((option) => ({
+                  label: option.label,
+                  value: option.value,
                 }))
               : base.options
             : undefined,
@@ -60,12 +56,13 @@ export function getFilterFields(
               : base.max
             : undefined,
         component:
-          "component" in base && typeof base.component === "function"
+          (col.type === "select" || col.type === "timeline") &&
+          "component" in base &&
+          typeof base.component === "function"
             ? (props: Option) =>
                 base.component({
                   ...props,
-                  options: col.options ?? undefined,
-                  colors: col.colors ?? undefined,
+                  options: col.options,
                 })
             : "component" in base
             ? base.component
@@ -85,20 +82,15 @@ const filterFields = {
     label: "Select",
     value: "select",
     type: "checkbox",
-    options: [].map((option) => ({ label: option, value: option })),
-    component: (
-      props: Option & { options?: string[]; colors?: (string | null)[] }
-    ) => {
-      const idx =
-        props.options && Array.isArray(props.options)
-          ? props.options.indexOf(String(props.value))
-          : -1;
+    options: [],
+    component: (props: Option & { options: ColumnOption[] }) => {
+      const idx = props.options.findIndex(
+        (option) => option.value === String(props.value)
+      );
       const color =
-        idx !== -1 && props.colors && Array.isArray(props.colors)
-          ? props.colors[idx]
-          : "default";
+        idx !== -1 ? props.options[idx].color ?? "default" : "default";
       return (
-        <span className={cn("font-mono", getColor(color ?? "default").text)}>
+        <span className={cn("font-mono", getColor(color).text)}>
           {props.value}
         </span>
       );
@@ -156,7 +148,7 @@ export function getSheetFields(
     .map((col) => {
       if (col.noSheet || !(col.type in sheetFields)) return false;
 
-      const base = sheetFields[col.type as keyof typeof sheetFields];
+      const base = sheetFields[col.type];
       return {
         ...base,
         id: col.id,
@@ -175,11 +167,16 @@ export function getSheetFields(
                 base.component({
                   ...props,
                   id: col.id,
-                  options: col.options ?? undefined,
-                  labels: col.labels ?? undefined,
-                  colors: col.colors ?? undefined,
-                  left: col.left ?? undefined,
-                  right: col.right ?? undefined,
+                  ...(col.type === "select" || col.type === "timeline"
+                    ? { options: col.options }
+                    : {}),
+                  ...(col.type === "number" || col.type === "timeline"
+                    ? {
+                        left: col.left,
+                        right: col.right,
+                      }
+                    : {}),
+                  ...(col.type === "message" ? { color: col.color } : {}),
                 }) // TODO: Este error se solucionará al volver dinámicos todos los types
             : "component" in base
             ? base.component
@@ -203,9 +200,7 @@ const sheetFields = {
     component: (
       props: Record<string, unknown> & {
         id?: string;
-        options?: string[];
-        labels?: (string | null)[];
-        colors?: (string | null)[];
+        options: ColumnOption[];
       }
     ) => {
       const value = props[props.id ?? "select"] as
@@ -214,19 +209,14 @@ const sheetFields = {
         | undefined;
 
       const getOptionalData = (val: string) => {
-        const idx =
-          props.options && Array.isArray(props.options)
-            ? props.options.indexOf(val)
-            : -1;
-        const color =
-          idx !== -1 && props.colors && Array.isArray(props.colors)
-            ? props.colors[idx]
-            : undefined;
+        const idx = props.options.findIndex((option) => option.value === val);
+
         const label =
-          idx !== -1 && props.labels && Array.isArray(props.labels)
-            ? props.labels[idx]
-            : undefined;
-        return { label, color: color ?? "default" };
+          idx !== -1 ? props.options[idx].label ?? undefined : undefined;
+        const color =
+          idx !== -1 ? props.options[idx].color ?? "default" : "default";
+
+        return { label, color };
       };
 
       if (Array.isArray(value)) {
@@ -321,25 +311,27 @@ const sheetFields = {
     component: (
       props: Record<string, unknown> & {
         id?: string;
-        options?: string[];
-        labels?: (string | null)[];
-        colors?: (string | null)[];
+        options: ColumnOption[];
         left?: string;
         right?: string;
       }
     ) => {
+      const options = props.options.map((option) => option.value);
       const values =
-        props.options && props.options.length > 0
-          ? props.options.map((key) => props[key] as number)
+        options.length > 0
+          ? options.map((option) => props[option] as number)
           : [];
+      const labels = props.options.map((option) => option.label ?? null);
+      const colors = props.options.map((option) => option.color ?? "default");
+
       const total = values.reduce((acc, curr) => acc + curr, 0);
       return (
         <SheetTimelinePhases
-          total={total}
-          options={props.options ?? []}
-          labels={props.labels ?? []}
+          options={options}
           values={values}
-          colors={props.colors ?? []}
+          labels={labels}
+          colors={colors}
+          total={total}
           left={props.left}
           right={props.right}
         />
@@ -362,14 +354,8 @@ const sheetFields = {
     label: "Message",
     type: "readonly",
     condition: (props: { message?: string }) => props.message !== undefined,
-    component: (props: { message?: string; colors?: (string | null)[] }) => (
-      <CopyToClipboardContainer
-        color={
-          props.colors && props.colors.length > 0 && props.colors[0]
-            ? props.colors[0]
-            : "default"
-        }
-      >
+    component: (props: { message?: string; color?: string }) => (
+      <CopyToClipboardContainer color={props.color ?? "default"}>
         {JSON.stringify(props.message, null, 2)}
       </CopyToClipboardContainer>
     ),

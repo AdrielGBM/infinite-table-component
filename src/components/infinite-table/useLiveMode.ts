@@ -3,7 +3,7 @@ import type { Table as TTable } from "@tanstack/react-table";
 import { useQueryState } from "nuqs";
 import type { FacetMetadataSchema } from "./schema";
 import { searchParamsParser } from "./search-params";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig } from "./config-types";
 
 // TODO: make a BaseObject (incl. date and uuid e.g. for every upcoming branch of infinite table)
 export function useLiveMode<TData extends { date: Date }>(

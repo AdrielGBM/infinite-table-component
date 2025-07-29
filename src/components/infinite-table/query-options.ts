@@ -7,7 +7,7 @@ import type {
   FacetMetadataSchema,
 } from "./schema";
 import { searchParamsSerializer, type SearchParamsType } from "./search-params";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig } from "./config-types";
 
 export interface LogsMeta {
   currentPercentiles: Record<Percentile, number>;

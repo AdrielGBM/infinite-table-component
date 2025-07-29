@@ -18,7 +18,7 @@ import {
   SORT_DELIMITER,
 } from "@/lib/delimiters";
 import { LEVELS } from "@/constants/levels";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig } from "./config-types";
 
 // https://logs.run/i?sort=latency.desc
 
@@ -46,10 +46,10 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     columnConfig.forEach((column) => {
       if (column.type === "select" && Array.isArray(column.options)) {
         params[column.id] = parseAsArrayOf(
-          parseAsStringLiteral(column.options),
+          parseAsStringLiteral(column.options.map((option) => option.value)),
           ARRAY_DELIMITER
         );
-      } else if (column.type && column.type in types) {
+      } else if (column.type in types) {
         params[column.id] = types[column.type as keyof typeof types];
       }
     });

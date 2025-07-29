@@ -16,7 +16,7 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
 } from "./useLiveMode";
-import type { ColumnConfig, RowConfig } from "./infinite-table";
+import type { ColumnConfig, RowConfig } from "./config-types";
 
 export function Client({
   url,

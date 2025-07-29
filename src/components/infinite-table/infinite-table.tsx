@@ -3,29 +3,7 @@ import { getQueryClient } from "@/providers/get-query-client";
 import { dataOptions } from "./query-options";
 import { Client } from "./client";
 import { useEffect } from "react";
-
-export interface ColumnConfig {
-  id: string;
-  type: string;
-  label?: string;
-  options?: string[];
-  labels?: (string | null)[];
-  colors?: (string | null)[];
-  min?: number;
-  max?: number;
-  left?: string;
-  right?: string;
-  columnSize?: number;
-  default?: boolean;
-  noColumn?: boolean;
-  noFilter?: boolean;
-  sheetClassName?: string;
-  noSheet?: boolean;
-}
-
-export interface RowConfig {
-  label: string;
-}
+import type { ColumnConfig, RowConfig } from "./config-types";
 
 export default function InfiniteTable({
   url,

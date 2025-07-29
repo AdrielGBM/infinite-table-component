@@ -7,7 +7,7 @@ import { CirclePause, CirclePlay } from "lucide-react";
 import { useQueryStates } from "nuqs";
 import * as React from "react";
 import { searchParamsParser } from "../search-params";
-import type { ColumnConfig } from "../infinite-table";
+import type { ColumnConfig } from "../config-types";
 
 const REFRESH_INTERVAL = 4_000;
 

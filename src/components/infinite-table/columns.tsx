@@ -21,7 +21,7 @@ import { HoverCardPortal } from "@radix-ui/react-hover-card";
 import { HoverCardTimestamp } from "./_components/hover-card-timestamp";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ColumnSchema } from "./schema";
-import type { ColumnConfig } from "./infinite-table";
+import type { ColumnConfig, ColumnOption } from "./config-types";
 import { getColor } from "@/lib/request/colors";
 import { formatMilliseconds } from "@/lib/format";
 
@@ -55,11 +55,15 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                   ...props,
                   column: {
                     ...props.column,
-                    options: col.options ?? undefined,
-                    labels: col.labels ?? undefined,
-                    colors: col.colors ?? undefined,
-                    left: col.left ?? undefined,
-                    right: col.right ?? undefined,
+                    ...(col.type === "select" || col.type === "timeline"
+                      ? { options: col.options }
+                      : {}),
+                    ...(col.type === "number" || col.type === "timeline"
+                      ? {
+                          left: col.left,
+                          right: col.right,
+                        }
+                      : {}),
                   },
                 })
             : "cell" in base
@@ -98,19 +102,12 @@ const columns: Record<
       const value = row.getValue<ColumnSchema["select"]>(column.id);
 
       const getOptionalData = (val: string) => {
-        const idx =
-          "options" in column && Array.isArray(column.options)
-            ? (column.options as string[]).indexOf(val)
-            : -1;
-        const color =
-          idx !== -1 && "colors" in column && Array.isArray(column.colors)
-            ? (column.colors as (string | null)[])[idx]
-            : undefined;
-        const label =
-          idx !== -1 && "labels" in column && Array.isArray(column.labels)
-            ? (column.labels as (string | null)[])[idx]
-            : undefined;
-        return { label, color: color ?? "default" };
+        const options =
+          "options" in column ? (column.options as ColumnOption[]) : [];
+        const idx = options.findIndex((option) => option.value === val);
+        const color = idx !== -1 ? options[idx].color ?? "default" : undefined;
+        const label = idx !== -1 ? options[idx].label ?? null : undefined;
+        return { label, color };
       };
 
       if (Array.isArray(value)) {
@@ -267,21 +264,16 @@ const columns: Record<
     ),
     cell: ({ row, column }) => {
       const options =
-        "options" in column && Array.isArray(column.options)
-          ? (column.options as string[])
-          : [];
-      const labels =
-        "labels" in column && Array.isArray(column.labels)
-          ? (column.labels as string[])
-          : [];
-      const colors =
-        "colors" in column && Array.isArray(column.colors)
-          ? (column.colors as string[])
-          : [];
+        "options" in column ? (column.options as ColumnOption[]) : [];
       const values =
         options.length > 0
-          ? options.map((key) => row.getValue<ColumnSchema["number"]>(key))
+          ? options.map((option) =>
+              row.getValue<ColumnSchema["number"]>(option.value)
+            )
           : [];
+      const labels = options.map((option) => option.label ?? null);
+      const colors = options.map((option) => option.color ?? "default");
+
       const total = values.reduce((acc, curr) => acc + curr, 0);
       const percentage = getTimelinePercentage(values, total);
       return (
@@ -319,7 +311,7 @@ const columns: Record<
                           )}
                         />
                         <div className="font-mono uppercase text-accent-foreground">
-                          {labels[idx] ?? options[idx]}
+                          {labels[idx] ?? options[idx].value}
                         </div>
                       </div>
                       <div className="flex items-center justify-between gap-4">
