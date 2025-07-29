@@ -22,7 +22,7 @@ function Home() {
   return (
     <>
       {/* TODO: Falta trabajar los types de level, percentile y headers. */
-      /* TODO: Se deben corregir errores de compilación que han aparecido con la modificación de los types. */}
+      /* TODO: Se deben corregir errores de compilación. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
         searchParams={searchParams}
