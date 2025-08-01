@@ -17,7 +17,6 @@ import {
   SLIDER_DELIMITER,
   SORT_DELIMITER,
 } from "@/lib/delimiters";
-import { LEVELS } from "@/constants/levels";
 import type { ColumnConfig } from "./config-types";
 
 // https://logs.run/i?sort=latency.desc
@@ -38,7 +37,6 @@ export const searchParamsParser = (columnConfig: ColumnConfig[] = []) => {
     string: parseAsString,
     date: parseAsArrayOf(parseAsTimestamp, RANGE_DELIMITER),
     number: parseAsArrayOf(parseAsInteger, SLIDER_DELIMITER),
-    level: parseAsArrayOf(parseAsStringLiteral(LEVELS), ARRAY_DELIMITER),
   };
 
   const params: Record<string, unknown> = {};

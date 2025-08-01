@@ -21,13 +21,25 @@ function Home() {
   const searchParams = useSearchParamsObject();
   return (
     <>
-      {/* TODO: Falta trabajar los types de level, percentile y headers. */
+      {/* TODO: Falta trabajar los types de percentile y headers. */
       /* TODO: Se deben corregir errores de compilación. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
         searchParams={searchParams}
         columnConfig={[
-          { id: "level", type: "level", label: "Nivel", noSheet: true },
+          {
+            id: "level",
+            type: "select",
+            label: "Nivel",
+            options: [
+              { value: "success", label: "2xx", color: "green" },
+              { value: "warning", label: "4xx", color: "orange" },
+              { value: "error", label: "5xx", color: "red" },
+              { value: "info", color: "blue" },
+            ],
+            showColor: true,
+            noSheet: true,
+          },
           {
             id: "uuid",
             type: "uuid",
@@ -42,8 +54,8 @@ function Home() {
             label: "Estado",
             options: [
               { value: "200", color: "green" },
-              { value: "400", color: "yellow" },
-              { value: "404", color: "yellow" },
+              { value: "400", color: "orange" },
+              { value: "404", color: "orange" },
               { value: "500", color: "red" },
             ],
             columnSize: 60,

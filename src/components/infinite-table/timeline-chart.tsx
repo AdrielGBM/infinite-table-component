@@ -10,26 +10,10 @@ import { useMemo, useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { CategoricalChartFunc } from "recharts/types/chart/generateCategoricalChart";
-import { getLevelLabel } from "@/lib/request/level";
 import { useDataTable } from "@/components/data-table/useDataTable";
 import type { BaseChartSchema, TimelineChartSchema } from "./schema";
 
 export const description = "A stacked bar chart";
-
-const chartConfig = {
-  success: {
-    label: <TooltipLabel level="success" />,
-    color: "var(--success)",
-  },
-  warning: {
-    label: <TooltipLabel level="warning" />,
-    color: "var(--warning)",
-  },
-  error: {
-    label: <TooltipLabel level="error" />,
-    color: "var(--error)",
-  },
-} satisfies ChartConfig;
 
 interface TimelineChartProps<TChart extends BaseChartSchema> {
   className?: string;
@@ -101,7 +85,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
 
   return (
     <ChartContainer
-      config={chartConfig}
+      config={{} as ChartConfig} // TODO: Se debe configurar con TooltipLabel
       className={cn(
         "aspect-auto h-[60px] w-full",
         "[&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted/50", // otherwise same color as 200

@@ -8,7 +8,7 @@
 import { TextWithTooltip } from "@/components/custom/text-with-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableColumnNumber } from "@/components/data-table/data-table-column/data-table-column-number";
-import { DataTableColumnLevelIndicator } from "@/components/data-table/data-table-column/data-table-column-level-indicator";
+import { DataTableColumnShape } from "@/components/data-table/data-table-column/data-table-column-shape";
 import { DataTableColumnSelectCode } from "@/components/data-table/data-table-column/data-table-column-select-code";
 import {
   HoverCard,
@@ -57,6 +57,10 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                     ...props.column,
                     ...(col.type === "select" || col.type === "timeline"
                       ? { options: col.options }
+                      : {}),
+
+                    ...(col.type === "select"
+                      ? { showColor: col.showColor }
                       : {}),
                     ...(col.type === "number" || col.type === "timeline"
                       ? {
@@ -111,6 +115,18 @@ const columns: Record<
       };
 
       if (Array.isArray(value)) {
+        if ("showColor" in column && column.showColor) {
+          return (
+            <div className={cn("flex items-center justify-center gap-2")}>
+              {value.map((val, i) => {
+                const { color } = getOptionalData(val);
+                return (
+                  <DataTableColumnShape key={val + String(i)} color={color} />
+                );
+              })}
+            </div>
+          );
+        }
         return (
           <>
             {value.map((val, i) => {
@@ -132,6 +148,9 @@ const columns: Record<
         );
       } else {
         const { label, color } = getOptionalData(value);
+        if ("showColor" in column && column.showColor) {
+          return <DataTableColumnShape color={color} />;
+        }
         return (
           <DataTableColumnSelectCode
             value={value}
@@ -214,27 +233,7 @@ const columns: Record<
         "font-mono w-(--col-number-size) max-w-(--col-number-size) min-w-(--col-number-size)",
     },
   },
-  level: {
-    accessorKey: "level",
-    label: "level",
-    header: "",
-    cell: ({ row }) => {
-      const level = row.getValue<ColumnSchema["level"]>("level");
-      return <DataTableColumnLevelIndicator value={level} />;
-    },
-    enableHiding: false,
-    enableResizing: false,
-    filterFn: "arrSome",
-    size: 27,
-    minSize: 27,
-    maxSize: 27,
-    meta: {
-      headerClassName:
-        "w-(--header-level-size) max-w-(--header-level-size) min-w-(--header-level-size)",
-      cellClassName:
-        "w-(--col-level-size) max-w-(--col-level-size) min-w-(--col-level-size)",
-    },
-  },
+
   uuid: {
     id: "uuid",
     accessorKey: "uuid",

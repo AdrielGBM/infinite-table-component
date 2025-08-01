@@ -1,5 +1,4 @@
 import { useHotKey } from "@/hooks/use-hot-key";
-import { getLevelRowClassName } from "@/lib/request/level";
 import { cn } from "@/lib/utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
@@ -127,8 +126,7 @@ export function Client({
           row.original.date
         ).getTime(); /* Se le agregó el new Date() */
         const isPast = rowTimestamp <= (liveMode.timestamp ?? -1);
-        const levelClassName = getLevelRowClassName(row.original.level);
-        return cn(levelClassName, isPast ? "opacity-50" : "opacity-100");
+        return cn(isPast ? "opacity-50" : "opacity-100");
       }}
       getRowId={(row) => row.uuid}
       getFacetedUniqueValues={getFacetedUniqueValues(facets)}

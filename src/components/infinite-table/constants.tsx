@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
 import type {
@@ -5,9 +8,7 @@ import type {
   Option,
   SheetField,
 } from "@/components/data-table/types";
-import { LEVELS } from "@/constants/levels";
 import { formatMilliseconds } from "@/lib/format";
-import { getLevelColor, getLevelLabel } from "@/lib/request/level";
 import { getColor } from "@/lib/request/colors";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -18,6 +19,7 @@ import { type ColumnSchema } from "./schema";
 import type { ColumnConfig, ColumnOption } from "./config-types";
 import type { Percentile } from "@/lib/request/percentile";
 import { DataTableColumnSelectCode } from "../data-table/data-table-column/data-table-column-select-code";
+import { DataTableColumnShape } from "../data-table/data-table-column/data-table-column-shape";
 
 // instead of filterFields, maybe just 'fields' with a filterDisabled prop?
 // that way, we could have 'message' or 'headers' field with label and value as well as type!
@@ -56,13 +58,14 @@ export function getFilterFields(
               : base.max
             : undefined,
         component:
-          (col.type === "select" || col.type === "timeline") &&
+          col.type === "select" &&
           "component" in base &&
           typeof base.component === "function"
             ? (props: Option) =>
                 base.component({
                   ...props,
                   options: col.options,
+                  showColor: col.showColor ?? false,
                 })
             : "component" in base
             ? base.component
@@ -83,14 +86,22 @@ const filterFields = {
     value: "select",
     type: "checkbox",
     options: [],
-    component: (props: Option & { options: ColumnOption[] }) => {
+    component: (
+      props: Option & { options: ColumnOption[]; showColor: boolean }
+    ) => {
       const idx = props.options.findIndex(
         (option) => option.value === String(props.value)
       );
       const color =
         idx !== -1 ? props.options[idx].color ?? "default" : "default";
       return (
-        <span className={cn("font-mono", getColor(color).text)}>
+        <span
+          className={cn(
+            "flex items-center gap-2 font-mono",
+            !props.showColor ? getColor(color).text : ""
+          )}
+        >
+          {props.showColor && <DataTableColumnShape color={color} />}
           {props.value}
         </span>
       );
@@ -109,35 +120,6 @@ const filterFields = {
     type: "slider",
     min: 0,
     max: 5000,
-  },
-  level: {
-    label: "Level",
-    value: "level",
-    type: "checkbox",
-    defaultOpen: true,
-    options: LEVELS.map((level) => ({ label: level, value: level })),
-    component: (props: Option) => {
-      // TODO: type `Option` with `options` values via Generics
-      const value = props.value as (typeof LEVELS)[number];
-      return (
-        <div className="flex w-full max-w-28 items-center justify-between gap-2 font-mono">
-          <span className="capitalize text-foreground/70 group-hover:text-accent-foreground">
-            {props.label}
-          </span>
-          <div className="flex items-center gap-2">
-            <div
-              className={cn(
-                "h-2.5 w-2.5 rounded-[2px]",
-                getLevelColor(value).shape
-              )}
-            />
-            <span className="text-xs text-muted-foreground/70">
-              {getLevelLabel(value)}
-            </span>
-          </div>
-        </div>
-      );
-    },
   },
 };
 
@@ -177,7 +159,7 @@ export function getSheetFields(
                       }
                     : {}),
                   ...(col.type === "message" ? { color: col.color } : {}),
-                }) // TODO: Este error se solucionará al volver dinámicos todos los types
+                } as any)
             : "component" in base
             ? base.component
             : undefined,
@@ -200,7 +182,7 @@ const sheetFields = {
     component: (
       props: Record<string, unknown> & {
         id?: string;
-        options: ColumnOption[];
+        options?: ColumnOption[];
       }
     ) => {
       const value = props[props.id ?? "select"] as
@@ -209,12 +191,18 @@ const sheetFields = {
         | undefined;
 
       const getOptionalData = (val: string) => {
-        const idx = props.options.findIndex((option) => option.value === val);
+        const idx = (props.options ?? []).findIndex(
+          (option) => option.value === val
+        );
 
         const label =
-          idx !== -1 ? props.options[idx].label ?? undefined : undefined;
+          idx !== -1
+            ? (props.options ?? [])[idx].label ?? undefined
+            : undefined;
         const color =
-          idx !== -1 ? props.options[idx].color ?? "default" : "default";
+          idx !== -1
+            ? (props.options ?? [])[idx].color ?? "default"
+            : "default";
 
         return { label, color };
       };
@@ -311,18 +299,22 @@ const sheetFields = {
     component: (
       props: Record<string, unknown> & {
         id?: string;
-        options: ColumnOption[];
+        options?: ColumnOption[];
         left?: string;
         right?: string;
       }
     ) => {
-      const options = props.options.map((option) => option.value);
+      const options = props.options?.map((option) => option.value) ?? [];
       const values =
         options.length > 0
           ? options.map((option) => props[option] as number)
           : [];
-      const labels = props.options.map((option) => option.label ?? null);
-      const colors = props.options.map((option) => option.color ?? "default");
+      const labels = (props.options ?? []).map(
+        (option) => option.label ?? null
+      );
+      const colors = (props.options ?? []).map(
+        (option) => option.color ?? "default"
+      );
 
       const total = values.reduce((acc, curr) => acc + curr, 0);
       return (
