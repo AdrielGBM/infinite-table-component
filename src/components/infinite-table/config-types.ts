@@ -6,7 +6,7 @@ export type ColumnType =
   | "select"
   | "timeline"
   | "percentile"
-  | "headers"
+  | "table"
   | "message";
 
 export interface BaseColumnConfig {
@@ -64,8 +64,8 @@ export interface PercentileColumnConfig extends BaseColumnConfig {
   type: "percentile";
 }
 
-export interface HeadersColumnConfig extends BaseColumnConfig {
-  type: "headers";
+export interface TableColumnConfig extends BaseColumnConfig {
+  type: "table";
 }
 
 export interface MessageColumnConfig extends BaseColumnConfig {
@@ -81,7 +81,7 @@ export type ColumnConfig =
   | SelectColumnConfig
   | TimelineColumnConfig
   | PercentileColumnConfig
-  | HeadersColumnConfig
+  | TableColumnConfig
   | MessageColumnConfig;
 
 export interface RowConfig {

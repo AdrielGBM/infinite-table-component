@@ -21,7 +21,7 @@ function Home() {
   const searchParams = useSearchParamsObject();
   return (
     <>
-      {/* TODO: Falta trabajar los types de percentile y headers. */
+      {/* TODO: Falta trabajar el type percentile. */
       /* TODO: Se deben corregir errores de compilación. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
@@ -170,7 +170,7 @@ function Home() {
           },
           {
             id: "headers",
-            type: "headers",
+            type: "table",
             label: "Encabezados",
             noColumn: true,
             noFilter: true,

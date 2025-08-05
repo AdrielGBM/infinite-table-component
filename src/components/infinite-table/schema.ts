@@ -13,7 +13,7 @@ export const columnSchema = z.object({
   date: z.date(),
   number: z.number(),
   uuid: z.string(),
-  headers: z.record(z.string()),
+  table: z.record(z.string()),
   message: z.string().optional(),
   percentile: z.number().optional(),
 });

@@ -143,6 +143,11 @@ export function getSheetFields(
           "className" in base
             ? col.sheetClassName ?? base.className
             : undefined,
+        condition:
+          "condition" in base && typeof base.condition === "function"
+            ? (props: Record<string, unknown>) =>
+                base.condition({ ...props, id: col.id })
+            : undefined,
         component:
           "component" in base && typeof base.component === "function"
             ? (props: Record<string, unknown>) =>
@@ -181,14 +186,11 @@ const sheetFields = {
     type: "checkbox",
     component: (
       props: Record<string, unknown> & {
-        id?: string;
+        id: string;
         options?: ColumnOption[];
       }
     ) => {
-      const value = props[props.id ?? "select"] as
-        | string
-        | string[]
-        | undefined;
+      const value = props[props.id] as string | string[] | undefined;
 
       const getOptionalData = (val: string) => {
         const idx = (props.options ?? []).findIndex(
@@ -242,20 +244,20 @@ const sheetFields = {
     id: "date",
     label: "Date",
     type: "timerange",
-    component: (props: Record<string, unknown> & { id?: string }) =>
-      format(new Date(String(props[props.id ?? "date"])), "LLL dd, y HH:mm:ss"),
+    component: (props: Record<string, unknown> & { id: string }) =>
+      format(new Date(String(props[props.id])), "LLL dd, y HH:mm:ss"),
     skeletonClassName: "w-36",
   },
   number: {
     id: "number",
     label: "Number",
     type: "slider",
-    component: (props: Record<string, unknown> & { id?: string }) => (
+    component: (props: Record<string, unknown> & { id: string }) => (
       <>
         {"left" in props && typeof props.left === "string" && (
           <span className="text-muted-foreground">{props.left}</span>
         )}
-        {formatMilliseconds(Number(props[props.id ?? "number"]))}
+        {formatMilliseconds(Number(props[props.id]))}
         {"right" in props && typeof props.right === "string" && (
           <span className="text-muted-foreground">{props.right}</span>
         )}
@@ -298,7 +300,6 @@ const sheetFields = {
     type: "readonly",
     component: (
       props: Record<string, unknown> & {
-        id?: string;
         options?: ColumnOption[];
         left?: string;
         right?: string;
@@ -331,13 +332,20 @@ const sheetFields = {
     },
     className: "flex-col items-start w-full gap-1",
   },
-  headers: {
-    id: "headers",
-    label: "Headers",
+  table: {
+    id: "table",
+    label: "Table",
     type: "readonly",
-    component: (props: { headers: Record<string, string> }) => (
+    component: (
+      props: Record<string, unknown> & {
+        id: string;
+      }
+    ) => (
       // REMINDER: negative margin to make it look like the header is on the same level of the tab triggers
-      <KVTabs data={props.headers} className="-mt-[22px]" />
+      <KVTabs
+        data={(props[props.id] ?? {}) as Record<string, string>}
+        className="-mt-[22px]"
+      />
     ),
     className: "flex-col items-start w-full gap-1",
   },
@@ -345,10 +353,16 @@ const sheetFields = {
     id: "message",
     label: "Message",
     type: "readonly",
-    condition: (props: { message?: string }) => props.message !== undefined,
-    component: (props: { message?: string; color?: string }) => (
+    condition: (
+      props: Record<string, unknown> & {
+        id: string;
+      }
+    ) => props[props.id] !== undefined,
+    component: (
+      props: Record<string, unknown> & { id: string; color?: string }
+    ) => (
       <CopyToClipboardContainer color={props.color ?? "default"}>
-        {JSON.stringify(props.message, null, 2)}
+        {JSON.stringify(props[props.id] as string, null, 2)}
       </CopyToClipboardContainer>
     ),
     className: "flex-col items-start w-full gap-1",
