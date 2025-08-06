@@ -39,7 +39,7 @@ export function Client({
   useResetFocus();
 
   const flatData = React.useMemo(
-    () => data?.pages.flatMap((page) => page.data) ?? [],
+    () => data?.pages.flatMap((page) => page.data) ?? mock, // ?? []
     [data?.pages]
   );
 
@@ -90,7 +90,7 @@ export function Client({
   return (
     <DataTableInfinite
       columns={getColumns(columnConfig)}
-      data={mock} /* Aquí va flatData */
+      data={flatData}
       totalRows={totalDBRowCount}
       filterRows={filterDBRowCount}
       totalRowsFetched={totalFetched}

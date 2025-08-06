@@ -21,8 +21,7 @@ function Home() {
   const searchParams = useSearchParamsObject();
   return (
     <>
-      {/* TODO: Falta trabajar el type percentile. */
-      /* TODO: Se deben corregir errores de compilación. */}
+      {/* TODO: Se deben corregir errores de compilación. */}
       <InfiniteTable
         url={"https://api.tu-backend.com/api"}
         searchParams={searchParams}

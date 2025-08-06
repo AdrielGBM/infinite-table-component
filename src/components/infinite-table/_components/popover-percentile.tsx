@@ -1,4 +1,3 @@
-import type { ColumnSchema } from "../schema";
 import { FunctionSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatCompactNumber, formatMilliseconds } from "@/lib/format";
@@ -10,14 +9,14 @@ import {
 } from "@/components/ui/popover";
 
 interface PopoverPercentileProps {
-  data?: ColumnSchema;
+  percentileValue?: number;
   percentiles?: Record<Percentile, number>;
   filterRows: number;
   className?: string;
 }
 
 export function PopoverPercentile({
-  data,
+  percentileValue,
   percentiles,
   filterRows,
   className,
@@ -29,9 +28,6 @@ export function PopoverPercentile({
       ])
     : [];
 
-  if (data?.percentile) {
-    percentileArray.push([data.percentile, data.latency]);
-  }
   percentileArray.sort((a, b) => a[0] - b[0]);
 
   return (
@@ -45,12 +41,12 @@ export function PopoverPercentile({
         <FunctionSquare
           className={cn(
             "h-4 w-4",
-            data?.percentile
-              ? getPercentileColor(data.percentile).text
+            percentileValue
+              ? getPercentileColor(percentileValue).text
               : "text-muted-foreground"
           )}
         />
-        {!data?.percentile ? "N/A" : `P${String(Math.round(data.percentile))}`}
+        {!percentileValue ? "N/A" : `P${String(Math.round(percentileValue))}`}
       </PopoverTrigger>
       <PopoverContent
         className="w-40 flex flex-col gap-2 p-2 text-xs"
@@ -66,16 +62,15 @@ export function PopoverPercentile({
         <div className="flex flex-col gap-0.5">
           {percentileArray.map(([key, value]) => {
             const active =
-              data?.percentile &&
-              data.percentile === key &&
-              value === data.latency;
+              percentileValue &&
+              Math.round(percentileValue) === Math.round(key);
             return (
               <div
                 key={`${String(key)}-${String(value)}`}
                 className={cn(
                   "flex items-center justify-between px-1 py-0.5 rounded-md",
-                  active && data.percentile
-                    ? `border ${getPercentileColor(data.percentile).border}`
+                  active && percentileValue
+                    ? `border ${getPercentileColor(percentileValue).border}`
                     : null
                 )}
               >

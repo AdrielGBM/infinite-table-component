@@ -1,3 +1,5 @@
+import { getColor } from "./colors";
+
 export type Percentile = 50 | 75 | 90 | 95 | 99;
 
 export function calculateSpecificPercentile(
@@ -43,28 +45,12 @@ export function calculatePercentile(values: number[], value: number) {
 
 export function getPercentileColor(value: number) {
   if (value < 50) {
-    return {
-      text: "text-green-500",
-      bg: "bg-green-100 dark:bg-green-900/50",
-      border: "border-green-200 dark:border-green-800",
-    };
+    return getColor("green");
   } else if (value < 75) {
-    return {
-      text: "text-yellow-500",
-      bg: "bg-yellow-100 dark:bg-yellow-900/50",
-      border: "border-yellow-200 dark:border-yellow-800",
-    };
+    return getColor("yellow");
   } else if (value < 90) {
-    return {
-      text: "text-orange-500",
-      bg: "bg-orange-100 dark:bg-orange-900/50",
-      border: "border-orange-200 dark:border-orange-800",
-    };
+    return getColor("orange");
   } else {
-    return {
-      text: "text-red-500",
-      bg: "bg-red-100 dark:bg-red-900/50",
-      border: "border-red-200 dark:border-red-800",
-    };
+    return getColor("red");
   }
 }

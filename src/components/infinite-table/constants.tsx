@@ -276,16 +276,20 @@ const sheetFields = {
     label: "Percentile",
     type: "readonly",
     component: (
-      props: ColumnSchema & {
-        metadata?: {
-          currentPercentiles?: Record<Percentile, number>;
-          filterRows?: number;
-        };
-      }
+      props: Record<string, unknown> &
+        ColumnSchema & {
+          metadata?: {
+            currentPercentiles?: Record<Percentile, number>;
+            filterRows?: number;
+          };
+          id: string;
+        }
     ) => {
+      const percentileValue = Number(props[props.id]);
+
       return (
         <PopoverPercentile
-          data={props}
+          percentileValue={percentileValue}
           percentiles={props.metadata?.currentPercentiles}
           filterRows={props.metadata?.filterRows ?? 0}
           className="ml-auto"
