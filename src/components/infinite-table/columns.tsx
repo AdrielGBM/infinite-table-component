@@ -1,10 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { TextWithTooltip } from "@/components/custom/text-with-tooltip";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableColumnNumber } from "@/components/data-table/data-table-column/data-table-column-number";
@@ -19,11 +12,31 @@ import { getTimelinePercentage } from "@/lib/request/timeline";
 import { cn } from "@/lib/utils";
 import { HoverCardPortal } from "@radix-ui/react-hover-card";
 import { HoverCardTimestamp } from "./_components/hover-card-timestamp";
-import type { ColumnDef } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  HeaderContext,
+  CellContext,
+} from "@tanstack/react-table";
 import type { ColumnSchema } from "./schema";
 import type { ColumnConfig, ColumnOption } from "./config-types";
 import { getColor } from "@/lib/request/colors";
 import { formatMilliseconds } from "@/lib/format";
+
+// Tipo extendido para columnas con propiedades personalizadas
+interface ExtendedColumn {
+  label?: string;
+  options?: ColumnOption[];
+  showColor?: boolean;
+  left?: string;
+  right?: string;
+}
+
+type HeaderFunction = (
+  props: HeaderContext<ColumnSchema, unknown>
+) => React.ReactNode;
+type CellFunction = (
+  props: CellContext<ColumnSchema, unknown>
+) => React.ReactNode;
 
 export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
   return config
@@ -40,18 +53,21 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
           base.header &&
           base.header !== "" &&
           (typeof base.header === "function"
-            ? (props: any) =>
-                (base.header as Function)({
+            ? (props: HeaderContext<ColumnSchema, unknown>) =>
+                (base.header as HeaderFunction)({
                   ...props,
-                  column: { ...props.column, label: col.label ?? col.id },
+                  column: {
+                    ...props.column,
+                    label: col.label ?? col.id,
+                  } as typeof props.column & ExtendedColumn,
                 })
             : col.label ?? base.label),
         size: col.columnSize ?? base.size,
         minSize: col.columnSize ?? base.size,
         cell:
           "cell" in base && typeof base.cell === "function"
-            ? (props: any) =>
-                (base.cell as Function)({
+            ? (props: CellContext<ColumnSchema, unknown>) =>
+                (base.cell as CellFunction)({
                   ...props,
                   column: {
                     ...props.column,
@@ -68,7 +84,7 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
                           right: col.right,
                         }
                       : {}),
-                  },
+                  } as typeof props.column & ExtendedColumn,
                 })
             : "cell" in base
             ? base.cell
@@ -80,7 +96,11 @@ export function getColumns(config: ColumnConfig[]): ColumnDef<ColumnSchema>[] {
 
 const columns: Record<
   string,
-  Partial<ColumnDef<ColumnSchema>> & { label: string }
+  Partial<ColumnDef<ColumnSchema>> & {
+    label: string;
+    header?: string | HeaderFunction;
+    cell?: CellFunction;
+  }
 > = {
   string: {
     accessorKey: "string",
