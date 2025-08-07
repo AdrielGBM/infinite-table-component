@@ -6,7 +6,7 @@ import { searchParamsParser } from "./search-params";
 import type { ColumnConfig } from "./config-types";
 
 // TODO: make a BaseObject (incl. date and uuid e.g. for every upcoming branch of infinite table)
-export function useLiveMode<TData extends { date: Date }>(
+export function useLiveMode<TData extends { date: Date | string }>(
   data: TData[],
   columnConfig: ColumnConfig[]
 ) {
@@ -28,7 +28,9 @@ export function useLiveMode<TData extends { date: Date }>(
       // return first item that is there if not liveTimestamp
       if (!liveTimestamp.current) return true;
       // return first item that is after the liveTimestamp
-      if (item.date.getTime() > liveTimestamp.current) return false;
+      const itemDate =
+        item.date instanceof Date ? item.date : new Date(item.date);
+      if (itemDate.getTime() > liveTimestamp.current) return false;
       return true;
       // return first item if no liveTimestamp
     });

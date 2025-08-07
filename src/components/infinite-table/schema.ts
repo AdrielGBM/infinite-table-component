@@ -7,20 +7,23 @@ import { z } from "zod";
 
 // https://github.com/colinhacks/zod/issues/2985#issue-2008642190
 
-export const columnSchema = z.object({
-  string: z.string().optional(),
-  select: z.union([z.string(), z.string().array()]),
-  date: z.date(),
-  number: z.number(),
-  uuid: z.string(),
-  table: z.record(z.string()),
-  message: z.string().optional(),
-  percentile: z.number().optional(),
-});
+export interface BaseRowSchema {
+  uuid: string;
+  date: string | Date;
+}
 
-export type ColumnSchema = z.infer<typeof columnSchema>;
+export type ColumnSchema = BaseRowSchema &
+  Record<
+    string,
+    | string
+    | string[]
+    | Date
+    | number
+    | Record<string, string>
+    | Record<string, number>
+    | undefined
+  >;
 
-// TODO: can we get rid of this in favor of nuqs search-params?
 export const columnFilterSchema = z.object({
   string: z.string().optional(),
   select: z

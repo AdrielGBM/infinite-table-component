@@ -87,7 +87,7 @@ const columns: Record<
     label: "string",
     header: "String",
     cell: ({ row, column }) => {
-      const value = row.getValue<ColumnSchema["string"]>(column.id);
+      const value = row.getValue<string | undefined>(column.id);
       return <TextWithTooltip text={value ?? ""} />;
     },
     size: 130,
@@ -103,7 +103,7 @@ const columns: Record<
     label: "select",
     header: "Select",
     cell: ({ row, column }) => {
-      const value = row.getValue<ColumnSchema["select"]>(column.id);
+      const value = row.getValue<string | string[] | undefined>(column.id);
 
       const getOptionalData = (val: string) => {
         const options =
@@ -146,7 +146,7 @@ const columns: Record<
             })}
           </>
         );
-      } else {
+      } else if (typeof value === "string") {
         const { label, color } = getOptionalData(value);
         if ("showColor" in column && column.showColor) {
           return <DataTableColumnShape color={color} />;
@@ -159,6 +159,7 @@ const columns: Record<
           />
         );
       }
+      return null;
     },
     filterFn: "arrIncludesSome",
     enableResizing: false,
@@ -181,7 +182,8 @@ const columns: Record<
       />
     ),
     cell: ({ row, column }) => {
-      const date = new Date(row.getValue<ColumnSchema["date"]>(column.id));
+      const dateValue = row.getValue<Date | string>(column.id);
+      const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
       return <HoverCardTimestamp date={date} />;
     },
     filterFn: "inDateRange",
@@ -205,7 +207,7 @@ const columns: Record<
       />
     ),
     cell: ({ row, column }) => {
-      const value = row.getValue<ColumnSchema["number"]>(column.id);
+      const value = row.getValue<number>(column.id);
       return (
         <DataTableColumnNumber
           left={
@@ -240,7 +242,7 @@ const columns: Record<
     label: "uuid",
     header: "Request Id",
     cell: ({ row }) => {
-      const value = row.getValue<ColumnSchema["uuid"]>("uuid");
+      const value = row.getValue<string>("uuid");
       return <TextWithTooltip text={value} />;
     },
     size: 130,
@@ -266,9 +268,10 @@ const columns: Record<
         "options" in column ? (column.options as ColumnOption[]) : [];
       const values =
         options.length > 0
-          ? options.map((option) =>
-              row.getValue<ColumnSchema["number"]>(option.value)
-            )
+          ? options.map((option) => {
+              const val = row.getValue<number | undefined>(option.value);
+              return val ?? 0;
+            })
           : [];
       const labels = options.map((option) => option.label ?? null);
       const colors = options.map((option) => option.color ?? "default");

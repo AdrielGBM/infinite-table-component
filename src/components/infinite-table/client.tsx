@@ -85,7 +85,7 @@ export function Client({
 
       return { ...field, options };
     });
-  }, [facets]);
+  }, [facets, columnConfig]);
 
   return (
     <DataTableInfinite
@@ -121,14 +121,17 @@ export function Client({
       }}
       chartData={chartData}
       chartDataColumnId="date"
+      columnConfig={columnConfig}
       getRowClassName={(row) => {
-        const rowTimestamp = new Date(
-          row.original.date
-        ).getTime(); /* Se le agregó el new Date() */
+        const dateValue = row.original.date;
+        const rowTimestamp =
+          dateValue instanceof Date
+            ? dateValue.getTime()
+            : new Date(dateValue).getTime();
         const isPast = rowTimestamp <= (liveMode.timestamp ?? -1);
         return cn(isPast ? "opacity-50" : "opacity-100");
       }}
-      getRowId={(row) => row.uuid}
+      getRowId={(row) => String(row.uuid)}
       getFacetedUniqueValues={getFacetedUniqueValues(facets)}
       getFacetedMinMaxValues={getFacetedMinMaxValues(facets)}
       renderLiveRow={(props) => {
