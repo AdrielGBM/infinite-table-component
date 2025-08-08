@@ -20,9 +20,12 @@ export function LiveButton({
   fetchPreviousPage,
   columnConfig,
 }: LiveButtonProps) {
-  const [{ live, date, sort }, setSearch] = useQueryStates(
+  const [searchParams, setSearch] = useQueryStates(
     searchParamsParser(columnConfig)
   );
+  const { live, sort } = searchParams;
+  const date = "date" in searchParams ? searchParams.date : undefined;
+
   const { table } = useDataTable();
   useHotKey(handleClick, "j");
 
@@ -53,13 +56,13 @@ export function LiveButton({
     if ((date || sort) && live) {
       void setSearch((prev) => ({ ...prev, live: null }));
     }
-  }, [date, sort]);
+  }, [date, sort, live, setSearch]);
 
   function handleClick() {
     void setSearch((prev) => ({
       ...prev,
       live: !prev.live,
-      date: null,
+      ...("date" in prev && { date: null }),
       sort: null,
     }));
     table.getColumn("date")?.setFilterValue(undefined);
