@@ -370,6 +370,7 @@ export function DataTableInfinite<TData, TValue, TMeta>({
               data={chartData}
               className="-mb-2"
               columnId={chartDataColumnId}
+              columnConfig={columnConfig}
             />
           </div>
           <div className="z-0">

@@ -11,7 +11,9 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import type { CategoricalChartFunc } from "recharts/types/chart/generateCategoricalChart";
 import { useDataTable } from "@/components/data-table/useDataTable";
-import type { BaseChartSchema, TimelineChartSchema } from "./schema";
+import type { BaseChartSchema } from "./schema";
+import type { ColumnConfig, SelectColumnConfig } from "./config-types";
+import { getColor } from "@/lib/request/colors";
 
 export const description = "A stacked bar chart";
 
@@ -26,17 +28,56 @@ interface TimelineChartProps<TChart extends BaseChartSchema> {
    * Same data as of the InfiniteQueryMeta.
    */
   data: TChart[];
+  /**
+   * Column configuration to determine chart structure
+   */
+  columnConfig?: ColumnConfig[];
 }
 
 export function TimelineChart<TChart extends BaseChartSchema>({
   data,
   className,
   columnId,
+  columnConfig = [],
 }: TimelineChartProps<TChart>) {
   const { table } = useDataTable();
   const [refAreaLeft, setRefAreaLeft] = useState<string | null>(null);
   const [refAreaRight, setRefAreaRight] = useState<string | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
+
+  const mainChartColumn = useMemo(() => {
+    return columnConfig.find(
+      (col): col is SelectColumnConfig =>
+        col.type === "select" && "chartMain" in col && col.chartMain === true
+    );
+  }, [columnConfig]);
+
+  const chartLevels = useMemo(() => {
+    if (!mainChartColumn?.options) {
+      return [
+        { value: "error", color: "red", label: "Error" },
+        { value: "warning", color: "orange", label: "Warning" },
+        { value: "success", color: "green", label: "Success" },
+      ];
+    }
+
+    return mainChartColumn.options.map((option) => ({
+      value: option.value,
+      color: option.color ?? "default",
+      label: option.label ?? option.value,
+    }));
+  }, [mainChartColumn]);
+
+  const chartConfig = useMemo(() => {
+    const config: ChartConfig = {};
+    chartLevels.forEach((level) => {
+      config[level.value] = {
+        label: level.label,
+        color: `hsl(var(--color-${level.color}))`,
+      };
+    });
+    return config;
+  }, [chartLevels]);
 
   // REMINDER: date has to be a string for tooltip label to work - don't ask me why
   const chart = useMemo(
@@ -45,7 +86,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
         ...item,
         [columnId]: new Date(item.timestamp).toString(),
       })),
-    [data]
+    [data, columnId]
   );
 
   const timerange = useMemo(() => {
@@ -85,7 +126,7 @@ export function TimelineChart<TChart extends BaseChartSchema>({
 
   return (
     <ChartContainer
-      config={{} as ChartConfig} // TODO: Se debe configurar con TooltipLabel
+      config={chartConfig}
       className={cn(
         "aspect-auto h-[60px] w-full",
         "[&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted/50", // otherwise same color as 200
@@ -138,10 +179,14 @@ export function TimelineChart<TChart extends BaseChartSchema>({
             />
           }
         />
-        {/* TODO: we could use the `{timestamp, ...rest} = data[0]` to dynamically create the bars but that would mean the order can be very much random */}
-        <Bar dataKey="error" stackId="a" fill="var(--color-error)" />
-        <Bar dataKey="warning" stackId="a" fill="var(--color-warning)" />
-        <Bar dataKey="success" stackId="a" fill="var(--color-success)" />
+        {chartLevels.map((level) => (
+          <Bar
+            key={level.value}
+            dataKey={level.value}
+            stackId="a"
+            fill={getColor(level.color).hex}
+          />
+        ))}
         {refAreaLeft && refAreaRight && (
           <ReferenceArea
             x1={refAreaLeft}
@@ -169,20 +214,4 @@ function calculatePeriod(interval: number): "10m" | "1d" | "1w" | "1mo" {
     return "1w";
   }
   return "1mo"; // defaults to 1 month
-}
-
-// TODO: use a `formatTooltipLabel` function instead for composability
-function TooltipLabel({
-  level,
-}: {
-  level: keyof Omit<TimelineChartSchema, "timestamp">;
-}) {
-  return (
-    <div className="mr-2 flex w-20 items-center justify-between gap-2 font-mono">
-      <div className="capitalize text-foreground/70">{level}</div>
-      <div className="text-xs text-muted-foreground/70">
-        {getLevelLabel(level)}
-      </div>
-    </div>
-  );
 }

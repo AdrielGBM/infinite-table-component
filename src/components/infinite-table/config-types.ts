@@ -51,6 +51,7 @@ export interface SelectColumnConfig extends BaseColumnConfig {
   type: "select";
   options: ColumnOption[];
   showColor?: boolean;
+  chartMain?: boolean;
 }
 
 export interface TimelineColumnConfig extends BaseColumnConfig {

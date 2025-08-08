@@ -9,7 +9,6 @@ import { getFilterFields, getSheetFields } from "./constants";
 import { DataTableInfinite } from "./data-table-infinite";
 import { dataOptions, type LogsMeta } from "./query-options";
 import { searchParamsParser } from "./search-params";
-import { mock } from "./mock";
 import {
   useLiveMode,
   getFacetedUniqueValues,
@@ -39,7 +38,7 @@ export function Client({
   useResetFocus();
 
   const flatData = React.useMemo(
-    () => data?.pages.flatMap((page) => page.data) ?? mock, // ?? []
+    () => data?.pages.flatMap((page) => page.data) ?? [],
     [data?.pages]
   );
 

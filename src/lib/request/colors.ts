@@ -1,6 +1,6 @@
 export function getColor(
   value: string
-): Record<"text" | "shape" | "bg" | "border", string> {
+): Record<"text" | "shape" | "bg" | "border" | "hex", string> {
   switch (value) {
     case "blue":
       return {
@@ -8,6 +8,7 @@ export function getColor(
         shape: "bg-blue-500 dark:bg-blue-500",
         bg: "bg-blue-100 dark:bg-blue-900",
         border: "border-blue-200 dark:border-blue-800",
+        hex: "#3b82f6",
       };
     case "green":
       return {
@@ -15,6 +16,7 @@ export function getColor(
         shape: "bg-green-500 dark:bg-green-500",
         bg: "bg-green-100 dark:bg-green-900",
         border: "border-green-200 dark:border-green-800",
+        hex: "#22c55e",
       };
     case "yellow":
       return {
@@ -22,6 +24,7 @@ export function getColor(
         shape: "bg-yellow-500 dark:bg-yellow-500",
         bg: "bg-yellow-100 dark:bg-yellow-900",
         border: "border-yellow-200 dark:border-yellow-800",
+        hex: "#eab308",
       };
     case "orange":
       return {
@@ -29,6 +32,7 @@ export function getColor(
         shape: "bg-orange-500 dark:bg-orange-500",
         bg: "bg-orange-100 dark:bg-orange-900",
         border: "border-orange-200 dark:border-orange-800",
+        hex: "#f97316",
       };
     case "red":
       return {
@@ -36,6 +40,7 @@ export function getColor(
         shape: "bg-red-500 dark:bg-red-500",
         bg: "bg-red-100 dark:bg-red-900",
         border: "border-red-200 dark:border-red-800",
+        hex: "#ef4444",
       };
     case "emerald":
       return {
@@ -43,6 +48,7 @@ export function getColor(
         shape: "bg-emerald-500 dark:bg-emerald-500",
         bg: "bg-emerald-100 dark:bg-emerald-900",
         border: "border-emerald-200 dark:border-emerald-800",
+        hex: "#10b981",
       };
     case "cyan":
       return {
@@ -50,6 +56,7 @@ export function getColor(
         shape: "bg-cyan-500 dark:bg-cyan-500",
         bg: "bg-cyan-100 dark:bg-cyan-900",
         border: "border-cyan-200 dark:border-cyan-800",
+        hex: "#06b6d4",
       };
     case "violet":
       return {
@@ -57,6 +64,7 @@ export function getColor(
         shape: "bg-violet-500 dark:bg-violet-500",
         bg: "bg-violet-100 dark:bg-violet-900",
         border: "border-violet-200 dark:border-violet-800",
+        hex: "#8b5cf6",
       };
     case "purple":
       return {
@@ -64,6 +72,7 @@ export function getColor(
         shape: "bg-purple-500 dark:bg-purple-500",
         bg: "bg-purple-100 dark:bg-purple-900",
         border: "border-purple-200 dark:border-purple-800",
+        hex: "#a855f7",
       };
     default:
       return {
@@ -71,6 +80,7 @@ export function getColor(
         shape: "bg-gray-500 dark:bg-gray-500",
         bg: "bg-gray-100 dark:bg-gray-900",
         border: "border-gray-200 dark:border-gray-800",
+        hex: "#6b7280",
       };
   }
 }

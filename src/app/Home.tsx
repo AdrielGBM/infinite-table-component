@@ -31,13 +31,14 @@ function Home() {
             type: "select",
             label: "Nivel",
             options: [
-              { value: "success", label: "2xx", color: "green" },
-              { value: "warning", label: "4xx", color: "orange" },
-              { value: "error", label: "5xx", color: "red" },
-              { value: "info", color: "blue" },
+              { value: "success", label: "Success", color: "green" },
+              { value: "warning", label: "Warning", color: "orange" },
+              { value: "error", label: "Error", color: "red" },
+              { value: "info", label: "Info", color: "blue" },
             ],
             showColor: true,
             noSheet: true,
+            chartMain: true,
           },
           {
             id: "uuid",
