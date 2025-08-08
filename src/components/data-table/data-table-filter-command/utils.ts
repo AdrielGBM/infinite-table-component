@@ -1,4 +1,3 @@
-/* eslint-disable no-fallthrough */
 import {
   ARRAY_DELIMITER,
   RANGE_DELIMITER,
@@ -42,39 +41,40 @@ export function replaceInputByFieldType<TData>({
   value: string;
   field: DataTableFilterField<TData>;
 }) {
-  switch (field.type) {
-    case "checkbox": {
-      if (currentWord.includes(ARRAY_DELIMITER)) {
-        const words = currentWord.split(ARRAY_DELIMITER);
-        words[words.length - 1] =
-          optionValue !== undefined ? String(optionValue) : "";
-        const input = prev.replace(currentWord, words.join(ARRAY_DELIMITER));
-        return `${input.trim()} `;
-      }
-    }
-    case "slider": {
-      if (currentWord.includes(SLIDER_DELIMITER)) {
-        const words = currentWord.split(SLIDER_DELIMITER);
-        words[words.length - 1] =
-          optionValue !== undefined ? String(optionValue) : "";
-        const input = prev.replace(currentWord, words.join(SLIDER_DELIMITER));
-        return `${input.trim()} `;
-      }
-    }
-    case "timerange": {
-      if (currentWord.includes(RANGE_DELIMITER)) {
-        const words = currentWord.split(RANGE_DELIMITER);
-        words[words.length - 1] =
-          optionValue !== undefined ? String(optionValue) : "";
-        const input = prev.replace(currentWord, words.join(RANGE_DELIMITER));
-        return `${input.trim()} `;
-      }
-    }
-    default: {
-      const input = prev.replace(currentWord, value);
-      return `${input.trim()} `;
-    }
+  if (field.type === "checkbox" && currentWord.includes(ARRAY_DELIMITER)) {
+    const words = currentWord.split(ARRAY_DELIMITER);
+    words[words.length - 1] =
+      optionValue !== undefined ? String(optionValue) : "";
+    const input = prev.replace(currentWord, words.join(ARRAY_DELIMITER));
+    return `${input.trim()} `;
   }
+
+  if (
+    (field.type === "checkbox" || field.type === "slider") &&
+    currentWord.includes(SLIDER_DELIMITER)
+  ) {
+    const words = currentWord.split(SLIDER_DELIMITER);
+    words[words.length - 1] =
+      optionValue !== undefined ? String(optionValue) : "";
+    const input = prev.replace(currentWord, words.join(SLIDER_DELIMITER));
+    return `${input.trim()} `;
+  }
+
+  if (
+    (field.type === "checkbox" ||
+      field.type === "slider" ||
+      field.type === "timerange") &&
+    currentWord.includes(RANGE_DELIMITER)
+  ) {
+    const words = currentWord.split(RANGE_DELIMITER);
+    words[words.length - 1] =
+      optionValue !== undefined ? String(optionValue) : "";
+    const input = prev.replace(currentWord, words.join(RANGE_DELIMITER));
+    return `${input.trim()} `;
+  }
+
+  const input = prev.replace(currentWord, value);
+  return `${input.trim()} `;
 }
 
 export function getFieldOptions<TData>({
