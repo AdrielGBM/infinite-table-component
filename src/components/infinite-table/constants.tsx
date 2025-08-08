@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { CopyToClipboardContainer } from "@/components/custom/copy-to-clipboard-container";
 import { KVTabs } from "@/components/custom/kv-tabs";
 import type {
@@ -150,21 +147,31 @@ export function getSheetFields(
             : undefined,
         component:
           "component" in base && typeof base.component === "function"
-            ? (props: Record<string, unknown>) =>
-                base.component({
-                  ...props,
-                  id: col.id,
-                  ...(col.type === "select" || col.type === "timeline"
-                    ? { options: col.options }
-                    : {}),
-                  ...(col.type === "number" || col.type === "timeline"
-                    ? {
-                        left: col.left,
-                        right: col.right,
-                      }
-                    : {}),
-                  ...(col.type === "message" ? { color: col.color } : {}),
-                } as any)
+            ? (props: ColumnSchema & { id: string }) => {
+                const baseProps = { ...props, id: col.id };
+
+                if (col.type === "number" || col.type === "timeline") {
+                  Object.assign(baseProps, {
+                    left: col.left,
+                    right: col.right,
+                  });
+                }
+
+                if (col.type === "message") {
+                  Object.assign(baseProps, { color: col.color });
+                }
+
+                if (col.type === "select" || col.type === "timeline") {
+                  Object.assign(baseProps, { options: col.options });
+                }
+
+                // Cast seguro al tipo esperado por el componente específico
+                return (
+                  base.component as (
+                    props: typeof baseProps
+                  ) => React.ReactElement
+                )(baseProps);
+              }
             : "component" in base
             ? base.component
             : undefined,
